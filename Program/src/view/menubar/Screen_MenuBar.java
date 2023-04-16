@@ -110,6 +110,7 @@ public class Screen_MenuBar extends JMenuBar{
     	 File.addSeparator();
     	 File.add(item1_2);
     	 View.add(item3_1);
+    	 View.addSeparator();
     	 View.add(item3_2);
     	 this.add(File);
     	 this.add(Edit);
