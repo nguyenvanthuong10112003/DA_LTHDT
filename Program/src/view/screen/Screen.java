@@ -1,6 +1,10 @@
 package view.screen;
-
 import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.awt.*;
+import controller.action;
+
 import java.io.File;
 import java.net.URL;
 
@@ -9,63 +13,85 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import controller.mouse;
+import view.content.PanelContent;
+import view.content.left.ScrollPaneTree;
 import view.formlogin.FormLogin;
 import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
-import view.panelcontent.JPanelContent;
 import view.toolbar.ScreenToolBar;
-import view.treebar.ScrollPaneTree;
 public class Screen extends JFrame
 {
-	  private Screen_MenuBar menubar;
+	  private int dd;
+	  private int chenhlech;
+	  private Screen_MenuBar menubar;  
 	  private String iconApp1 = "folder-icon1.png";
 	  private String iconApp2 = "folder-icon2.png";
       private Font font = new Font("Arial", Font.PLAIN, 14);
       private ScreenToolBar toolbar;
       private JPanel content;
-      private JPanel content_center;
-      private ScrollPaneTree scroll;
+      private PanelContent content_center;
       private mouse mouseListen = new mouse(this);
-      private JPanelContent panelcontent;
+      private action actionlistener;
       public Screen(String title)
       {
-    	  this.setTitle(title);               //tieu de
-    	  //this.setLocationRelativeTo(null);         
+    	  this.setTitle(title);               //tieu de         
     	  this.setDefaultCloseOperation(EXIT_ON_CLOSE);     // tat han khi onclick close
-    	  this.setExtendedState(this.MAXIMIZED_BOTH);        // kich thuoc to nhat
-    	  //this.setUndecorated(true); full
+    	  //this.setUndecorated(true); //full
     	  this.setMinimumSize(new Dimension(800,450));   // kich thuoc be nhat
     	  this.setIconImage();  // set icon app
-    	  this.init(); // khởi tạo các thuộc tính
-    	  this.addObj(); // thêm các thuộc tính
+    	  //this.setLocationRelativeTo(null); // Giua man hinh
+    	  this.init(); // 
+    	  this.addObj(); //   	  
+    	  this.addListen();    
     	  this.setVisible(true);  // hien app
-    	 
+          this.chenhlech = this.getSize().width - content_center.getSize().width;
+          this.dd = this.getSize().height - chenhlech - content_center.getSize().height;
+          this.menubar.setPanelContent(content_center);
+          this.content_center.getPanelContentLeft().getTreeBar().setPanelContent(content_center);
+          update();
       }         
-      private void init()
+      private void addListen()
+      {
+    	  //this.addMouseListener(mouseListen);
+    	  this.addWindowStateListener(new WindowStateListener() {
+
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				// TODO Auto-generated method stub
+                update();
+			}
+    		  
+    	  });
+
+    }
+    public void update()
+    {
+        this.content_center.update(this.getSize().width - chenhlech, this.getSize().height - dd - chenhlech);
+    }
+    @Override
+    public Dimension getSize()
+    {
+    	return super.getSize();
+    }
+	private void init()
       {
     	  menubar = new Screen_MenuBar(font, Color.white);
     	  toolbar = new ScreenToolBar(font);
     	  content = new JPanel();
-    	  content_center = new JPanel();
-    	  panelcontent = new JPanelContent();
-    	  scroll = new ScrollPaneTree(new DefaultMutableTreeNode("This pc"), panelcontent);
+    	  content_center = new PanelContent();
+    	  //actionlistener = new action(this);
       }
       private void addObj()
       {
+    	  
+    	  this.add(content);
     	  content.setLayout(new BorderLayout());
     	  this.setJMenuBar(menubar);
     	  content.add(toolbar, BorderLayout.NORTH);
-    	  
-    	  
-    	  content_center.setLayout(null);
-    	  content_center.add(scroll);
-    	  
-    	  content_center.add(panelcontent);
-    	  panelcontent.setOpaque(true);
-    	  panelcontent.setBackground(Color.WHITE);
-    	  panelcontent.setBounds(10 + scroll.getSize().width, 5, Toolkit.getDefaultToolkit().getScreenSize().width - 15 - scroll.getSize().width, 100);
-    	  content.add(content_center, BorderLayout.CENTER);
-    	  this.add(content);
+    	  content.add(content_center, BorderLayout.CENTER);	  
+    	  content_center.setSpace(5);
+    	  update();
+
       }
       private void setIconImage()
       {

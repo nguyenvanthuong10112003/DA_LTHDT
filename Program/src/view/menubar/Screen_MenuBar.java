@@ -18,7 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 
+import controller.mouse;
+import view.content.PanelContent;
+import controller.action;
 public class Screen_MenuBar extends JMenuBar{
+	 private PanelContent pc;
 	 private JMenu File;
 	 private JMenu Edit;
 	 private JMenu View;
@@ -29,8 +33,13 @@ public class Screen_MenuBar extends JMenuBar{
 	 private JRadioButtonMenuItem item3_1_2;
 	 private JRadioButtonMenuItem item3_1_3;
 	 private JMenu item3_2;
+	 private JMenu item3_3;
+	 private JMenuItem item3_3_1;
+	 private JMenuItem item3_3_2;
+	 private JMenuItem item3_3_3;
      private ButtonGroup groupbutton;
-	 
+	 private mouse mouselisten;
+	 private action actionlisten;
 	 private Color backcl;
 	 private Font font;
      public Screen_MenuBar(Font font, Color color)
@@ -44,19 +53,14 @@ public class Screen_MenuBar extends JMenuBar{
     	 addObj();
          setBack();
      }
+     public void setPanelContent(PanelContent pc)
+     {
+    	 this.pc = pc;
+     }
      private void setBack()
      {
     	 //panel_file.setBackground(backcl);
          this.setBackground(backcl);
-         item1_1.setBackground(backcl);
-         item1_2.setBackground(backcl);
-         item3_1.setOpaque(true);
-         item3_1.setBackground(backcl);
-         item3_2.setOpaque(true);
-         item3_2.setBackground(backcl);
-         item3_1_1.setBackground(backcl);
-         item3_1_2.setBackground(backcl);
-         item3_1_3.setBackground(backcl);
      }
      private void init()
      {
@@ -71,6 +75,11 @@ public class Screen_MenuBar extends JMenuBar{
     	 item3_1_3 = new JRadioButtonMenuItem();
     	 item3_2 = new JMenu();
          groupbutton = new ButtonGroup();
+    	 item3_3 = new JMenu();
+    	 item3_3_1 = new JMenuItem();
+    	 item3_3_2 = new JMenuItem();
+    	 mouselisten = new mouse(this);
+    	 actionlisten = new action(this);
      }
      private void setText()
      {
@@ -94,9 +103,18 @@ public class Screen_MenuBar extends JMenuBar{
     	 item3_1_3.setFont(font);
     	 item3_2.setText("Sắp xếp theo");
     	 item3_2.setFont(font);
+    	 item3_3.setText("Hiển thị");
+    	 item3_3.setFont(font);
+    	 item3_3_1.setText("Hiện ngăn xem trước");
+    	 item3_3_1.setFont(font);
+    	 item3_3_2.setText("Hiện ngăn xem chi tiết");
+    	 item3_3_2.setFont(font);
      }
      private void addObj()
-     {
+     { 
+    	 item3_3_1.addActionListener(actionlisten);
+    	 item3_3_2.addActionListener(actionlisten);
+    	 
     	 item3_1_1.setSelected(true);	 
     	 groupbutton.add(item3_1_1);
     	 groupbutton.add(item3_1_2);
@@ -106,12 +124,17 @@ public class Screen_MenuBar extends JMenuBar{
     	 item3_1.add(item3_1_2);
     	 item3_1.add(item3_1_3);
     	 
+    	 item3_3.add(item3_3_1);
+    	 item3_3.add(item3_3_2);
+    	 
     	 File.add(item1_1);
     	 File.addSeparator();
     	 File.add(item1_2);
     	 View.add(item3_1);
     	 View.addSeparator();
     	 View.add(item3_2);
+    	 View.addSeparator();
+    	 View.add(item3_3);
     	 this.add(File);
     	 this.add(Edit);
     	 this.add(View);
@@ -133,5 +156,28 @@ public class Screen_MenuBar extends JMenuBar{
 	         item3_2.setIconTextGap(7);
     	 }
     	 catch(Exception e) {}
+     }
+     public void handleEvent(int hash)
+     {
+    	 if(item3_1_1.hashCode() == hash)
+    	 {
+    		 
+    	 }
+    	 else if(item3_1_2.hashCode() == hash)
+    	 {
+    		 
+    	 }
+    	 else if(item3_1_3.hashCode() == hash)
+    	 {
+    		 
+    	 }
+    	 else if(item3_3_1.hashCode() == hash)
+    	 {
+    		 pc.ShowPanelLeft();
+    	 }
+    	 else if(item3_3_2.hashCode() == hash)
+    	 {
+    		 pc.ShowPanelRight();
+    	 }
      }
 }

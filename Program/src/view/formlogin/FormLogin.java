@@ -38,7 +38,9 @@ public class FormLogin extends JFrame
 	 private Font font32 = new Font("Arial", Font.BOLD, 28);
 	 private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	 private Font fontb = new Font("Arial", Font.BOLD, 14);
-	 private Color color = Color.BLACK;
+	 private Color black = Color.BLACK;
+	 private Color white = Color.WHITE;
+	 private Color blue = Color.BLUE;
      public FormLogin()
      {
     	 this.setTitle("Đăng nhập");
@@ -49,23 +51,23 @@ public class FormLogin extends JFrame
     	 this.setResizable(false);
     	 this.init();
     	 this.setIcon();
-    	 this.setColor();
+    	 this.setColor(blue, black);
     	 this.setText();
     	 this.addObj();
     	 this.setCusor();
     	 this.setVisible(true);
      }
-     private void setColor()
+     private void setColor(Color back, Color font)
      {
     	 cancel.setOpaque(true);
     	 register.setOpaque(true);
     	 login.setOpaque(true);
-    	 cancel.setBackground(color);
-    	 register.setBackground(color);
-    	 login.setBackground(color);
-    	 login.setForeground(Color.white);
-    	 cancel.setForeground(Color.white);
-    	 register.setForeground(Color.white);
+    	 cancel.setBackground(back);
+    	 register.setBackground(back);
+    	 login.setBackground(back);
+    	 login.setForeground(font);
+    	 cancel.setForeground(font);
+    	 register.setForeground(font);
      }
      private void setIcon()
      {

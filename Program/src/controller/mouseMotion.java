@@ -5,16 +5,17 @@ import java.awt.event.MouseMotionListener;
 
 import view.screen.Screen;
 
-public class mouseMotion implements MouseMotionListener{
-    private Screen sc;
-    mouseMotion(Screen sc)
-    {
-    	this.sc = sc;
-    }
+public class mouseMotion implements MouseMotionListener {
+	private Screen sc;
+
+	mouseMotion(Screen sc) {
+		this.sc = sc;
+	}
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

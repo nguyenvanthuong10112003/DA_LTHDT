@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.border.EtchedBorder;
 
 import controller.mouse;
 import view.formlogin.FormLogin;
@@ -21,6 +23,7 @@ public class ScreenToolBar extends JToolBar{
 	  private JButton register;
 	  private Color black = Color.BLACK;
 	  private Color white = Color.WHITE;
+	  private Color blue = Color.BLUE;
 	  private Font font;
 	  private FormLogin Flogin;
 	  private FormRegister Fregister;
@@ -41,10 +44,10 @@ public class ScreenToolBar extends JToolBar{
       }
       private void setColor()
       {
-    	  login.setBackground(black);
-    	  login.setForeground(white);
-    	  register.setBackground(black);
-    	  register.setForeground(white);
+    	  login.setBackground(blue);
+    	  //login.setForeground(white);
+    	  register.setBackground(blue);
+    	  //register.setForeground(white);
       }
       private void init()
       {
@@ -61,6 +64,7 @@ public class ScreenToolBar extends JToolBar{
       {
     	  mouse mlisten = new mouse(this);
     	  this.setLayout(new BorderLayout());
+    	  this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     	  login.addMouseListener(mlisten);
     	  register.addMouseListener(mlisten);
     	  content.setLayout(new FlowLayout(FlowLayout.RIGHT));
