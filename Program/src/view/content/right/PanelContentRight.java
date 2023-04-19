@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import controller.mouse;
+import libary.ColorList;
 import libary.JButtonIcon;
 import libary.JLabelIcon;
 import view.content.PanelContent;
@@ -55,11 +56,11 @@ public class PanelContentRight extends JPanel{
        }
        public void hoverClose()
        {
-    	   close.setBackground(new Color(102,153,204));
+    	   close.setBackground(ColorList.Hover);
        }
        public void exitClose()
        {
-    	   close.setBackground(Color.white);
+    	   close.setBackground(ColorList.Back_Ground);
        }
        public void closeClick()
        {

@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import libary.ColorList;
+import libary.JLabelIcon;
 import view.content.PanelContent;
 import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
@@ -17,9 +19,11 @@ import view.content.left.TreeBar;
 import view.content.right.PanelContentRight;
 import view.menubar.Screen_MenuBar;
 import view.screen.Screen;
+import view.toolbar.JPanelFunction;
 import view.toolbar.ScreenToolBar;
 
 public class mouse extends MouseAdapter{
+	private JPanelFunction pf;
 	private PanelContentRight cr;
 	private JPanel content;
 	private ScreenToolBar tb;
@@ -29,6 +33,10 @@ public class mouse extends MouseAdapter{
 	private Boolean mousep = false;
 	private Screen_MenuBar menu;
 	private PanelContentCenter pct;
+	public mouse(JPanelFunction pf)
+	{
+		this.pf = pf;
+	}
 	public mouse(ScreenToolBar tb)
 	{
 		this.tb = tb;
@@ -128,7 +136,13 @@ public class mouse extends MouseAdapter{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(tree != null) {
+		if(pf != null) {
+			if(e.getSource().getClass().equals(JLabelIcon.class))
+			{
+				pf.setColorIcon(e.getSource().hashCode(), ColorList.Back_Ground);
+			}
+		}
+		else if(tree != null) {
 			if(e.getSource().equals(tree.getLabelIconClose()))
 			{
 				tree.exitClose();
@@ -173,7 +187,13 @@ public class mouse extends MouseAdapter{
 				System.out.println("error");
 			}
 		}*/
-		if(tree != null) {
+		if(pf != null) {
+			if(e.getSource().getClass().equals(JLabelIcon.class))
+			{
+				pf.setColorIcon(e.getSource().hashCode(), ColorList.Hover);
+			}
+		}
+		else if(tree != null) {
 			if(e.getSource().equals(tree.getLabelIconClose()))
 			{
 				tree.hoverClose();;
@@ -182,7 +202,7 @@ public class mouse extends MouseAdapter{
 		else if(pct != null)
 		{
 		}
-		if(cr != null) {
+		else if(cr != null) {
 		if(e.getSource().equals(cr.getLabelIconClose()))
 		{
 			cr.hoverClose();

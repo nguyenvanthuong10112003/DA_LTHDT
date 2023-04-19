@@ -11,6 +11,8 @@ public class TreeBar extends JTree{
 	  private PanelContent pc;
 	  private JLabelIcon close;
 	  private mouse mouseListen;
+	  private String iconClose16 = "close16.png";
+	  private String iconClose24 = "close24.png";
       public TreeBar()
       {
     	  super();
@@ -29,7 +31,7 @@ public class TreeBar extends JTree{
     	  this.setShowsRootHandles(true);
     	  this.setBorder(new EmptyBorder(5,5,5,5));
     	  this.setBackground(Color.white);
-          close = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("close16.png"))));
+          close = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
           this.add(close);
     	  mouseListen = new mouse(this);
     	  this.addMouseListener(mouseListen);
@@ -52,12 +54,12 @@ public class TreeBar extends JTree{
       }
       public void hoverClose()
       {
-    	  close.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("close24.png"))));
+    	  close.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose24))));
    	      setIconClose(24);
       }
       public void exitClose()
       {
-   	      close.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("close16.png"))));
+   	      close.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
 	      setIconClose(18);
       }
       public void closeClick()

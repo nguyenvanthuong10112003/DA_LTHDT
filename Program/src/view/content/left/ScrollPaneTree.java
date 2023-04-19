@@ -32,7 +32,7 @@ public class ScrollPaneTree extends JScrollPane
 	public void setBounds(int x, int y, int width, int height)
 	{
 		super.setBounds(x, y, width, height);
-		tree.setSize(width - 20, height - 20);
+		tree.setSize(width - (width >= 20 ? 20 : 0), height - (height >= 20 ? 20 : 0));
 	}
 	public void setTree(DefaultMutableTreeNode root)
 	{

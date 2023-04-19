@@ -2,6 +2,8 @@ package view.screen;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import controller.action;
 
@@ -18,6 +20,7 @@ import view.content.left.ScrollPaneTree;
 import view.formlogin.FormLogin;
 import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
+import view.toolbar.JPanelToolBar;
 import view.toolbar.ScreenToolBar;
 public class Screen extends JFrame
 {
@@ -27,7 +30,7 @@ public class Screen extends JFrame
 	  private String iconApp1 = "folder-icon1.png";
 	  private String iconApp2 = "folder-icon2.png";
       private Font font = new Font("Arial", Font.PLAIN, 14);
-      private ScreenToolBar toolbar;
+      private JPanelToolBar toolbar;
       private JPanel content;
       private PanelContent content_center;
       private mouse mouseListen = new mouse(this);
@@ -76,10 +79,10 @@ public class Screen extends JFrame
 	private void init()
       {
     	  menubar = new Screen_MenuBar(font, Color.white);
-    	  toolbar = new ScreenToolBar(font);
+    	  toolbar = new JPanelToolBar(font);
     	  content = new JPanel();
     	  content_center = new PanelContent();
-    	  //actionlistener = new action(this);
+    	  actionlistener = new action(this);
       }
       private void addObj()
       {
@@ -90,7 +93,6 @@ public class Screen extends JFrame
     	  content.add(toolbar, BorderLayout.NORTH);
     	  content.add(content_center, BorderLayout.CENTER);	  
     	  content_center.setSpace(5);
-    	  update();
 
       }
       private void setIconImage()

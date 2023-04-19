@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JPanel;
 
 import controller.mouse;
+import libary.ColorList;
 import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
 import view.content.right.PanelContentRight;
@@ -20,8 +21,6 @@ public class PanelContent extends JPanel{
        private Boolean Show_Content_Right;
        private Boolean Show_Content_Center;
        private Font font;
-       private Color back;
-       private Color fore;
        public PanelContent()
        {
     	   super();
@@ -34,8 +33,6 @@ public class PanelContent extends JPanel{
     	   this.Show_Content_Right = true;
     	   this.Show_Content_Center = true;
     	   this.font = new Font("Arial", Font.PLAIN, 14);
-    	   this.back = Color.WHITE;
-    	   this.fore = Color.BLACK;
     	   this.getSize();
     	   this.addObj();
     	   this.setColorObj();
@@ -70,11 +67,11 @@ public class PanelContent extends JPanel{
        {
     	   this.contentCenter.setOpaque(true);
     	   //this.contentCenter.setBackground(back);
-    	   this.contentCenter.setForeground(fore);
+    	   this.contentCenter.setForeground(ColorList.Fore_Ground);
     	   
     	   this.contentRight.setOpaque(true);
-    	   this.contentRight.setBackground(back);
-    	   this.contentRight.setForeground(fore);	   
+    	   this.contentRight.setBackground(ColorList.Back_Ground);
+    	   this.contentRight.setForeground(ColorList.Fore_Ground);	   
        }
        public ScrollPaneTree getPanelContentLeft()
        {
@@ -82,10 +79,11 @@ public class PanelContent extends JPanel{
        }
        public void setBoundsObj(int width, int height)
        {
+    	   this.setVisible(false);
     	   if(Show_Content_Left)
     	   this.contentLeft.setBounds(space, space, 200, height - space*2);
     	   else
-    	   this.contentLeft.setSize(0,0);
+    	   this.contentLeft.setBounds(space, space, 0, 0);
     	   if(Show_Content_Right)
     	   this.contentRight.setBounds(width - 200 - space, space,200, height - space*2);
     	   else
@@ -93,6 +91,8 @@ public class PanelContent extends JPanel{
     	   this.contentCenter.setBounds(contentLeft.getSize().width + (Show_Content_Left ? space*2 : space), space, width - contentLeft.getSize().width - contentRight.getSize().width - (Show_Content_Right ? space*2 : space) - (Show_Content_Left ? space*2 : space), height - space*2);
            ///System.out.println(this.contentLeft.isVisible());
            //System.out.println(this.contentLeft.getTreeBar().isVisible());
+    	   this.contentCenter.addObj();
+    	   this.setVisible(true);
        }
        public void ClosePanelRight()
        {
