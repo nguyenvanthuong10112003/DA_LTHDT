@@ -4,29 +4,38 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-
 import controller.mouse;
 import libary.JLabelIcon;
+import view.content.PanelContent;
 import view.screen.Screen;
 
 public class ScrollPaneTree extends JScrollPane
 {
+	private PanelContent pc;
 	private int width;
 	private int height;
 	private int space;
 	private TreeBar tree;
-	public ScrollPaneTree()
+	private mouse mouselisten;
+	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	public ScrollPaneTree(PanelContent pc)
 	{
 		 super();
+		 this.pc = pc;
          tree = new TreeBar(new DefaultMutableTreeNode("This pc"));
 		 this.setViewportView(tree);
          this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
          this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+         this.mouselisten = new mouse(this, tree, pc);
+         this.addMouseMotionListener(mouselisten);
+         this.tree.addMouseMotionListener(mouselisten);
+         this.pc.addMouseMotionListener(mouselisten);
+         this.addMouseListener(mouselisten);
+         this.setCursor(defaultCursor);
 	}
 	@Override
 	public void setBounds(int x, int y, int width, int height)
@@ -38,28 +47,86 @@ public class ScrollPaneTree extends JScrollPane
 	{
 		tree = new TreeBar(root);
 	}
+	public void SetCusorTreeBar()
+	{
+		//tree.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	}
 	public void SetCusorScroll(int x, int y)
 	{
-
-		if(x >= this.getSize().width - 2 && x <= this.getSize().width + space + 2 && y >= this.getSize().height - 2 && y <= this.getSize().height + space + 2)
+		if(x >= this.getSize().width - 4  && y >= this.getSize().height - 4)
 		{
 			this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
 		}
-		else if(x >= this.getSize().width - 2 && x <= this.getSize().width + space + 2)
+		else if(x >= this.getSize().width - 1)
 		{
 			this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
 		}
-		else if(y >= this.getSize().height - 2 && y <= this.getSize().height + space + 2)
+		else if(y >= this.getSize().height - 1)
 		{
 			this.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));
 		}
 		else 
 		{
-			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			this.setCursor(defaultCursor);
 		}
+		//pc.setBoundsObj(pc.getSize().width, pc.getSize().height, this.getSize().width, pc.getWidthContentRight());
+	}
+	public void setSize(int x, int y)
+	{
+		if(x >= this.getSize().width - 4  && y >= this.getSize().height - 4 
+		&& x <= this.getSize().width + 4 && y <= this.getSize().height + 4)
+		{
+			if(x >= this.getMinimumSize().width && y >= this.getMinimumSize().height
+			&& y <= this.getMaximumSize().height && x <= this.getMaximumSize().width) 
+			{	
+				super.setSize(x, y);
+				tree.setSize(x - (x >= 20 ? 20 : 0), y - (y >= 20 ? 20 : 0));
+			}
+			tree.setIconClose(18);
+		}
+		else if(x >= this.getSize().width - 10 && x <= this.getSize().width + 10)
+		{
+			if(x >= this.getMinimumSize().width && x <= this.getMaximumSize().width) 
+			{
+				super.setSize(x, this.getSize().height);
+				tree.setSize(x - (x >= 20 ? 20 : 0), this.getSize().height);
+			}
+			tree.setIconClose(18);
+		}
+		else if(y >= this.getSize().height - 10 && y <= this.getSize().height + 10)
+		{
+			
+			if(y >= this.getMinimumSize().height && y <= this.getMaximumSize().height) 
+			{
+				//System.out.println(this.getMinimumSize().height + " " + this.getMaximumSize().height + " " + y);
+			    super.setSize(this.getSize().width, y);
+			    //System.out.println(this.getSize());
+			    tree.setSize(this.getSize().width, y - (y >= 20 ? 20 : 0));
+			}
+		}
+		//pc.update(pc.getSize().width, pc.getSize().height);
+		pc.setBoundsObj(pc.getSize().width, pc.getSize().height, this.getSize().width, this.getSize().height, pc.getWidthContentRight());
+	}
+	public void setHover(int x, int y) 
+	{
+        this.setSize(x - pc.getSpace(), y - pc.getSpace());
 	}
 	public TreeBar getTreeBar()
 	{
 		return tree;
+	}
+	public PanelContent getPanelContent()
+	{
+		return pc;
+	}
+	public Cursor getDefaultCursor()
+	{
+		return defaultCursor;
+	}
+	public void mouseExit(int x, int y)
+	{
+		if(x - pc.getSpace() - 3 > this.getSize().width || y - pc.getSpace() - 3 > this.getSize().height)
+			this.setCursor(defaultCursor);
 	}
 }

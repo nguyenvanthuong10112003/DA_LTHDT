@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,6 +13,7 @@ import javax.swing.JScrollPane;
 
 import libary.ColorList;
 import libary.JLabelIcon;
+import libary.LabelEditor;
 import view.content.PanelContent;
 import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
@@ -23,6 +25,7 @@ import view.toolbar.JPanelFunction;
 import view.toolbar.ScreenToolBar;
 
 public class mouse extends MouseAdapter{
+	private PanelContent pc;
 	private JPanelFunction pf;
 	private PanelContentRight cr;
 	private JPanel content;
@@ -33,6 +36,11 @@ public class mouse extends MouseAdapter{
 	private Boolean mousep = false;
 	private Screen_MenuBar menu;
 	private PanelContentCenter pct;
+	private LabelEditor le;
+	public mouse(LabelEditor le)
+	{
+		this.le = le;
+	}
 	public mouse(JPanelFunction pf)
 	{
 		this.pf = pf;
@@ -61,36 +69,34 @@ public class mouse extends MouseAdapter{
 	{
 		this.tree = tree;
 	}
-	public mouse(PanelContentRight cr)
+	public mouse(PanelContentRight cr, PanelContent pc)
 	{
 		this.cr = cr;
+		this.pc = pc;
 	}
-	public mouse(ScrollPaneTree scroll, Screen sc, TreeBar tree)
+	public mouse(ScrollPaneTree scroll, TreeBar tree, PanelContent pc)
 	{
+		this.pc = pc;
 		this.scroll = scroll;
-		this.sc = sc;
-		this.tree = tree;
+	    this.tree = tree;
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		//System.out.println(e.getSource());
-		/*try {
+		if(tb != null) {
+		try {
             if(e.getSource().getClass().equals(JButton.class))
             {
-            	tb.onclick_Button((JButton)e.getSource());
-            }
-            if(e.getSource().getClass().equals(ScrollPaneTree.class))
-            {
-            	scroll.SetCusorScroll(e.getX(), e.getY());
-            }
-            	
+            	tb.onclick_Button((JButton)e.getSource(), e.getXOnScreen(), e.getYOnScreen());
+            }     	
 		}
 		catch(Exception ex)
 		{
 			System.out.print("error");
-		}*/
-		if(tree != null)
+		}
+		}
+		else if(tree != null)
 		{
 			if(e.getSource().equals(tree.getLabelIconClose()))
 			{
@@ -136,6 +142,11 @@ public class mouse extends MouseAdapter{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+		if(scroll != null) {
+			//System.out.println(e.getX());
+			//if(e.getSource().equals(scroll))
+				//scroll.mouseExit(e.getX(), e.getY());
+		}
 		if(pf != null) {
 			if(e.getSource().getClass().equals(JLabelIcon.class))
 			{
@@ -158,36 +169,65 @@ public class mouse extends MouseAdapter{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		/*if(e.getSource().getClass().equals(ScrollPaneTree.class) || e.getSource().getClass().equals(sc.getClass()) || e.getSource().getClass().equals(TreeBar.class) )
-		{
-			try {
-				mousep = true;
-				//scroll.SetSize(e.getX(), e.getY());
-			}
-			catch(Exception ex)
+		if(scroll != null) {
+			if(e.getSource().equals(scroll))
 			{
-				System.out.println("error");
+				scroll.setSize(e.getX(), e.getY());
 			}
-		}*/
-		
+			else if(e.getSource().equals(pc))
+			{
+				scroll.setHover(e.getX(), e.getY());
+			}
+		}
+		else if(cr != null) {
+			if(e.getSource().equals(cr))
+			{
+				cr.setSize(e.getX());
+			}
+		}
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		/*if(e.getSource().getClass().equals(ScrollPaneTree.class) || e.getSource().getClass().equals(TreeBar.class) || e.getSource().getClass().equals(sc.getClass()))
-		{
-			try {
-				if(e.getSource().getClass().equals(ScrollPaneTree.class))
-				scroll.SetCusorScroll(e.getX(), e.getY());
-				//else 
-			    //scroll.SetCusorTreeBar(e.getX(), e.getY());
-			}
-			catch(Exception ex)
+		if(scroll != null) {
+			if(e.getSource().getClass().equals(ScrollPaneTree.class) || e.getSource().getClass().equals(TreeBar.class))
 			{
-				System.out.println("error");
+				try {
+					if(e.getSource().equals(scroll)) {
+					//if(scroll.getCursor().equals(scroll.getDefaultCursor())) 
+					scroll.SetCusorScroll(e.getX(), e.getY());	
+					//else if(e.getSource().getClass().equals(ScrollPaneTree.class))
+					//{
+					//	if(e.getSource().equals(scroll))
+					//	{
+					//		scroll.setSize(e.getX(), e.getY());
+					//	}
+					//}
+					}
+					else if(e.getSource().equals(tree))
+					scroll.SetCusorTreeBar();
+				}
+				catch(Exception ex)
+				{
+					System.out.println("error");
+				}
 			}
-		}*/
-		if(pf != null) {
+			else if(e.getSource().equals(scroll.getPanelContent()))
+			{
+				//scroll.mouseExit(e.getX(), e.getY());
+			}
+
+		}
+		else if(cr != null)
+		{
+			if(e.getSource().equals(cr))
+				cr.setCusor(e.getX(), e.getY());
+			else if(e.getSource().equals(cr.getLabelIconClose())) {
+				cr.setDefaultCursor();
+				cr.hoverClose();
+			}
+		}
+		else if(pf != null) {
 			if(e.getSource().getClass().equals(JLabelIcon.class))
 			{
 				pf.setColorIcon(e.getSource().hashCode(), ColorList.Hover);
@@ -205,7 +245,7 @@ public class mouse extends MouseAdapter{
 		else if(cr != null) {
 		if(e.getSource().equals(cr.getLabelIconClose()))
 		{
-			cr.hoverClose();
+			
 		}
 		}
 	}

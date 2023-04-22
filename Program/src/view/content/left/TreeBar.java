@@ -46,7 +46,13 @@ public class TreeBar extends JTree{
       }
       public void setIconClose(int size)
       {
+    	  this.setVisible(false);
     	  close.setBounds(this.getSize().width - size, 0, size, size);
+    	  this.setVisible(true);
+      }
+      public JLabelIcon getIconClose()
+      {
+    	  return close;
       }
       public JLabelIcon getLabelIconClose()
       {
@@ -66,4 +72,23 @@ public class TreeBar extends JTree{
       {
    	      pc.ClosePanelLeft();
       }
+      /*public void setCursor(int x, int y)
+      {
+    			if(x >= this.getSize().width - 2 && x <= this.getSize().width + space + 2 && y >= this.getSize().height - 2 && y <= this.getSize().height + space + 2)
+    			{
+    				this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
+    			}
+    			else if(x >= this.getSize().width - 2 && x <= this.getSize().width + space + 2)
+    			{
+    				this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+    			}
+    			else if(y >= this.getSize().height - 2 && y <= this.getSize().height + space + 2)
+    			{
+    				this.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));
+    			}
+    			else 
+    			{
+    				this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    			}
+      }*/
 }

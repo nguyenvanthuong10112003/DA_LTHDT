@@ -1,6 +1,7 @@
 package view.content.right;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
@@ -11,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
 import controller.mouse;
 import libary.ColorList;
 import libary.JButtonIcon;
@@ -28,7 +28,7 @@ public class PanelContentRight extends JPanel{
        {
     	   super();
     	   this.pc = pc;
-    	   mouselisten = new mouse(this);
+    	   mouselisten = new mouse(this, pc);
     	   this.addMouseMotionListener(mouselisten);
     	   this.setBorder(new LineBorder(Color.black));
     	   this.setLayout(null);
@@ -66,5 +66,26 @@ public class PanelContentRight extends JPanel{
        {
     	   pc.ClosePanelRight();
        }
-       
+       public void setCusor(int x, int y)
+       {
+           if(0 <= x && x <= 3)
+    	   {
+    		   this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+    	   }
+           else
+           {
+        	   this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+           }
+       }
+       public void setSize(int x)
+       {
+    	   if(x - 4 <= 0 || x + 4 >= 0)
+    	   this.setBounds(this.getBounds().x + x, this.getBounds().y, (this.getSize().width - x) > this.getMaximumSize().width ? this.getMaximumSize().width 
+    	   : ((this.getSize().width - x) >= this.getMinimumSize().width ? (this.getSize().width - x) : this.getMinimumSize().width), this.getSize().height);
+    	   pc.setBoundsObj(pc.getSize().width, pc.getSize().height, pc.getPanelContentLeft().getSize().width, pc.getPanelContentLeft().getSize().height, this.getSize().width);
+       }
+       public void setDefaultCursor()
+       {
+    	   this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+       }
 }

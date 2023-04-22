@@ -80,7 +80,7 @@ public class ScreenToolBar extends JToolBar{
       {
     	  return register;
       }
-      public void onclick_Button(JButton bt)
+      public void onclick_Button(JButton bt, int x, int y)
       {
     	  if(bt.equals(login))
     	  {
@@ -89,9 +89,10 @@ public class ScreenToolBar extends JToolBar{
     			  Fregister.setVisible(false);
     		  }
     		  if(Flogin != null)
-    			  if(Flogin.isVisible())
+    			  if(Flogin.isVisible()) 
     				  Flogin.setVisible(false);
     		  Flogin = new FormLogin();
+    		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
     	  }
     	  else if(bt.equals(register))
     	  {
@@ -103,6 +104,7 @@ public class ScreenToolBar extends JToolBar{
     			  if(Fregister.isVisible())
     				  Fregister.setVisible(false);
     		  Fregister = new FormRegister(); 		  
+    		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
     	  }
     		   
       }
