@@ -79,7 +79,7 @@ public class PanelContentRight extends JPanel{
        }
        public void setSize(int x)
        {
-    	   if(x - 4 <= 0 || x + 4 >= 0)
+    	   if(x - 2 <= 0 || x + 2 >= 0)
     	   this.setBounds(this.getBounds().x + x, this.getBounds().y, (this.getSize().width - x) > this.getMaximumSize().width ? this.getMaximumSize().width 
     	   : ((this.getSize().width - x) >= this.getMinimumSize().width ? (this.getSize().width - x) : this.getMinimumSize().width), this.getSize().height);
     	   pc.setBoundsObj(pc.getSize().width, pc.getSize().height, pc.getPanelContentLeft().getSize().width, pc.getPanelContentLeft().getSize().height, this.getSize().width);

@@ -6,18 +6,18 @@ import java.awt.Font;
 
 import javax.swing.JPanel;
 
-public class JPanelToolBar extends JPanel{
-       private ScreenToolBar toolbar;
-       private JPanelFunction function;
-       private Font font;
+import libary.ColorList;
+import libary.FONT;
+
+public class Screen_ToolBar extends JPanel{
+       private Panel_Functions toolbar;
+       private Panel_Navigation function;
        private Color black = Color.black;
        private Color white = Color.white;
-       public JPanelToolBar(Font font)
-       {
+       public Screen_ToolBar() {
     	   super();
-    	   this.font = font;
-    	   toolbar = new ScreenToolBar(font);
-    	   function = new JPanelFunction(font);
+    	   toolbar = new Panel_Functions();
+    	   function = new Panel_Navigation();
     	   setColor(white, black);
     	   this.setLayout(new BorderLayout());
     	   this.add(toolbar, BorderLayout.CENTER);
@@ -30,5 +30,7 @@ public class JPanelToolBar extends JPanel{
     	   function.setForeground(font);
     	   
     	   toolbar.setForeground(font);
+     	   this.setOpaque(true);
+     	   this.setBackground(ColorList.Back_Ground);
        }
 }

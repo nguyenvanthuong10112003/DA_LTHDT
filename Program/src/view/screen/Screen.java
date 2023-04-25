@@ -20,8 +20,8 @@ import view.content.left.ScrollPaneTree;
 import view.formlogin.FormLogin;
 import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
-import view.toolbar.JPanelToolBar;
-import view.toolbar.ScreenToolBar;
+import view.toolbar.Screen_ToolBar;
+import view.toolbar.Panel_Functions;
 public class Screen extends JFrame
 {
 	  private int dd;
@@ -30,7 +30,7 @@ public class Screen extends JFrame
 	  private String iconApp1 = "folder-icon1.png";
 	  private String iconApp2 = "folder-icon2.png";
       private Font font = new Font("Arial", Font.PLAIN, 14);
-      private JPanelToolBar toolbar;
+      private Screen_ToolBar toolbar;
       private JPanel content;
       private PanelContent content_center;
       private mouse mouseListen = new mouse(this);
@@ -78,8 +78,8 @@ public class Screen extends JFrame
     }
 	private void init()
       {
-    	  menubar = new Screen_MenuBar(font, Color.white);
-    	  toolbar = new JPanelToolBar(font);
+    	  menubar = new Screen_MenuBar();
+    	  toolbar = new Screen_ToolBar();
     	  content = new JPanel();
     	  content_center = new PanelContent();
     	  actionlistener = new action(this);

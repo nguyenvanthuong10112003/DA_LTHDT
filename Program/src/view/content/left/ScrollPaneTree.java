@@ -36,6 +36,7 @@ public class ScrollPaneTree extends JScrollPane
          this.pc.addMouseMotionListener(mouselisten);
          this.addMouseListener(mouselisten);
          this.setCursor(defaultCursor);
+         this.tree.getIconClose().addMouseMotionListener(mouselisten);
 	}
 	@Override
 	public void setBounds(int x, int y, int width, int height)

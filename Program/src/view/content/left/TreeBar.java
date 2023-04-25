@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import controller.mouse;
+import libary.FONT;
 import libary.JLabelIcon;
 import view.content.PanelContent;
 public class TreeBar extends JTree{
@@ -39,6 +40,7 @@ public class TreeBar extends JTree{
     	  close.addMouseListener(mouseListen);
     	  close.addMouseMotionListener(mouseListen);
     	  close.setBackground(new Color(102,153,204));
+    	  this.setFont(FONT.font_mac_dinh);
       }
       public void setPanelContent(PanelContent pc)
       {

@@ -21,6 +21,7 @@ import javax.swing.table.TableCellRenderer;
 import controller.mouse;
 import libary.ButtonEditor;
 import libary.ButtonRenderer;
+import libary.FONT;
 import libary.LabelEditor;
 import libary.LabelRenderer;
 import view.content.left.ScrollPaneTree;
@@ -82,6 +83,7 @@ public class PanelContentCenter extends JScrollPane{
          //table.getColumn("Name").setCellRenderer(new LabelRenderer(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(folder))), JLabel.LEFT));
          //table.getColumn("Name").setCellEditor(new LabelEditor(new JCheckBox(), new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(folder))), JLabel.LEFT));
          table = new JTable(model);
+         table.setFont(FONT.font_mac_dinh);
          final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
          table.setRowSorter(sorter);
          table.setBorder(new EmptyBorder(0,0,0,0));

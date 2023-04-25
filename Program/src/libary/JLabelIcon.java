@@ -1,4 +1,5 @@
 package libary;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
@@ -13,9 +14,10 @@ public class JLabelIcon extends JLabel
 	public JLabelIcon(ImageIcon icon)
 	{
 		super();
-		if(icon != null)
+		if(icon != null) {
 			setIcon(icon);
 		setHorizontalAlignment(JLabel.CENTER);
+		}
 	}
 }
 			

@@ -19,6 +19,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 
 import controller.mouse;
+import libary.ColorList;
+import libary.FONT;
 import view.content.PanelContent;
 import controller.action;
 public class Screen_MenuBar extends JMenuBar{
@@ -40,13 +42,9 @@ public class Screen_MenuBar extends JMenuBar{
      private ButtonGroup groupbutton;
 	 private mouse mouselisten;
 	 private action actionlisten;
-	 private Color backcl;
-	 private Font font;
-     public Screen_MenuBar(Font font, Color color)
+     public Screen_MenuBar()
      {
     	 super();
-    	 this.font = font;
-    	 this.backcl = color;
     	 init();
     	 setIconItem();
     	 setText();
@@ -60,7 +58,7 @@ public class Screen_MenuBar extends JMenuBar{
      private void setBack()
      {
     	 //panel_file.setBackground(backcl);
-         this.setBackground(backcl);
+         this.setBackground(ColorList.Back_Ground);
      }
      private void init()
      {
@@ -84,31 +82,31 @@ public class Screen_MenuBar extends JMenuBar{
      private void setText()
      {
     	 File.setText("File");
-    	 File.setFont(font);
+    	 File.setFont(FONT.font_mac_dinh);
     	 Edit.setText("Edit");
-    	 Edit.setFont(font);
+    	 Edit.setFont(FONT.font_mac_dinh);
     	 View.setText("View");
-    	 View.setFont(font);
+    	 View.setFont(FONT.font_mac_dinh);
     	 item1_1.setText("Mở trong cửa sổ mới");
-    	 item1_1.setFont(font);
+    	 item1_1.setFont(FONT.font_mac_dinh);
     	 item1_2.setText("Đóng");
-    	 item1_2.setFont(font);
+    	 item1_2.setFont(FONT.font_mac_dinh);
     	 item3_1.setText("Chế độ xem");
-    	 item3_1.setFont(font);
+    	 item3_1.setFont(FONT.font_mac_dinh);
     	 item3_1_1.setText("Chi tiết");
-    	 item3_1_1.setFont(font);
+    	 item3_1_1.setFont(FONT.font_mac_dinh);
     	 item3_1_2.setText("Biểu tượng");
-    	 item3_1_2.setFont(font);
+    	 item3_1_2.setFont(FONT.font_mac_dinh);
     	 item3_1_3.setText("Biểu tượng lớn");
-    	 item3_1_3.setFont(font);
+    	 item3_1_3.setFont(FONT.font_mac_dinh);
     	 item3_2.setText("Sắp xếp theo");
-    	 item3_2.setFont(font);
+    	 item3_2.setFont(FONT.font_mac_dinh);
     	 item3_3.setText("Hiển thị");
-    	 item3_3.setFont(font);
+    	 item3_3.setFont(FONT.font_mac_dinh);
     	 item3_3_1.setText("Hiện ngăn xem trước");
-    	 item3_3_1.setFont(font);
+    	 item3_3_1.setFont(FONT.font_mac_dinh);
     	 item3_3_2.setText("Hiện ngăn xem chi tiết");
-    	 item3_3_2.setFont(font);
+    	 item3_3_2.setFont(FONT.font_mac_dinh);
      }
      private void addObj()
      { 

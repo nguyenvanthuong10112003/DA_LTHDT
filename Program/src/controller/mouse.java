@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,15 +22,15 @@ import view.content.left.TreeBar;
 import view.content.right.PanelContentRight;
 import view.menubar.Screen_MenuBar;
 import view.screen.Screen;
-import view.toolbar.JPanelFunction;
-import view.toolbar.ScreenToolBar;
+import view.toolbar.Panel_Navigation;
+import view.toolbar.Panel_Functions;
 
 public class mouse extends MouseAdapter{
 	private PanelContent pc;
-	private JPanelFunction pf;
+	private Panel_Navigation pf;
 	private PanelContentRight cr;
 	private JPanel content;
-	private ScreenToolBar tb;
+	private Panel_Functions tb;
 	private Screen sc;
 	private ScrollPaneTree scroll;
 	private TreeBar tree;
@@ -41,11 +42,11 @@ public class mouse extends MouseAdapter{
 	{
 		this.le = le;
 	}
-	public mouse(JPanelFunction pf)
+	public mouse(Panel_Navigation pf)
 	{
 		this.pf = pf;
 	}
-	public mouse(ScreenToolBar tb)
+	public mouse(Panel_Functions tb)
 	{
 		this.tb = tb;
 	}
@@ -165,6 +166,10 @@ public class mouse extends MouseAdapter{
 			cr.exitClose();
 		}
 		}
+		else if(tb != null)
+		{
+			tb.setBackGroundIconFunction(e.getSource().hashCode(), ColorList.Back_Ground);
+		}
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -194,18 +199,10 @@ public class mouse extends MouseAdapter{
 			{
 				try {
 					if(e.getSource().equals(scroll)) {
-					//if(scroll.getCursor().equals(scroll.getDefaultCursor())) 
-					scroll.SetCusorScroll(e.getX(), e.getY());	
-					//else if(e.getSource().getClass().equals(ScrollPaneTree.class))
-					//{
-					//	if(e.getSource().equals(scroll))
-					//	{
-					//		scroll.setSize(e.getX(), e.getY());
-					//	}
-					//}
+					  scroll.SetCusorScroll(e.getX(), e.getY());	
 					}
 					else if(e.getSource().equals(tree))
-					scroll.SetCusorTreeBar();
+					  scroll.SetCusorTreeBar();
 				}
 				catch(Exception ex)
 				{
@@ -247,6 +244,10 @@ public class mouse extends MouseAdapter{
 		{
 			
 		}
+		}
+		else if(tb != null)
+		{
+			tb.setBackGroundIconFunction(e.getSource().hashCode(), ColorList.Hover);;
 		}
 	}
 
