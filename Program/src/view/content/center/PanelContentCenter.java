@@ -99,6 +99,12 @@ public class PanelContentCenter extends JScrollPane{
         //	 table.getColumnModel().getColumn(i).
         	 
          //}
+         table.getColumnModel().setColumnMargin(10);
+         table.getValueAt(1, 1);
+         //JPanel panel = (JPanel) table.getValueAt(0, 0);
+         
+         table.setBackground(Color.BLACK);;
+         table.setBorder(new EmptyBorder(0,0,0,0));
          this.setViewportView(table);
      }
      public void setColor()

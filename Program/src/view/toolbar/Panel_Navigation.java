@@ -66,7 +66,6 @@ public class Panel_Navigation extends JPanel{
 		search.setOpaque(true);
 		input_show.setBorder(new EmptyBorder(0,5,0,0));
 		input_show.setAlignmentX(JTextField.CENTER);
-		search.setBackground(ColorList.Back_Ground);
 		search.setBorder(new LineBorder(Color.BLACK));
 		search.setEditable(true);
 		//

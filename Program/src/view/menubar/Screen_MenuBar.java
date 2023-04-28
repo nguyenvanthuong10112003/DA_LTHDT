@@ -22,8 +22,10 @@ import controller.mouse;
 import libary.ColorList;
 import libary.FONT;
 import view.content.PanelContent;
+import view.screen.Screen;
 import controller.action;
 public class Screen_MenuBar extends JMenuBar{
+	 private Screen sc;
 	 private PanelContent pc;
 	 private JMenu File;
 	 private JMenu Edit;
@@ -42,12 +44,14 @@ public class Screen_MenuBar extends JMenuBar{
      private ButtonGroup groupbutton;
 	 private mouse mouselisten;
 	 private action actionlisten;
-     public Screen_MenuBar()
+     public Screen_MenuBar(Screen sc)
      {
     	 super();
+    	 this.sc = sc;
     	 init();
     	 setIconItem();
     	 setText();
+    	 addEvent();
     	 addObj();
          setBack();
      }
@@ -78,6 +82,11 @@ public class Screen_MenuBar extends JMenuBar{
     	 item3_3_2 = new JMenuItem();
     	 mouselisten = new mouse(this);
     	 actionlisten = new action(this);
+     }
+     private void addEvent()
+     {
+    	 this.addMouseListener(mouselisten);
+    	 Edit.addMouseListener(mouselisten);
      }
      private void setText()
      {
@@ -176,6 +185,13 @@ public class Screen_MenuBar extends JMenuBar{
     	 else if(item3_3_2.hashCode() == hash)
     	 {
     		 pc.ShowPanelRight();
+    	 }
+     }
+     public void onClick(int hash)
+     {
+    	 if(hash == Edit.hashCode())
+    	 {
+    		 sc.setToolVisiable();
     	 }
      }
 }

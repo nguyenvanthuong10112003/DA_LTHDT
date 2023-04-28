@@ -2,6 +2,7 @@ package view.screen;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
@@ -52,7 +53,12 @@ public class Screen extends JFrame
           this.menubar.setPanelContent(content_center);
           this.content_center.getPanelContentLeft().getTreeBar().setPanelContent(content_center);
           update();
-      }         
+      }  
+      public void setDD()
+      {
+    	  this.chenhlech = this.getSize().width - content_center.getSize().width;
+    	  this.dd = this.getSize().height - chenhlech - content_center.getSize().height;
+      }
       private void addListen()
       {
     	  //this.addMouseListener(mouseListen);
@@ -78,7 +84,7 @@ public class Screen extends JFrame
     }
 	private void init()
       {
-    	  menubar = new Screen_MenuBar();
+    	  menubar = new Screen_MenuBar(this);
     	  toolbar = new Screen_ToolBar();
     	  content = new JPanel();
     	  content_center = new PanelContent();
@@ -103,5 +109,15 @@ public class Screen extends JFrame
 	    	  System.out.print("error");
 	      }
       }
-      
+      public Boolean CheckTool()
+      {
+    	  return toolbar.isVisible();
+      }
+      public void setToolVisiable()
+      {
+          toolbar.Show_Hide_Function();
+          this.setVisible(true);
+          setDD();
+          update();
+      } 
 }

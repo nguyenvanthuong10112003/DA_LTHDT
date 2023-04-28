@@ -114,7 +114,7 @@ public class mouse extends MouseAdapter{
 		}
 		else if(menu != null)
 		{
-			System.out.println(e.getSource());
+			menu.onClick(e.getSource().hashCode());
 		}
 		
 	}
@@ -168,7 +168,7 @@ public class mouse extends MouseAdapter{
 		}
 		else if(tb != null)
 		{
-			tb.setBackGroundIconFunction(e.getSource().hashCode(), ColorList.Back_Ground);
+			tb.setHover(e.getSource().hashCode(), ColorList.Back_Ground);
 		}
 	}
 	@Override
@@ -247,7 +247,8 @@ public class mouse extends MouseAdapter{
 		}
 		else if(tb != null)
 		{
-			tb.setBackGroundIconFunction(e.getSource().hashCode(), ColorList.Hover);;
+			//System.out.println(e.getSource());
+			tb.setHover(e.getSource().hashCode(), ColorList.Hover);;
 		}
 	}
 
