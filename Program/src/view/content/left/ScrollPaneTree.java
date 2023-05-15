@@ -22,6 +22,7 @@ public class ScrollPaneTree extends JScrollPane
 	private TreeBar tree;
 	private mouse mouselisten;
 	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	private Cursor []resizeCursor = {new Cursor(Cursor.N_RESIZE_CURSOR), new Cursor(Cursor.W_RESIZE_CURSOR), new Cursor(Cursor.SE_RESIZE_CURSOR)};
 	public ScrollPaneTree(PanelContent pc)
 	{
 		 super();
@@ -34,6 +35,7 @@ public class ScrollPaneTree extends JScrollPane
          this.addMouseMotionListener(mouselisten);
          this.tree.addMouseMotionListener(mouselisten);
          this.pc.addMouseMotionListener(mouselisten);
+         this.pc.addMouseListener(mouselisten);
          this.addMouseListener(mouselisten);
          this.setCursor(defaultCursor);
          this.tree.getIconClose().addMouseMotionListener(mouselisten);
@@ -73,8 +75,17 @@ public class ScrollPaneTree extends JScrollPane
 		}
 		//pc.setBoundsObj(pc.getSize().width, pc.getSize().height, this.getSize().width, pc.getWidthContentRight());
 	}
+	public void setCusorPanelContent(int x, int y)
+	{
+		if(x - space - this.getSize().width - 3 >= 0 || y - space - this.getSize().height - 3 >= 0)
+		{
+			pc.setCursor(defaultCursor);
+		}
+			
+	}
 	public void setSize(int x, int y)
 	{
+		if(this.getCursor() != defaultCursor) {
 		if(x >= this.getSize().width - 4  && y >= this.getSize().height - 4 
 		&& x <= this.getSize().width + 4 && y <= this.getSize().height + 4)
 		{
@@ -108,6 +119,7 @@ public class ScrollPaneTree extends JScrollPane
 		}
 		//pc.update(pc.getSize().width, pc.getSize().height);
 		pc.setBoundsObj(pc.getSize().width, pc.getSize().height, this.getSize().width, this.getSize().height, pc.getWidthContentRight());
+		}
 	}
 	public void setHover(int x, int y) 
 	{
@@ -129,5 +141,9 @@ public class ScrollPaneTree extends JScrollPane
 	{
 		if(x - pc.getSpace() - 3 > this.getSize().width || y - pc.getSpace() - 3 > this.getSize().height)
 			this.setCursor(defaultCursor);
+	}
+	public Cursor[]resizeCusor()
+	{
+		return resizeCursor;
 	}
 }

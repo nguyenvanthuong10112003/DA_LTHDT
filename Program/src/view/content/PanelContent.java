@@ -1,6 +1,7 @@
 package view.content;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -21,6 +22,7 @@ public class PanelContent extends JPanel{
        private Boolean Show_Content_Left;
        private Boolean Show_Content_Right;
        private Boolean Show_Content_Center;
+       private Cursor cursorDefault = new Cursor(Cursor.DEFAULT_CURSOR);
        private Font font;
        public PanelContent()
        {
@@ -149,5 +151,9 @@ public class PanelContent extends JPanel{
        public int getWidthContentRight()
        {
     	   return contentRight.getSize().width;  
+       }
+       public Cursor cursorDefault()
+       {
+    	   return cursorDefault;
        }
 }

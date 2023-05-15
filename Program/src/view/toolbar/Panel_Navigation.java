@@ -26,10 +26,11 @@ public class Panel_Navigation extends JPanel{
 	private JLabel iconforward;
 	private String back = "back16.png";
 	private String forward = "forward16.png";
-	private mouse mouselisten;
+	private mouse mouselisten;      
 	private JPanel address;
 	private JTextField input_show;
 	private JComboBox search;
+	private Boolean in_input = false;
 	public Panel_Navigation()
 	{
 		super();
@@ -68,6 +69,8 @@ public class Panel_Navigation extends JPanel{
 		input_show.setAlignmentX(JTextField.CENTER);
 		search.setBorder(new LineBorder(Color.BLACK));
 		search.setEditable(true);
+		input_show.setEditable(false);
+		input_show.setBackground(ColorList.Back_Ground);
 		//
 	}
 	private void setFonts()
@@ -81,7 +84,33 @@ public class Panel_Navigation extends JPanel{
 		iconback.addMouseMotionListener(mouselisten);
 		iconforward.addMouseListener(mouselisten);
 		iconforward.addMouseMotionListener(mouselisten);
-		
+		this.addMouseListener(mouselisten);
+		input_show.addMouseListener(mouselisten);
+		search.addMouseListener(mouselisten);
+	}
+	public void mouseOnclick(int hash)
+	{
+		if(hash == input_show.hashCode())
+		{
+			if(!in_input) {
+			input_show.setEditable(true);
+			in_input = true;
+			}
+		}
+		else if(hash == search.hashCode())
+		{
+			if(input_show.isEditable()) {
+			input_show.setEditable(false);
+			in_input = false;
+			}
+		}
+		else
+		{
+			if(input_show.isEditable()) {
+			input_show.setEditable(false);
+			in_input = false;
+			}
+		}
 	}
 	private void addObj()
 	{

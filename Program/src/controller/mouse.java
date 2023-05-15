@@ -25,7 +25,7 @@ import view.screen.Screen;
 import view.toolbar.Panel_Navigation;
 import view.toolbar.Panel_Functions;
 
-public class mouse extends MouseAdapter{
+public class mouse extends MouseAdapter implements MouseListener{
 	private PanelContent pc;
 	private Panel_Navigation pf;
 	private PanelContentRight cr;
@@ -116,20 +116,24 @@ public class mouse extends MouseAdapter{
 		{
 			menu.onClick(e.getSource().hashCode());
 		}
-		
+		else if(pf != null)
+		{
+			System.out.println(e.getSource());
+			pf.mouseOnclick(e.getSource().hashCode());
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().getClass().equals(ScrollPaneTree.class))
+		if(scroll != null)
 		{
+			if(e.getSource().equals(scroll))
 			mousep = false;
 		}
 	}
@@ -137,16 +141,21 @@ public class mouse extends MouseAdapter{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(scroll != null) {
-			//System.out.println(e.getX());
-			//if(e.getSource().equals(scroll))
+			if(e.getSource().equals(scroll))
+			{
+				//System.out.println(e.getX() + " " + e.getY());
+				//pc.setCursor(scroll.getDefaultCursor());
+				//scroll.setCursor(scroll.getDefaultCursor());
+			}
+					//if(e.getSource().equals(scroll))
 				//scroll.mouseExit(e.getX(), e.getY());
+			
 		}
 		if(pf != null) {
 			if(e.getSource().getClass().equals(JLabelIcon.class))
@@ -161,10 +170,10 @@ public class mouse extends MouseAdapter{
 			}
 		}
 		else if(cr != null) {
-		if(e.getSource().equals(cr.getLabelIconClose()))
-		{
-			cr.exitClose();
-		}
+			if(e.getSource().equals(cr.getLabelIconClose()))
+			{
+				cr.exitClose();
+			}
 		}
 		else if(tb != null)
 		{
@@ -175,18 +184,19 @@ public class mouse extends MouseAdapter{
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(scroll != null) {
-			if(e.getSource().equals(scroll))
-			{
-				scroll.setSize(e.getX(), e.getY());
-			}
-			else if(e.getSource().equals(pc))
-			{
-				scroll.setHover(e.getX(), e.getY());
-			}
+				if(e.getSource().equals(scroll))
+				{
+					scroll.setSize(e.getX(), e.getY());
+				}
+				else if(e.getSource().equals(pc))
+				{
+					scroll.setHover(e.getX(), e.getY());
+				}
 		}
 		else if(cr != null) {
 			if(e.getSource().equals(cr))
 			{
+				if(cr.getCursor() == cr.cursorResize())
 				cr.setSize(e.getX());
 			}
 		}
@@ -195,7 +205,7 @@ public class mouse extends MouseAdapter{
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(scroll != null) {
-			if(e.getSource().getClass().equals(ScrollPaneTree.class) || e.getSource().getClass().equals(TreeBar.class))
+			if(scroll != null)
 			{
 				try {
 					if(e.getSource().equals(scroll)) {
@@ -203,6 +213,10 @@ public class mouse extends MouseAdapter{
 					}
 					else if(e.getSource().equals(tree))
 					  scroll.SetCusorTreeBar();
+					else if(e.getSource().equals(pc))
+					{
+					  scroll.setCusorPanelContent(e.getX(), e.getY());
+					}
 				}
 				catch(Exception ex)
 				{
@@ -253,3 +267,4 @@ public class mouse extends MouseAdapter{
 	}
 
 }
+                                                                                    

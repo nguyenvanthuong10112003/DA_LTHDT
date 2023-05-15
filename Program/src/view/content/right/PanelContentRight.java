@@ -24,6 +24,7 @@ public class PanelContentRight extends JPanel{
 	   private String iconClose16 = "close16.png";
 	   private String iconClose24 = "close24.png";
 	   private mouse mouselisten;
+	   private Cursor cursorResize = new Cursor(Cursor.W_RESIZE_CURSOR);
        public PanelContentRight(PanelContent pc)
        {
     	   super();
@@ -70,7 +71,7 @@ public class PanelContentRight extends JPanel{
        {
            if(0 <= x && x <= 3)
     	   {
-    		   this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+    		   this.setCursor(cursorResize);
     	   }
            else
            {
@@ -87,5 +88,9 @@ public class PanelContentRight extends JPanel{
        public void setDefaultCursor()
        {
     	   this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+       }
+       public Cursor cursorResize()
+       {
+    	   return cursorResize;
        }
 }
