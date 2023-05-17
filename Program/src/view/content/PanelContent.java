@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import controller.mouse;
 import libary.ColorList;
+import model.Folder;
 import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
 import view.content.right.PanelContentRight;
@@ -28,7 +29,7 @@ public class PanelContent extends JPanel{
        {
     	   super();
     	   this.contentLeft = new ScrollPaneTree(this);
-    	   this.contentCenter = new PanelContentCenter();
+    	   this.contentCenter = new PanelContentCenter(new Folder(1));
     	   this.contentRight = new PanelContentRight(this);
     	   this.space = 0;
     	   this.mouseEvent = new mouse(this);
@@ -39,6 +40,7 @@ public class PanelContent extends JPanel{
     	   this.getSize();
     	   this.addObj();
     	   this.setColorObj();
+           
        }
        public void update(int width, int height)
        {

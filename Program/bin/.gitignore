@@ -1,3 +1,6 @@
-/view/
 /controller/
+/libary/
 /model/
+/test/
+/view/
+/.gitignore

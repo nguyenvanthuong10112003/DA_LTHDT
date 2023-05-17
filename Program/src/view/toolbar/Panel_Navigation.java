@@ -24,8 +24,8 @@ import controller.mouse;
 public class Panel_Navigation extends JPanel{
 	private JLabel iconback;
 	private JLabel iconforward;
-	private String back = "back16.png";
-	private String forward = "forward16.png";
+	private String back = "..//image//toolbar//back16.png";
+	private String forward = "..//image//toolbar//forward16.png";
 	private mouse mouselisten;      
 	private JPanel address;
 	private JTextField input_show;
@@ -130,7 +130,7 @@ public class Panel_Navigation extends JPanel{
 		panel.setOpaque(true);
 		panel.setBackground(ColorList.Back_Ground);
 		address.setLayout(new BorderLayout());
-		address.add(new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("folder.png")))), BorderLayout.WEST);
+		address.add(new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//folder.png")))), BorderLayout.WEST);
 		address.add(input_show);
 		panel.add(address);
 		panel.add(search);

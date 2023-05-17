@@ -31,8 +31,8 @@ public class Screen extends JFrame
 	  private int dd;
 	  private int chenhlech;
 	  private Screen_MenuBar menubar;  
-	  private String iconApp1 = "folder-icon1.png";
-	  private String iconApp2 = "folder-icon2.png";
+	  private String iconApp1 = "..//image//screen//folder-icon1.png";
+	  private String iconApp2 = "..//image//screen//folder-icon2.png";
       private Font font = new Font("Arial", Font.PLAIN, 14);
       private Screen_ToolBar toolbar;
       private JPanel content;
@@ -74,6 +74,50 @@ public class Screen extends JFrame
 			}
     		  
     	  });
+    	  this.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("ok");
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
     }
     public void update()

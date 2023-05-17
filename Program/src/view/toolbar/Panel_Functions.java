@@ -42,21 +42,21 @@ public class Panel_Functions extends JToolBar{
 	  private FormLogin Flogin;
 	  private FormRegister Fregister;
 	  private JPanel  container_icon_function;
-	  private JLabelIcon pin_to_access_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("pin_to_access_24.png"))));
-	  private JLabelIcon cut_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("cut16.png"))));
-	  private JLabelIcon copy_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("copy2_16.png"))));
-	  private JLabelIcon paste_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("paste16.png"))));
-	  private JLabelIcon move_to_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("move.png"))));
+	  private JLabelIcon pin_to_access_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//pin_to_access_24.png"))));
+	  private JLabelIcon cut_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//cut16.png"))));
+	  private JLabelIcon copy_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//copy2_16.png"))));
+	  private JLabelIcon paste_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//paste16.png"))));
+	  private JLabelIcon move_to_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//move.png"))));
 	  private JTextArea move_to_text;
-	  private JLabelIcon copy_to_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("copy_to32.png"))));
+	  private JLabelIcon copy_to_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//copy_to32.png"))));
 	  private JTextArea copy_to_text;
-	  private JLabelIcon delete_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("delete24.png"))));
+	  private JLabelIcon delete_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//delete24.png"))));
 	  private JLabel delete_text;
-	  private JLabelIcon rename_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("rename32.png"))));
+	  private JLabelIcon rename_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//rename32.png"))));
 	  private JLabel rename_text;
-	  private JLabelIcon new_folder_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("new_folder24.png"))));
+	  private JLabelIcon new_folder_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//new_folder24.png"))));
 	  private JLabel new_folder_text;
-	  private JLabelIcon new_file_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("new_file24.png"))));
+	  private JLabelIcon new_file_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//new_file24.png"))));
 	  private JLabel new_file_text;
 	  private JTextArea pinTo_text;
 	  private JPanel Cut;
@@ -70,7 +70,7 @@ public class Panel_Functions extends JToolBar{
 	  private JPanel NewFile;
 	  private JPanel NewFolder;
 	  private mouse mouseListen;
-	  
+
 	  public Panel_Functions()
       {
     	  super();
@@ -172,7 +172,6 @@ public class Panel_Functions extends JToolBar{
           Rename = new JPanel();
           NewFile = new JPanel();
           NewFolder = new JPanel();
-        		  
       }
       private void setText()
       {
@@ -348,7 +347,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Flogin != null)
     			  if(Flogin.isVisible()) 
     				  Flogin.setVisible(false);
-    		  Flogin = new FormLogin();
+    		  Flogin = new FormLogin(this);
     		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
     	  }
     	  else if(bt.equals(register))
@@ -360,7 +359,35 @@ public class Panel_Functions extends JToolBar{
     		  if(Fregister != null)
     			  if(Fregister.isVisible())
     				  Fregister.setVisible(false);
-    		  Fregister = new FormRegister(); 		  
+    		  Fregister = new FormRegister(this); 		  
+    		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
+    	  }
+    		   
+      }
+      public void onclick_InForm(Boolean f, int x, int y)
+      {
+    	  if(f)
+    	  {
+    		  if(Fregister != null)
+    		  {
+    			  Fregister.setVisible(false);
+    		  }
+    		  if(Flogin != null)
+    			  if(Flogin.isVisible()) 
+    				  Flogin.setVisible(false);
+    		  Flogin = new FormLogin(this);
+    		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
+    	  }
+    	  else 
+    	  {
+    		  if(Flogin != null)
+    		  {
+    			  Flogin.setVisible(false);
+    		  }
+    		  if(Fregister != null)
+    			  if(Fregister.isVisible())
+    				  Fregister.setVisible(false);
+    		  Fregister = new FormRegister(this); 		  
     		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
     	  }
     		   

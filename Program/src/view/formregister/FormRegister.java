@@ -11,6 +11,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -26,6 +30,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.InsetsUIResource;
 
 import libary.JTextFieldPassWord;
+import view.toolbar.Panel_Functions;
 
 public class FormRegister extends JFrame
 {
@@ -66,15 +71,18 @@ public class FormRegister extends JFrame
 	 private JPanel t;
 	 private JLabel hoi;
 	 private JButton register;
-	 private String icon = "icon-register.png";
+	 private Panel_Functions fun;
+	 private String icon = "..//image//formregister//icon-register.png";
 	 private Font font32 = new Font("Arial", Font.BOLD, 24);
 	 private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	 private Font fontb = new Font("Arial", Font.BOLD, 14);
 	 private Color black = Color.BLACK;
 	 private Color white = Color.WHITE;
 	 private Color blue = Color.BLUE;
-     public FormRegister()
+     public FormRegister(Panel_Functions fun)
      {
+    	 if(fun != null)
+    		 this.fun = fun;
     	 this.setTitle("Đăng ký");
     	 this.setSize(300, 450);
     	 //this.setLocationRelativeTo(null);
@@ -243,5 +251,45 @@ public class FormRegister extends JFrame
          l.add(p);
          content.add(l, BorderLayout.SOUTH);
     	 this.add(content, BorderLayout.CENTER);
+    	 login.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				fun.onclick_InForm(true, e.getX(), e.getY());
+			}
+		});
+    	 cancel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+			}
+		});
      }
 }

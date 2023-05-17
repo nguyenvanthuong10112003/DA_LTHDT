@@ -21,91 +21,98 @@ import javax.swing.table.TableCellRenderer;
 import controller.mouse;
 import libary.ButtonEditor;
 import libary.ButtonRenderer;
+import libary.ColorList;
 import libary.FONT;
 import libary.LabelEditor;
 import libary.LabelRenderer;
+import model.Element;
+import model.Folder;
+import model.User;
 import view.content.left.ScrollPaneTree;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.util.*;
 public class PanelContentCenter extends JScrollPane{
-
-	//private static final long serialVersionUID = 1L;
-	 private JTable table;
 	 private JPanel nd;
 	 private int width, height, space;
 	 private ScrollPaneTree scroll; 
 	 private mouse mouselisten;
-	 private String folder = "folder-icon.png";
-     public PanelContentCenter()
+	 private String folder = ".//imageIcon//folder-icon24.png";
+	 private static final long serialVersionUID = 1L;
+	 private JTable table;
+	 private JLabel myLabel = new JLabel("waiting");
+	 private int Height1 = 25;
+	 private int Height2 = 40;
+	 private int Height3 = 50;
+	 private ImageIcon folderIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(".//imageIcon////folder-icon24.png")));
+     private LinkedList <ImageIcon>icon = new LinkedList<ImageIcon>();
+     private Folder root;
+     private LinkedList <Element> nows;
+     private Font font16 = new Font("Arial", Font.PLAIN, 16);
+     public PanelContentCenter(Folder root)
      {
     	 super();
-    	 mouselisten = new mouse(this);
-    	 nd = new JPanel();
-    	 this.setColor();
-    	 //this.init();
+    	 this.init();
+    	 this.root = root;
+    	 this.addMouseMotionListener(mouselisten);
+    	 String[] columnNames = {"", "Name", "Date", "Date Modifield", "Size"};
+         Object[][] data = {{folderIcon, "About", "", "", ""}, {folderIcon, "Add", "", "", ""}, {folderIcon, "Copy", "", "", ""}, {folderIcon, "Copy", "", "", ""}};
+         DefaultTableModel model = new DefaultTableModel(data, columnNames);
+         table = new JTable(model) {
+             private static final long serialVersionUID = 1L;                                                  
+             @Override
+             public Class getColumnClass(int column) {
+                 return getValueAt(0, column).getClass();
+             }
 
-    	 //this.updateBound();
+             /*@Override
+             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                 Component comp = super.prepareRenderer(renderer, row, column);
+                 return comp;
+             }*/
+         };
+         Edit();
+
+     }
+     public void Edit()
+     {
+    	 this.setColor();
+         this.setBackground(ColorList.Back_Ground);
     	 this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	 this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     	 this.setBorder(new LineBorder(Color.black));
-         //this.setLayout(new BorderLayout());
-    	 //this.add(nd, BorderLayout.EAST);
-    	 //this.add(new JPanel(), BorderLayout.WEST);
-    	 this.addObj();
-    	 this.addMouseMotionListener(mouselisten);
+         //myLabel.setPreferredSize(new Dimension(200, Height));
+         myLabel.setHorizontalAlignment(SwingConstants.CENTER);
+         table.setSelectionBackground(ColorList.Hover);
+         table.setSelectionForeground(ColorList.Fore_Ground);
+         table.setRowHeight(Height2);
+         table.setPreferredScrollableViewportSize(table.getPreferredSize());
+         table.setDefaultEditor(Object.class, null);
+         table.setShowHorizontalLines(false);
+         table.setShowVerticalLines(false);
+         table.getColumnModel().getColumn(0).setMaxWidth(50);
+         table.setBackground(ColorList.Back_Ground);
+
      }
-     public void init()
+     public void setListIcon(String file)
      {
     	 
      }
+     public boolean isCellEditable(int row, int column) {                
+         return false;               
+     };
+     public void init()
+     {
+    	 mouselisten = new mouse(this);
+    	 nd = new JPanel();
+    	 this.addObj();
+     }
      public void addObj()
      {
-    	 Object rows[][] = {{"Adithya", "Content Developer", 25000},
-                 {"Jai", "SME", 30000},
-                 {"Chaitanya", "Java Engineer", 45000},
-                 {"Ramesh", "Scala Developer", 40000},
-                 {"Ravi", "SAP  Consultant", 70000}};
-         Object columns[] = {"Name", "Designation", "Salary"};
-         TableModel model = new DefaultTableModel(rows, columns) {
-             public Class getColumnClass(int column) {
-                 Class returnValue;
-                 if ((column >= 0) && (column < getColumnCount())) {
-                     returnValue = getValueAt(0, column).getClass();
-                 } else {
-                     returnValue = Object.class;
-                 }
-                 return returnValue;
-             }
-         };
-         //table.getColumn("Name").setCellRenderer(new LabelRenderer(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(folder))), JLabel.LEFT));
-         //table.getColumn("Name").setCellEditor(new LabelEditor(new JCheckBox(), new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(folder))), JLabel.LEFT));
-         table = new JTable(model);
-         table.setFont(FONT.font_mac_dinh);
-         final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-         table.setRowSorter(sorter);
-         table.setBorder(new EmptyBorder(0,0,0,0));
-         //JScrollPane scroll = new JScrollPane(table);
-
-         //table.setPreferredScrollableViewportSize(table.getPreferredSize());//thanks mKorbel +1 http://stackoverflow.com/questions/10551995/how-to-set-jscrollpane-layout-to-be-the-same-as-jtable
-         
-        // table.getColumnModel().getColumn(0).setPreferredWidth(100);//so buttons will fit and not be shown butto..
-         table.setRowHeight(50);
-         table.setEnabled(false);
-         //for(int i = 0; i < table.getColumnCount(); i++)
-         //{
-        //	 table.getColumnModel().getColumn(i).
-        	 
-         //}
-         table.getColumnModel().setColumnMargin(10);
-         table.getValueAt(1, 1);
-         //JPanel panel = (JPanel) table.getValueAt(0, 0);
-         
-         table.setBackground(Color.BLACK);;
-         table.setBorder(new EmptyBorder(0,0,0,0));
-         this.setViewportView(table);
+        this.setViewportView(table);
      }
      public void setColor()
      {
