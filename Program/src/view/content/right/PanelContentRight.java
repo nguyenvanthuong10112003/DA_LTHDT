@@ -28,20 +28,27 @@ public class PanelContentRight extends JPanel{
        public PanelContentRight(PanelContent pc)
        {
     	   super();
-    	   this.pc = pc;
-    	   mouselisten = new mouse(this, pc);
-    	   this.addMouseMotionListener(mouselisten);
-    	   this.setBorder(new LineBorder(Color.black));
-    	   this.setLayout(null);
-    	   close = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
-    	   close.addMouseMotionListener(mouselisten);
-    	   close.addMouseListener(mouselisten);
-    	   close.setBorder(new EmptyBorder(0,0,0,0));
-    	   close.setOpaque(true);
-    	   close.setBackground(Color.WHITE);
-    	   this.add(close);
-    	   close.setSize(20,20);
-    	   close.setBounds(1, 1, close.getSize().width, close.getSize().height);
+    	   try {
+	    	   this.pc = pc;
+	    	   mouselisten = new mouse(this, pc);
+	    	   this.addMouseMotionListener(mouselisten);
+	    	   this.setBorder(new LineBorder(Color.black));
+	    	   this.setLayout(null);
+	    	   close = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
+	    	   close.addMouseMotionListener(mouselisten);
+	    	   close.addMouseListener(mouselisten);
+	    	   close.setBorder(new EmptyBorder(0,0,0,0));
+	    	   close.setOpaque(true);
+	    	   close.setBackground(Color.WHITE);
+	    	   this.add(close);
+	    	   close.setSize(20,20);
+	    	   close.setBounds(1, 1, close.getSize().width, close.getSize().height);
+	    	   System.out.println("Tải thành công content bên phải");
+    	   }
+    	   catch (Exception e) {
+			// TODO: handle exception
+    		   System.out.println("Error Content bên phải");
+		}
        }
        public int getWidth()
        {

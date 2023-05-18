@@ -15,16 +15,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import libary.JTextFieldPassWord;
 import model.User;
 public class FormLogin extends JFrame
@@ -52,23 +52,50 @@ public class FormLogin extends JFrame
 	 private LinkedList <User> users;
 	 private Map<String, User> checkUser;
 	 private Panel_Functions fun;
-     public FormLogin(Panel_Functions fun)
+	 private JOptionPane option;
+	 private String thongbao = "Thông báo";
+	 private String text_accept = "Thành công!";
+	 private String text_no = "Thông tin đăng nhập không tồn tại!\nHãy tạo tài khoản mới.";
+	 private String text_error = "Thông tin đăng nhập không chính xác!";
+	 private String text_thieu = "Yêu cầu nhập đầy đủ thông tin đăng nhập!";
+     public FormLogin(Panel_Functions fun, LinkedList <User> users)
      {
-    	 if(fun!= null)
-    		 this.fun = fun;
-    	 this.setTitle("Đăng nhập");
-    	 this.setSize(500, 250);
-    	 //this.setLocationRelativeTo(null);
-    	 this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-    	 this.setBackground(getForeground());
-    	 this.setResizable(false);
-    	 this.init();
-    	 this.setIcon();
-    	 this.setColor(blue, black);
-    	 this.setText();
-    	 this.addObj();
-    	 this.setCusor();
-    	 this.setVisible(true);
+    	 try {
+	    	 if(fun!= null)
+	    		 this.fun = fun;
+	    	 if(users != null)
+	    	 {
+	    		 this.users = users;
+	    		 checkUser = new HashMap<String, User>();
+	    		 for(User user : this.users)
+	    		 {
+	    			 checkUser.put(user.getTenDangNhap(), user);
+	    		 }
+	    	 }
+	    	 else
+	    	 {
+	    		 users = null;
+	    		 checkUser = null;
+	    	 }
+	    	 this.setTitle("Đăng nhập");
+	    	 this.setSize(500, 250);
+	    	 //this.setLocationRelativeTo(null);
+	    	 this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+	    	 this.setBackground(getForeground());
+	    	 this.setResizable(false);
+	    	 this.init();
+	    	 this.setIcon();
+	    	 this.setColor(blue, black);
+	    	 this.setText();
+	    	 this.addObj();
+	    	 this.setCusor();
+	    	 this.setVisible(true);
+	    	 System.out.println("Tải thành công form đăng nhập");
+    	 }
+    	 catch (Exception e) {
+			// TODO: handle exception
+    		 System.out.println("Error Form đăng nhập");
+		}
      }
      private void setColor(Color back, Color font)
      {
@@ -198,5 +225,43 @@ public class FormLogin extends JFrame
  				setVisible(false);
  			}
  		});
+     	 login.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(tdn_input.getText().equals(""));
+				if(!(tdn_input.getText().equals("") || pass_input.getText().equals(""))) {
+		        if(checkUser != null)
+		        {
+		        	if(checkUser.get(tdn_input.getText()) != null)
+		        	{
+		        		if(checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getText()))
+		        		{
+		        			JOptionPane.showMessageDialog(login, text_accept, thongbao, JOptionPane.INFORMATION_MESSAGE);
+		        			if(fun.getScreen() != null)
+		        				fun.getScreen().setUser(checkUser.get(tdn_input.getText()));
+		        		}
+		        		else
+		        		{
+		        			JOptionPane.showMessageDialog(login, text_error, thongbao, JOptionPane.WARNING_MESSAGE);
+		        		}
+		        	}
+		        	else
+		        	{
+		        		JOptionPane.showMessageDialog(login, text_no, thongbao, JOptionPane.YES_OPTION);
+		        	}
+		        }
+		        else
+		        {
+		        	JOptionPane.showMessageDialog(login, text_no, thongbao, JOptionPane.YES_OPTION);
+		        }
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(login, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
      }
 }

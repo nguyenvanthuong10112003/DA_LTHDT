@@ -17,13 +17,20 @@ public class Main {
          com.sun.java.swing.plaf.windows.WindowsLookAndFeel
          com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel
          */
-    	UIManager.LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
-        for (UIManager.LookAndFeelInfo look : looks) {
-            if(look.getClassName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
-            {
-            	UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            }
-        }
-        Screen form = new Screen("Chương trình quản lý file và folder");
+    	try {
+	    	UIManager.LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
+	        for (UIManager.LookAndFeelInfo look : looks) {
+	            if(look.getClassName().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+	            {
+	            	UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	            }
+	        }
+	        Screen form = new Screen("Chương trình quản lý file và folder");
+	        System.out.println("Tải chương trình thành công");
+    	}
+    	catch (Exception e) {
+			// TODO: handle exception
+    		System.out.println("Tải chương trình thất bại");
+		}
     }
 }

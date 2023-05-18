@@ -43,16 +43,23 @@ public class Panel_Navigation extends JPanel{
 	}
 	private void init()
 	{
-		mouselisten = new mouse(this);
-		iconback = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(back))));
-		iconback.setToolTipText("back");
-		iconforward = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(forward))));
-		iconforward.setToolTipText("forward");
-		address = new JPanel();
-		input_show = new JTextField();
-		input_show.setText("Địa chỉ");
-		search = new JComboBox();
-		search.addItem("Tìm kiếm");
+		try {
+			mouselisten = new mouse(this);
+			iconback = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(back))));
+			iconback.setToolTipText("back");
+			iconforward = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(forward))));
+			iconforward.setToolTipText("forward");
+			address = new JPanel();
+			input_show = new JTextField();
+			input_show.setText("Địa chỉ");
+			search = new JComboBox();
+			search.addItem("Tìm kiếm");
+			System.out.println("Tải thành công thanh tìm kiếm của ToolBar");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error tìm kiếm của ToolBar");
+		}
 	}
 	private void EditObj()
 	{

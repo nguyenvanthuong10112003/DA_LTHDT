@@ -47,13 +47,20 @@ public class Screen_MenuBar extends JMenuBar{
      public Screen_MenuBar(Screen sc)
      {
     	 super();
-    	 this.sc = sc;
-    	 init();
-    	 setIconItem();
-    	 setText();
-    	 addEvent();
-    	 addObj();
-         setBack();
+    	 try {
+	    	 this.sc = sc;
+	    	 init();
+	    	 setIconItem();
+	    	 setText();
+	    	 addEvent();
+	    	 addObj();
+	         setBack();
+	         System.out.println("Tải tành công thanh menu");
+    	 }
+    	 catch (Exception e) {
+			// TODO: handle exception
+    		 System.out.println("Error thanh menu");
+		}
      }
      public void setPanelContent(PanelContent pc)
      {

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Set;
 
 abstract public class Element {
-	private static int count;
     protected int id;
     protected String name; 
     protected Date dateCreate;

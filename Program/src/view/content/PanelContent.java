@@ -28,19 +28,26 @@ public class PanelContent extends JPanel{
        public PanelContent()
        {
     	   super();
-    	   this.contentLeft = new ScrollPaneTree(this);
-    	   this.contentCenter = new PanelContentCenter(new Folder(1));
-    	   this.contentRight = new PanelContentRight(this);
-    	   this.space = 0;
-    	   this.mouseEvent = new mouse(this);
-    	   this.Show_Content_Left = true;
-    	   this.Show_Content_Right = true;
-    	   this.Show_Content_Center = true;
-    	   this.font = new Font("Arial", Font.PLAIN, 14);
-    	   this.getSize();
-    	   this.addObj();
-    	   this.setColorObj();
-           
+    	   try {
+	    	   this.contentLeft = new ScrollPaneTree(this);
+	    	   this.contentCenter = new PanelContentCenter(new Folder(1));
+	    	   this.contentRight = new PanelContentRight(this);
+	    	   this.space = 0;
+	    	   this.mouseEvent = new mouse(this);
+	    	   this.Show_Content_Left = true;
+	    	   this.Show_Content_Right = true;
+	    	   this.Show_Content_Center = true;
+	    	   this.font = new Font("Arial", Font.PLAIN, 14);
+	    	   this.getSize();
+	    	   this.addObj();
+	    	   this.setColorObj();
+	    	   System.out.println("Tải thành công Content");
+           }
+    	   catch (Exception e) {
+			// TODO: handle exception
+    		   System.out.println("Error Content");
+		}
+    	  
        }
        public void update(int width, int height)
        {

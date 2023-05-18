@@ -26,19 +26,26 @@ public class ScrollPaneTree extends JScrollPane
 	public ScrollPaneTree(PanelContent pc)
 	{
 		 super();
-		 this.pc = pc;
-         tree = new TreeBar(new DefaultMutableTreeNode("This pc"));
-		 this.setViewportView(tree);
-         this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-         this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-         this.mouselisten = new mouse(this, tree, pc);
-         this.addMouseMotionListener(mouselisten);
-         this.tree.addMouseMotionListener(mouselisten);
-         this.pc.addMouseMotionListener(mouselisten);
-         this.pc.addMouseListener(mouselisten);
-         this.addMouseListener(mouselisten);
-         this.setCursor(defaultCursor);
-         this.tree.getIconClose().addMouseMotionListener(mouselisten);
+		 try {
+			 this.pc = pc;
+	         tree = new TreeBar(new DefaultMutableTreeNode("This pc"));
+			 this.setViewportView(tree);
+	         this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+	         this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+	         this.mouselisten = new mouse(this, tree, pc);
+	         this.addMouseMotionListener(mouselisten);
+	         this.tree.addMouseMotionListener(mouselisten);
+	         this.pc.addMouseMotionListener(mouselisten);
+	         this.pc.addMouseListener(mouselisten);
+	         this.addMouseListener(mouselisten);
+	         this.setCursor(defaultCursor);
+	         this.tree.getIconClose().addMouseMotionListener(mouselisten);
+	         System.out.println("Tải thành công Content bên trái");
+		 }
+		 catch (Exception e) {
+			// TODO: handle exception
+			 System.out.println("Error Content bên trái");
+		}
 	}
 	@Override
 	public void setBounds(int x, int y, int width, int height)

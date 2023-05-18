@@ -33,6 +33,7 @@ import view.formregister.FormRegister;
 import view.screen.Screen;
 
 public class Panel_Functions extends JToolBar{
+      private Screen screen; 
 	  private JPanel content;
 	  private JButton login;
 	  private JButton register;
@@ -71,16 +72,27 @@ public class Panel_Functions extends JToolBar{
 	  private JPanel NewFolder;
 	  private mouse mouseListen;
 
-	  public Panel_Functions()
+	  public Panel_Functions(Screen screen)
       {
     	  super();
-    	  init();
-    	  setFont();
-    	  setText();
-    	  setColor();
-    	  EditObj();
-    	  addObj();
-    	  addEvent();
+    	  try {
+	    	  if(screen != null)
+	    		  this.screen = screen;
+	    	  else
+	    		  this.screen = null;
+	    	  init();
+	    	  setFont();
+	    	  setText();
+	    	  setColor();
+	    	  EditObj();
+	    	  addObj();
+	    	  addEvent(); 
+	    	  System.out.println("Tải thanh chức năng thành công");
+    	  }
+    	  catch(Exception e)
+    	  {
+    		  System.out.println("Error thanh chức năng!");
+    	  }
       }
       private void setFont()
       {
@@ -347,7 +359,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Flogin != null)
     			  if(Flogin.isVisible()) 
     				  Flogin.setVisible(false);
-    		  Flogin = new FormLogin(this);
+    		  Flogin = new FormLogin(this, null);
     		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
     	  }
     	  else if(bt.equals(register))
@@ -359,7 +371,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Fregister != null)
     			  if(Fregister.isVisible())
     				  Fregister.setVisible(false);
-    		  Fregister = new FormRegister(this); 		  
+    		  Fregister = new FormRegister(this, null); 		  
     		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
     	  }
     		   
@@ -375,7 +387,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Flogin != null)
     			  if(Flogin.isVisible()) 
     				  Flogin.setVisible(false);
-    		  Flogin = new FormLogin(this);
+    		  Flogin = new FormLogin(this, null);
     		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
     	  }
     	  else 
@@ -387,7 +399,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Fregister != null)
     			  if(Fregister.isVisible())
     				  Fregister.setVisible(false);
-    		  Fregister = new FormRegister(this); 		  
+    		  Fregister = new FormRegister(this, null); 		  
     		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
     	  }
     		   
@@ -468,5 +480,9 @@ public class Panel_Functions extends JToolBar{
     			  copy_to_text.setBackground(color);
     		  }
     	  }
+      }
+      public Screen getScreen()
+      {
+    	  return screen;
       }
 }

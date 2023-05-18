@@ -1,5 +1,5 @@
 package view.formregister;
-
+import libary.DATE;
 import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.Color;
@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -23,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -30,8 +34,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.InsetsUIResource;
 
 import libary.JTextFieldPassWord;
+import model.User;
 import view.toolbar.Panel_Functions;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 public class FormRegister extends JFrame
 {
 	 private JPanel content;
@@ -60,11 +68,8 @@ public class FormRegister extends JFrame
 	 private ButtonGroup gb;
 	 private JLabel phoneNumber;
 	 private JTextField phone_number_input;
-	 
 	 private JLabel email;
 	 private JTextField email_input;
-	 
-	 
 	 private JPanel containerbt;
 	 private JButton cancel;
 	 private JButton login;
@@ -73,29 +78,57 @@ public class FormRegister extends JFrame
 	 private JButton register;
 	 private Panel_Functions fun;
 	 private String icon = "..//image//formregister//icon-register.png";
+	 private LinkedList <User> users;
+	 private Map<String, User> checkUser;
+	 private String thongbao = "Thông báo";
+	 private String text_accept = "Thành công!";
+	 private String text_thieu = "Yêu cầu nhập đầy đủ thông tin!";
+	 private String da_ton_tai = "Thông tin tên đăng nhập đã tồn tại! Hãy đặt tên đăng nhập khác.";
 	 private Font font32 = new Font("Arial", Font.BOLD, 24);
 	 private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	 private Font fontb = new Font("Arial", Font.BOLD, 14);
 	 private Color black = Color.BLACK;
 	 private Color white = Color.WHITE;
 	 private Color blue = Color.BLUE;
-     public FormRegister(Panel_Functions fun)
+     public FormRegister(Panel_Functions fun, LinkedList <User> users)
      {
-    	 if(fun != null)
-    		 this.fun = fun;
-    	 this.setTitle("Đăng ký");
-    	 this.setSize(300, 450);
-    	 //this.setLocationRelativeTo(null);
-    	 this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-    	 this.setBackground(getForeground());
-    	 this.setResizable(false);
-    	 this.init();
-    	 this.setIcon();
-    	 this.setColor(blue, black);
-    	 this.setText();
-    	 this.addObj();
-    	 this.setCusor();
-    	 this.setVisible(true);
+    	 try {
+	    	 if(fun != null)
+	    		 this.fun = fun;
+	    	 if(users != null)
+	    	 {
+	    		 this.users = users;
+	    		 checkUser = new HashMap<String, User>();
+	    		 for(User user : this.users)
+	    		 {
+	    			 checkUser.put(user.getTenDangNhap(), user);
+	    		 }
+	    	 }
+	    	 else
+	    	 {
+	    		 users = null;
+	    		 checkUser = null;
+	    	 }
+	    	 this.setTitle("Đăng ký");
+	    	 this.setSize(380, 480);
+	    	 //this.setLocationRelativeTo(null);
+	    	 this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+	    	 this.setBackground(getForeground());
+	    	 this.setResizable(false);
+	    	 this.init();
+	    	 this.setIcon();
+	    	 this.setColor(blue, black);
+	    	 this.setText();
+	    	 this.addObj();
+	    	 this.setCusor();
+	    	 this.updateTime();
+	    	 this.setVisible(true);
+	    	 System.out.println("Tải thành công form đăng ký");
+    	 }
+    	 catch (Exception e) {
+			// TODO: handle exception
+    		 System.out.println("Error form đăng ký");
+		}
      }
      private void setColor(Color back, Color font)
      {
@@ -177,7 +210,7 @@ public class FormRegister extends JFrame
     	 pass_check.setFont(fontp);
     	 full_name.setText("Họ và tên");
     	 full_name.setFont(fontp);
-    	 date_of_birth.setText("Ngày sinh");
+    	 date_of_birth.setText("Ngày sinh(dd/mm/yyyy)");
     	 date_of_birth.setFont(fontp);
     	 sex.setText("Giới tính");
     	 sex.setFont(fontp);
@@ -196,8 +229,9 @@ public class FormRegister extends JFrame
      private void addObj()
      {
     	 content.setLayout(new BorderLayout());
-    	 content.setBorder(new EmptyBorder(5, 15, 0, 15));
+    	 content.setBorder(new EmptyBorder(10, 15, 5, 15));
     	 register_text.setHorizontalAlignment(JLabel.CENTER);
+    	 register_text.setBorder(new EmptyBorder(0, 0, 10, 0));
     	 content.add(register_text, BorderLayout.NORTH);
          JPanel p = new JPanel();
          p.setLayout(new GridLayout(8,2,0,15));
@@ -221,7 +255,7 @@ public class FormRegister extends JFrame
          l.add(nam);
          l.add(nu);
          p.add(l);
-         
+          
          p.add(date_of_birth);
          l = new JPanel();
          l.setLayout(new GridLayout(1,3));
@@ -235,7 +269,6 @@ public class FormRegister extends JFrame
          
          p.add(email);
          p.add(email_input);
-         
          
          content.add(p, BorderLayout.CENTER);
          l = new JPanel();
@@ -291,5 +324,138 @@ public class FormRegister extends JFrame
 				setVisible(false);
 			}
 		});
+    	 register.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+			    if(CheckInput())
+			    {
+			    	if(checkUser != null)
+			    	{
+			    	    if(checkUser.size() == 0)
+			    	    {
+			    	    	JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
+			    	    	Accept();
+			    	    }
+			    	    else
+			    	    {
+			    	    	if(checkUser.get(tdn_input.getText()) == null)
+			    	    	{
+				    	    	JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
+				    	    	Accept();
+			    	    	}
+			    	    	else
+			    	    	{
+			    	    		JOptionPane.showMessageDialog(day, text_accept, da_ton_tai, JOptionPane.OK_OPTION);
+			    	    	}
+			    	    }
+			    	}
+			    	else
+			    	{
+			    		JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
+			    	}
+			    }
+			    else
+			    {
+			    	JOptionPane.showMessageDialog(day, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
+			    	//JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.OK_OPTION);
+			    }
+			}
+		});
+    	 year.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+		        updateTime();		
+			}
+		});
+    	 month.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+		        updateTime();		
+			}
+		});
+    	 day.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+		        updateTime();		
+			}
+		});
+     }
+     private void Accept()
+     {
+    	 User us = new User(users.getLast().getId() + 1, tdn_input.getText(), pass_input.getText());
+    	 us.setName(full_name_input.getText());
+    	 us.setSex(nam.isSelected());
+    	 us.setEmail(email_input.getText());
+    	 us.setPhoneNumber(phone_number_input.getText());
+    	 us.setDateOfBirth(new Date((Integer)year.getSelectedItem(), (Integer)month.getSelectedItem(), (Integer)day.getSelectedItem()));
+         users.add(us);
+         checkUser.put(us.getTenDangNhap(), us);
+         this.setVisible(false);
+     }
+     private Boolean CheckInput()
+     {
+    	 if(tdn_input.getText().equals("") ||
+    		pass_input.getText().equals("") ||
+    		pass_check_input.getText().equals("") ||
+    		full_name_input.getText().equals("") ||
+    		!(nam.isSelected() || nu.isSelected()) ||
+    	    //((String)day.getSelectedItem()).equals("") ||
+    	    //((String)month.getSelectedItem()).equals("") ||
+    	    //((String)year.getSelectedItem()).equals("") ||
+    	    phone_number_input.getText().equals("") ||
+    	    email_input.getText().equals(""))
+    		 return false;
+    	 
+    	 return true;
+     }
+     private void updateTime()
+     {
+         DATE date = new DATE(LocalDateTime.now().getYear());
+         System.out.println(year.getSelectedItem());
+         for(int i : date.year())
+           year.addItem(i);
+         System.out.println(year.getSelectedItem());
+         if(year.getSelectedItem() == null)
+             year.setSelectedItem((Integer)year.getItemAt(year.getItemCount() - 1));
+         else if(!year.getSelectedItem().getClass().equals(Integer.class))
+        	 year.setSelectedItem((Integer)year.getItemAt(year.getItemCount() - 1));
+         else if((Integer)year.getSelectedItem() > (Integer)year.getItemAt(year.getItemCount() - 1))
+             year.setSelectedItem((Integer)year.getItemAt(year.getItemCount() - 1));
+         else if((Integer)year.getSelectedItem() < (Integer)year.getItemAt(0))
+        	 year.setSelectedItem((Integer)year.getItemAt(0));
+        	 
+         year.setEditable(true);
+         
+         for(int i : date.month())
+           month.addItem(i);
+         if(month.getSelectedItem() == null)
+             month.setSelectedItem(1);
+         else if(!month.getSelectedItem().getClass().equals(Integer.class))
+        	 month.setSelectedItem((Integer)month.getItemAt(1));
+         else if((Integer)month.getSelectedItem() > (Integer)month.getItemAt(month.getItemCount() - 1))
+        	 month.setSelectedItem((Integer)month.getItemAt(month.getItemCount() - 1));
+         else if((Integer)month.getSelectedItem() < (Integer)month.getItemAt(0))
+        	 month.setSelectedItem((Integer)month.getItemAt(0));
+         month.setEditable(true);
+         
+         for(int i : date.day((Integer)month.getSelectedItem(), (Integer)year.getSelectedItem())) 
+         	day.addItem(i);
+         if(day.getSelectedItem() == null)
+             day.setSelectedItem(1);
+         else if(!day.getSelectedItem().getClass().equals(Integer.class))
+        	 day.setSelectedItem((Integer)day.getItemAt(1));
+         else if((Integer)day.getSelectedItem() > (Integer)day.getItemAt(day.getItemCount() - 1))
+        	 day.setSelectedItem((Integer)day.getItemAt(day.getItemCount() - 1));
+         else if((Integer)day.getSelectedItem() < (Integer)day.getItemAt(0))
+        	 day.setSelectedItem((Integer)day.getItemAt(0));
+         day.setEditable(true);
      }
 }

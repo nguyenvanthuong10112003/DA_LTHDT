@@ -55,26 +55,33 @@ public class PanelContentCenter extends JScrollPane{
      public PanelContentCenter(Folder root)
      {
     	 super();
-    	 this.init();
-    	 this.root = root;
-    	 this.addMouseMotionListener(mouselisten);
-    	 String[] columnNames = {"", "Name", "Date", "Date Modifield", "Size"};
-         Object[][] data = {{folderIcon, "About", "", "", ""}, {folderIcon, "Add", "", "", ""}, {folderIcon, "Copy", "", "", ""}, {folderIcon, "Copy", "", "", ""}};
-         DefaultTableModel model = new DefaultTableModel(data, columnNames);
-         table = new JTable(model) {
-             private static final long serialVersionUID = 1L;                                                  
-             @Override
-             public Class getColumnClass(int column) {
-                 return getValueAt(0, column).getClass();
-             }
-
-             /*@Override
-             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                 Component comp = super.prepareRenderer(renderer, row, column);
-                 return comp;
-             }*/
-         };
-         Edit();
+    	 try {
+	    	 this.init();
+	    	 this.root = root;
+	    	 this.addMouseMotionListener(mouselisten);
+	    	 String[] columnNames = {"", "Name", "Date", "Date Modifield", "Size"};
+	         Object[][] data = {{folderIcon, "About", "", "", ""}, {folderIcon, "Add", "", "", ""}, {folderIcon, "Copy", "", "", ""}, {folderIcon, "Copy", "", "", ""}};
+	         DefaultTableModel model = new DefaultTableModel(data, columnNames);
+	         table = new JTable(model) {
+	             private static final long serialVersionUID = 1L;                                                  
+	             @Override
+	             public Class getColumnClass(int column) {
+	                 return getValueAt(0, column).getClass();
+	             }
+	
+	             /*@Override
+	             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+	                 Component comp = super.prepareRenderer(renderer, row, column);
+	                 return comp;
+	             }*/
+	         };
+	         Edit();
+	         System.out.println("Tải thành công Content ở giữa");
+    	 }
+    	 catch (Exception e) {
+			// TODO: handle exception
+    		 System.out.println("Error Content ở giữa");
+		}
 
      }
      public void Edit()

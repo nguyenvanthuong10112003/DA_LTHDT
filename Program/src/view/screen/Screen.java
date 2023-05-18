@@ -19,6 +19,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import controller.mouse;
+import model.User;
 import view.content.PanelContent;
 import view.content.left.ScrollPaneTree;
 import view.formlogin.FormLogin;
@@ -39,24 +40,34 @@ public class Screen extends JFrame
       private PanelContent content_center;
       private mouse mouseListen = new mouse(this);
       private action actionlistener;
+      private User user;
       public Screen(String title)
       {
-    	  this.setTitle(title);               //tieu de         
-    	  this.setDefaultCloseOperation(EXIT_ON_CLOSE);     // tat han khi onclick close
-    	  //this.setUndecorated(true); //full
-    	  this.setMinimumSize(new Dimension(800,450));   // kich thuoc be nhat
-    	  this.setIconImage();  // set icon app
-    	  //this.setLocationRelativeTo(null); // Giua man hinh
-    	  this.init(); // 
-    	  this.addObj(); //   	  
-    	  this.addListen();    
-    	  this.setVisible(true);  // hien app
-          this.chenhlech = this.getSize().width - content_center.getSize().width;
-          this.dd = this.getSize().height - chenhlech - content_center.getSize().height;
-          this.menubar.setPanelContent(content_center);
-          this.content_center.getPanelContentLeft().getTreeBar().setPanelContent(content_center);
-          update();
+    	  try {
+	    	  user = null;
+	    	  this.setTitle(title);               //tieu de         
+	    	  this.setDefaultCloseOperation(EXIT_ON_CLOSE);     // tat han khi onclick close
+	    	  //this.setUndecorated(true); //full
+	    	  this.setMinimumSize(new Dimension(800,450));   // kich thuoc be nhat
+	    	  this.setIconImage();  // set icon app
+	    	  //this.setLocationRelativeTo(null); // Giua man hinh
+	    	  this.init(); // 
+	    	  this.addObj(); //   	  
+	    	  this.addListen();    
+	    	  this.setVisible(true);  // hien app
+	          this.chenhlech = this.getSize().width - content_center.getSize().width;
+	          this.dd = this.getSize().height - chenhlech - content_center.getSize().height;
+	          this.menubar.setPanelContent(content_center);
+	          this.content_center.getPanelContentLeft().getTreeBar().setPanelContent(content_center);
+	          update();
+	          System.out.println("Tải thành công màn hình");
+    	  }
+    	  catch (Exception e) {
+			// TODO: handle exception
+    		  System.out.println("Error màn hình");
+		}
       }  
+      
       public void setDD()
       {
     	  this.chenhlech = this.getSize().width - content_center.getSize().width;
@@ -132,7 +143,7 @@ public class Screen extends JFrame
 	private void init()
       {
     	  menubar = new Screen_MenuBar(this);
-    	  toolbar = new Screen_ToolBar();
+    	  toolbar = new Screen_ToolBar(this);
     	  content = new JPanel();
     	  content_center = new PanelContent();
     	  actionlistener = new action(this);
@@ -167,4 +178,13 @@ public class Screen extends JFrame
           setDD();
           update();
       } 
+      public void setUser(User user)
+      {
+    	  this.user = user;
+    	  this.update();
+      }
+      public User getUser()
+      {
+    	  return user;
+      }
 }
