@@ -44,6 +44,7 @@ public class PanelContentCenter extends JScrollPane{
 	 private static final long serialVersionUID = 1L;
 	 private JTable table;
 	 private JLabel myLabel = new JLabel("waiting");
+	 private DefaultTableModel tableModel;
 	 private int Height1 = 25;
 	 private int Height2 = 40;
 	 private int Height3 = 50;

@@ -84,6 +84,7 @@ public class FormRegister extends JFrame
 	 private String text_accept = "Thành công!";
 	 private String text_thieu = "Yêu cầu nhập đầy đủ thông tin!";
 	 private String da_ton_tai = "Thông tin tên đăng nhập đã tồn tại! Hãy đặt tên đăng nhập khác.";
+	 private DATE date = new DATE(LocalDateTime.now().getYear());
 	 private Font font32 = new Font("Arial", Font.BOLD, 24);
 	 private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	 private Font fontb = new Font("Arial", Font.BOLD, 14);
@@ -119,9 +120,11 @@ public class FormRegister extends JFrame
 	    	 this.setIcon();
 	    	 this.setColor(blue, black);
 	    	 this.setText();
+	    	 this.Edit();
+	    	 this.setTime();
+	    	 //this.updateTime();
 	    	 this.addObj();
 	    	 this.setCusor();
-	    	 this.updateTime();
 	    	 this.setVisible(true);
 	    	 System.out.println("Tải thành công form đăng ký");
     	 }
@@ -157,6 +160,10 @@ public class FormRegister extends JFrame
     	 login.setCursor(new Cursor(Cursor.HAND_CURSOR));
     	 register.setCursor(new Cursor(Cursor.HAND_CURSOR));
      }
+     private void Edit()
+     {
+
+     }
      private void init()
      {
     	 content = new JPanel();
@@ -177,9 +184,6 @@ public class FormRegister extends JFrame
     	 full_name = new JLabel();
     	 full_name_input = new JTextField();   	 
     	 date_of_birth = new JLabel();
-    	 day = new JComboBox();
-    	 month = new JComboBox();
-    	 year = new JComboBox(); 
     	 sex = new JLabel();
     	 gb = new ButtonGroup();
     	 check_sex = new JPanel();
@@ -189,6 +193,9 @@ public class FormRegister extends JFrame
     	 phone_number_input = new JTextField();	 
     	 email = new JLabel();
     	 email_input = new JTextField();
+    	 year = new JComboBox();
+    	 month = new JComboBox();
+    	 day = new JComboBox();
      }
      private void setText()
      {
@@ -363,30 +370,6 @@ public class FormRegister extends JFrame
 			    }
 			}
 		});
-    	 year.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-		        updateTime();		
-			}
-		});
-    	 month.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-		        updateTime();		
-			}
-		});
-    	 day.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-		        updateTime();		
-			}
-		});
      }
      private void Accept()
      {
@@ -416,13 +399,54 @@ public class FormRegister extends JFrame
     	 
     	 return true;
      }
+     private void setTime()
+     { 
+         year.setEditable(true);
+         month.setEditable(true);
+         day.setEditable(true);
+         
+         for(int i : date.year())
+             year.addItem(i);
+         for(int i : date.month())
+             month.addItem(i);
+         for(int i : date.day((Integer)month.getSelectedItem(), (Integer)year.getSelectedItem())) 
+             day.addItem(i);
+         
+    	 year.addActionListener(new ActionListener() {
+ 			
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+		        updateTime();		
+			}
+		 });
+    	 month.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+		        updateTime();		
+			}
+		 });
+    	 day.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+		         if(day.getSelectedItem() == null)
+		             day.setSelectedItem(1);
+		         else if(!day.getSelectedItem().getClass().equals(Integer.class))
+		        	 day.setSelectedItem((Integer)day.getItemAt(day.getItemCount() - 1));
+		         else if((Integer)day.getSelectedItem() > (Integer)day.getItemAt(day.getItemCount() - 1))
+		        	 day.setSelectedItem((Integer)day.getItemAt(day.getItemCount() - 1));
+		         else if((Integer)day.getSelectedItem() < (Integer)day.getItemAt(0))
+		        	 day.setSelectedItem((Integer)day.getItemAt(0));	
+			}
+		 });
+     }
      private void updateTime()
      {
-         DATE date = new DATE(LocalDateTime.now().getYear());
-         System.out.println(year.getSelectedItem());
-         for(int i : date.year())
-           year.addItem(i);
-         System.out.println(year.getSelectedItem());
+    	 int d = (int) day.getSelectedItem();
          if(year.getSelectedItem() == null)
              year.setSelectedItem((Integer)year.getItemAt(year.getItemCount() - 1));
          else if(!year.getSelectedItem().getClass().equals(Integer.class))
@@ -431,31 +455,24 @@ public class FormRegister extends JFrame
              year.setSelectedItem((Integer)year.getItemAt(year.getItemCount() - 1));
          else if((Integer)year.getSelectedItem() < (Integer)year.getItemAt(0))
         	 year.setSelectedItem((Integer)year.getItemAt(0));
-        	 
-         year.setEditable(true);
          
-         for(int i : date.month())
-           month.addItem(i);
          if(month.getSelectedItem() == null)
              month.setSelectedItem(1);
          else if(!month.getSelectedItem().getClass().equals(Integer.class))
-        	 month.setSelectedItem((Integer)month.getItemAt(1));
+        	 month.setSelectedItem((Integer)month.getItemAt(month.getItemCount() - 1));
          else if((Integer)month.getSelectedItem() > (Integer)month.getItemAt(month.getItemCount() - 1))
         	 month.setSelectedItem((Integer)month.getItemAt(month.getItemCount() - 1));
          else if((Integer)month.getSelectedItem() < (Integer)month.getItemAt(0))
         	 month.setSelectedItem((Integer)month.getItemAt(0));
-         month.setEditable(true);
+
+         day.removeAllItems();
+         for(int i : date.day((Integer)month.getSelectedItem(), (Integer)year.getSelectedItem())) {
+        	 day.addItem(i);
+         }
+         if(d <= (int)day.getItemAt(day.getItemCount() - 1))
+        	 day.setSelectedItem(d);
+         else
+        	 day.setSelectedItem((int) day.getItemAt(day.getItemCount() - 1));
          
-         for(int i : date.day((Integer)month.getSelectedItem(), (Integer)year.getSelectedItem())) 
-         	day.addItem(i);
-         if(day.getSelectedItem() == null)
-             day.setSelectedItem(1);
-         else if(!day.getSelectedItem().getClass().equals(Integer.class))
-        	 day.setSelectedItem((Integer)day.getItemAt(1));
-         else if((Integer)day.getSelectedItem() > (Integer)day.getItemAt(day.getItemCount() - 1))
-        	 day.setSelectedItem((Integer)day.getItemAt(day.getItemCount() - 1));
-         else if((Integer)day.getSelectedItem() < (Integer)day.getItemAt(0))
-        	 day.setSelectedItem((Integer)day.getItemAt(0));
-         day.setEditable(true);
      }
 }
