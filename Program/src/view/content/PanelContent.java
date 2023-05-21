@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import model.Element;
 import javax.swing.JPanel;
 
 import controller.mouse;
@@ -25,13 +26,24 @@ public class PanelContent extends JPanel{
        private Boolean Show_Content_Center;
        private Cursor cursorDefault = new Cursor(Cursor.DEFAULT_CURSOR);
        private Font font;
-       public PanelContent()
+	   private Element elements;
+	   private String url;
+       public PanelContent(Element elements, String url)
        {
     	   super();
     	   try {
-	    	   this.contentLeft = new ScrollPaneTree(this);
-	    	   this.contentCenter = new PanelContentCenter(new Folder(1));
-	    	   this.contentRight = new PanelContentRight(this);
+    		   if(elements != null)
+    		   {
+    			   this.elements = elements;
+    		   }
+    		   else
+    		   {
+    			   this.elements = null;
+    		   }
+    		   this.url = url;
+	    	   this.contentLeft = new ScrollPaneTree(this, this.elements, this.url);
+	    	   this.contentCenter = new PanelContentCenter(new Folder(1), this.elements, this.url);
+	    	   this.contentRight = new PanelContentRight(this, this.url);
 	    	   this.space = 0;
 	    	   this.mouseEvent = new mouse(this);
 	    	   this.Show_Content_Left = true;

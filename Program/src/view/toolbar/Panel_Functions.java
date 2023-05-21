@@ -43,23 +43,33 @@ public class Panel_Functions extends JToolBar{
 	  private FormLogin Flogin;
 	  private FormRegister Fregister;
 	  private JPanel  container_icon_function;
-	  private JLabelIcon pin_to_access_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//pin_to_access_24.png"))));
-	  private JLabelIcon cut_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//cut16.png"))));
-	  private JLabelIcon copy_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//copy2_16.png"))));
-	  private JLabelIcon paste_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//paste16.png"))));
-	  private JLabelIcon move_to_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//move.png"))));
-	  private JTextArea move_to_text;
-	  private JLabelIcon copy_to_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//copy_to32.png"))));
-	  private JTextArea copy_to_text;
-	  private JLabelIcon delete_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//delete24.png"))));
-	  private JLabel delete_text;
-	  private JLabelIcon rename_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//rename32.png"))));
-	  private JLabel rename_text;
-	  private JLabelIcon new_folder_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//new_folder24.png"))));
-	  private JLabel new_folder_text;
-	  private JLabelIcon new_file_icon = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//new_file24.png"))));
-	  private JLabel new_file_text;
+	  private String pin_to = "\\Icon\\toolbar\\fun\\pin_to_access_24.png";
+	  private String cut = "\\Icon\\toolbar\\fun\\cut16.png";
+	  private String copy = "\\Icon\\toolbar\\fun\\copy2_16.png";
+	  private String paste = "\\Icon\\toolbar\\fun\\paste16.png";
+	  private String move_to = "\\Icon\\toolbar\\fun\\move.png";
+	  private String copy_to = "\\Icon\\toolbar\\fun\\copy_to32.png";
+	  private String delete = "\\Icon\\toolbar\\fun\\delete24.png";
+	  private String rename = "\\Icon\\toolbar\\fun\\rename32.png";
+	  private String new_folder = "\\Icon\\toolbar\\fun\\new_folder24.png";
+	  private String new_file = "\\Icon\\toolbar\\fun\\new_file24.png";
+	  private JLabelIcon pin_to_access_icon;
 	  private JTextArea pinTo_text;
+	  private JLabelIcon cut_icon;
+	  private JLabelIcon copy_icon;
+	  private JLabelIcon paste_icon;
+	  private JLabelIcon move_to_icon;
+	  private JTextArea move_to_text;
+	  private JLabelIcon copy_to_icon;
+	  private JTextArea copy_to_text;
+	  private JLabelIcon delete_icon;
+	  private JLabel delete_text;
+	  private JLabelIcon rename_icon;
+	  private JLabel rename_text;
+	  private JLabelIcon new_folder_icon;
+	  private JLabel new_folder_text;
+	  private JLabelIcon new_file_icon;
+	  private JLabel new_file_text;
 	  private JPanel Cut;
 	  private JPanel Copy;
 	  private JPanel Paste;
@@ -71,8 +81,8 @@ public class Panel_Functions extends JToolBar{
 	  private JPanel NewFile;
 	  private JPanel NewFolder;
 	  private mouse mouseListen;
-
-	  public Panel_Functions(Screen screen)
+	  private String url;
+	  public Panel_Functions(Screen screen, String url)
       {
     	  super();
     	  try {
@@ -80,6 +90,7 @@ public class Panel_Functions extends JToolBar{
 	    		  this.screen = screen;
 	    	  else
 	    		  this.screen = null;
+	    	  this.url = url;
 	    	  init();
 	    	  setFont();
 	    	  setText();
@@ -184,6 +195,16 @@ public class Panel_Functions extends JToolBar{
           Rename = new JPanel();
           NewFile = new JPanel();
           NewFolder = new JPanel();
+          pin_to_access_icon = new JLabelIcon(new ImageIcon(url + pin_to));
+    	  cut_icon = new JLabelIcon(new ImageIcon(url + cut));
+    	  copy_icon = new JLabelIcon(new ImageIcon(url + copy));
+    	  paste_icon = new JLabelIcon(new ImageIcon(url + paste));
+    	  move_to_icon = new JLabelIcon(new ImageIcon(url + move_to));
+    	  copy_to_icon = new JLabelIcon(new ImageIcon(url + copy_to));
+    	  delete_icon = new JLabelIcon(new ImageIcon(url + delete));
+    	  rename_icon = new JLabelIcon(new ImageIcon(url + rename));
+    	  new_folder_icon = new JLabelIcon(new ImageIcon(url + new_folder));
+          new_file_icon = new JLabelIcon(new ImageIcon(url + new_file));
       }
       private void setText()
       {
@@ -359,7 +380,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Flogin != null)
     			  if(Flogin.isVisible()) 
     				  Flogin.setVisible(false);
-    		  Flogin = new FormLogin(this, null);
+    		  Flogin = new FormLogin(this, null, url);
     		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
     	  }
     	  else if(bt.equals(register))
@@ -371,7 +392,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Fregister != null)
     			  if(Fregister.isVisible())
     				  Fregister.setVisible(false);
-    		  Fregister = new FormRegister(this, null); 		  
+    		  Fregister = new FormRegister(this, null, url); 		  
     		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
     	  }
     		   
@@ -387,7 +408,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Flogin != null)
     			  if(Flogin.isVisible()) 
     				  Flogin.setVisible(false);
-    		  Flogin = new FormLogin(this, null);
+    		  Flogin = new FormLogin(this, null, url);
     		  Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
     	  }
     	  else 
@@ -399,7 +420,7 @@ public class Panel_Functions extends JToolBar{
     		  if(Fregister != null)
     			  if(Fregister.isVisible())
     				  Fregister.setVisible(false);
-    		  Fregister = new FormRegister(this, null); 		  
+    		  Fregister = new FormRegister(this, null, url); 		  
     		  Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
     	  }
     		   

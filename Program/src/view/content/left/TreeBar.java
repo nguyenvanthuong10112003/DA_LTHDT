@@ -12,15 +12,13 @@ public class TreeBar extends JTree{
 	  private PanelContent pc;
 	  private JLabelIcon close;
 	  private mouse mouseListen;
-	  private String iconClose16 = "close16.png";
-	  private String iconClose24 = "close24.png";
-      public TreeBar()
-      {
-    	  super();
-      }
-      public TreeBar(DefaultMutableTreeNode root)
+	  private String iconClose16 = "\\Icon\\content\\left\\close16.png";
+	  private String iconClose24 = "\\Icon\\content\\left\\close24.png";
+	  private String url;
+      public TreeBar(DefaultMutableTreeNode root, String url)
       {
     	  super(root);    	  
+    	  this.url = url;
     	  root.add(new DefaultMutableTreeNode("con 1"));
     	  root.add(new DefaultMutableTreeNode("con 2"));
     	  root.add(new DefaultMutableTreeNode("con 3"));
@@ -32,7 +30,7 @@ public class TreeBar extends JTree{
     	  this.setShowsRootHandles(true);
     	  this.setBorder(new EmptyBorder(5,5,5,5));
     	  this.setBackground(Color.white);
-          close = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
+          close = new JLabelIcon(new ImageIcon(url + iconClose16));
           this.add(close);
     	  mouseListen = new mouse(this);
     	  this.addMouseListener(mouseListen);
@@ -62,12 +60,12 @@ public class TreeBar extends JTree{
       }
       public void hoverClose()
       {
-    	  close.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose24))));
+    	  close.setIcon(new ImageIcon(url + iconClose24));
    	      setIconClose(24);
       }
       public void exitClose()
       {
-   	      close.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
+   	      close.setIcon(new ImageIcon(url + iconClose16));
 	      setIconClose(18);
       }
       public void closeClick()

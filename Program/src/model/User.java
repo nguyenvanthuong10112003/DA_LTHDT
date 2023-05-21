@@ -6,8 +6,6 @@ import java.util.Date;
 import javax.lang.model.util.Elements;
 
 public class User {
-    private static int count = 0;
-    private int id;
     private String name;
     private String tenDangNhap;
     private String passWord;
@@ -21,8 +19,6 @@ public class User {
     private Element root;
     public User(String tendangnhap, String password)
     {
-    	this.count++;
-        this.id = count;
         this.tenDangNhap = tendangnhap;
         this.passWord = password;
         this.name = "Thành viên mới";
@@ -35,27 +31,10 @@ public class User {
         this.dateOfBirth = null;
         this.root = new Folder(0);
     } 
-    public User(int id, String tendangnhap, String password)
-    {
-        this.id = id;
-        this.tenDangNhap = tendangnhap;
-        this.passWord = password;
-        this.name = "Thành viên mới";
-        this.phoneNumber = "";
-        this.email = "";
-        this.dateCreated = java.util.Calendar.getInstance().getTime();
-        this.state = "";
-        this.sex = null;
-        this.Country = "";
-        this.dateOfBirth = null;
-        this.root = new Folder(0);
-    }
     public User(String tendangnhap, String password, String name, 
     		String phone, String email, String state, 
     		Boolean sex, String country, Date birth, Element root)
     {
-    	this.count++;
-        this.id = count;
         this.tenDangNhap = tendangnhap;
         this.passWord = password;
         this.name = name;
@@ -68,40 +47,11 @@ public class User {
         this.dateOfBirth = birth;
         this.root = root;
     }
-    public User(int id, String tendangnhap, String password, String name, 
-    		String phone, String email, String state, 
-    		Boolean sex, String country, Date birth, Element root)
-    {
-        this.id = id;
-        this.tenDangNhap = tendangnhap;
-        this.passWord = password;
-        this.name = name;
-        this.phoneNumber = phone;
-        this.email = email;
-        this.dateCreated = (Date) java.util.Calendar.getInstance().getTime();
-        this.state = state;
-        this.sex = sex;
-        this.Country = country;
-        this.dateOfBirth = birth;
-        this.root = root;
-    }
-	public static int getCount() {
-		return count;
-	}
-	public static void setCount(int count) {
-		User.count = count;
-	}
 	public Element getRoot() {
 		return root;
 	}
 	public void setRoot(Element root) {
 		this.root = root;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getName() {
 		return name;

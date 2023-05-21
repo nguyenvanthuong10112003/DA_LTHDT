@@ -10,6 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import controller.mouse;
 import libary.JLabelIcon;
+import model.Element;
 import view.content.PanelContent;
 import view.screen.Screen;
 
@@ -23,12 +24,19 @@ public class ScrollPaneTree extends JScrollPane
 	private mouse mouselisten;
 	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 	private Cursor []resizeCursor = {new Cursor(Cursor.N_RESIZE_CURSOR), new Cursor(Cursor.W_RESIZE_CURSOR), new Cursor(Cursor.SE_RESIZE_CURSOR)};
-	public ScrollPaneTree(PanelContent pc)
+	private Element root;
+	private String url;
+	public ScrollPaneTree(PanelContent pc, Element root, String url)
 	{
 		 super();
 		 try {
+			 if(root != null)
+				 this.root = root;
+			 else
+				 this.root = null;
 			 this.pc = pc;
-	         tree = new TreeBar(new DefaultMutableTreeNode("This pc"));
+			 this.url = url;
+	         this.tree = new TreeBar(new DefaultMutableTreeNode("This pc"), this.url);
 			 this.setViewportView(tree);
 	         this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 	         this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
@@ -55,7 +63,7 @@ public class ScrollPaneTree extends JScrollPane
 	}
 	public void setTree(DefaultMutableTreeNode root)
 	{
-		tree = new TreeBar(root);
+		tree = new TreeBar(root, this.url);
 	}
 	public void SetCusorTreeBar()
 	{

@@ -44,11 +44,13 @@ public class Screen_MenuBar extends JMenuBar{
      private ButtonGroup groupbutton;
 	 private mouse mouselisten;
 	 private action actionlisten;
-     public Screen_MenuBar(Screen sc)
+	 private String url;
+     public Screen_MenuBar(Screen sc, String url)
      {
     	 super();
     	 try {
 	    	 this.sc = sc;
+	    	 this.url = url;
 	    	 init();
 	    	 setIconItem();
 	    	 setText();
@@ -156,16 +158,16 @@ public class Screen_MenuBar extends JMenuBar{
      private void setIconItem()
      {
     	 try {
-	    	 item1_1.setIcon((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//menubar//new window1_16px.png")))));
+	    	 item1_1.setIcon((new ImageIcon(url + "\\Icon\\menubar\\new window1_16px.png")));
 	         item1_1.setIconTextGap(7);
-	         item1_2.setIcon((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//menubar//close_16px.png")))));
+	         item1_2.setIcon((new ImageIcon(url + "\\Icon\\menubar\\close_16px.png")));
 	         item1_2.setIconTextGap(7);
 	         item3_1.setIconTextGap(7);
-	         item3_1_1.setIcon((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//menubar//che do xem chi tiet1.png")))));
+	         item3_1_1.setIcon((new ImageIcon(url + "\\Icon\\menubar\\che do xem chi tiet1.png")));
 	         item3_1_1.setIconTextGap(7);
-	         item3_1_2.setIcon((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//menubar//bieu tuong.png")))));
+	         item3_1_2.setIcon((new ImageIcon(url + "\\Icon\\menubar\\bieu tuong.png")));
 	         item3_1_2.setIconTextGap(7);
-	         item3_1_3.setIcon((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//menubar//bieu tuong lon.png")))));
+	         item3_1_3.setIcon((new ImageIcon(url + "\\Icon\\menubar\\bieu tuong lon.png")));
 	         item3_1_3.setIconTextGap(7);
 	         item3_2.setIconTextGap(7);
     	 }

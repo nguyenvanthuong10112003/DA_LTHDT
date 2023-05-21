@@ -15,20 +15,22 @@ public class Screen_ToolBar extends JPanel{
        private Panel_Functions function;
        private Panel_Navigation navigation;
        private Screen screen;
-       public Screen_ToolBar(Screen screen) {
+       private String url;
+       public Screen_ToolBar(Screen screen, String url) {
     	   super();
     	   try {
 	    	   if(screen != null)
 	    		   this.screen = screen;
 	    	   else 
 	    		   this.screen = null;
-	    	   function = new Panel_Functions(this.screen);
-	    	   navigation = new Panel_Navigation();
-	    	   setColor();
+	    	   this.url = url;
+	    	   this.function = new Panel_Functions(this.screen, this.url);
+	    	   this.navigation = new Panel_Navigation(this.screen, this.url);
+	    	   this.setColor();
 	    	   this.setLayout(new BorderLayout());
 	    	   this.add(function, BorderLayout.CENTER);
 	    	   this.add(navigation, BorderLayout.SOUTH); 
-	    	   function.setVisible(false);
+	    	   //function.setVisible(false);
 	    	   System.out.println("Tải thành công ToolBar");
     	   }
     	   catch(Exception e)
@@ -38,11 +40,10 @@ public class Screen_ToolBar extends JPanel{
        }
        private void setColor()
        {
-    	   navigation.setOpaque(true);
-    	   navigation.setBackground(ColorList.Back_Ground);
-    	   navigation.setForeground(ColorList.Fore_Ground);
-    	   
-    	   function.setForeground(ColorList.Fore_Ground);
+    	   this.navigation.setOpaque(true);
+    	   this.navigation.setBackground(ColorList.Back_Ground);
+    	   this.navigation.setForeground(ColorList.Fore_Ground);
+    	   this.function.setForeground(ColorList.Fore_Ground);
      	   this.setOpaque(true);
      	   this.setBackground(ColorList.Back_Ground);
        }
@@ -50,9 +51,9 @@ public class Screen_ToolBar extends JPanel{
        {
     	   if(function.isVisible())
     	   {
-    		   function.setVisible(false);
+    		   this.function.setVisible(false);
     	   }
     	   else
-    		   function.setVisible(true);
+    		   this.function.setVisible(true);
        }
 }

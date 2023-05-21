@@ -42,7 +42,7 @@ public class FormLogin extends JFrame
 	 private JPanel t;
 	 private JLabel hoi;
 	 private JButton register;
-	 private String icon = "..//image//formlogin//icon-login.png";
+	 private String icon = "\\Icon\\formlogin\\icon-login.png";
 	 private Font font32 = new Font("Arial", Font.BOLD, 28);
 	 private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	 private Font fontb = new Font("Arial", Font.BOLD, 14);
@@ -58,7 +58,8 @@ public class FormLogin extends JFrame
 	 private String text_no = "Thông tin đăng nhập không tồn tại!\nHãy tạo tài khoản mới.";
 	 private String text_error = "Thông tin đăng nhập không chính xác!";
 	 private String text_thieu = "Yêu cầu nhập đầy đủ thông tin đăng nhập!";
-     public FormLogin(Panel_Functions fun, LinkedList <User> users)
+	 private String url;
+     public FormLogin(Panel_Functions fun, LinkedList <User> users, String url)
      {
     	 try {
 	    	 if(fun!= null)
@@ -77,6 +78,7 @@ public class FormLogin extends JFrame
 	    		 users = null;
 	    		 checkUser = null;
 	    	 }
+	    	 this.url = url;
 	    	 this.setTitle("Đăng nhập");
 	    	 this.setSize(500, 250);
 	    	 //this.setLocationRelativeTo(null);
@@ -112,7 +114,7 @@ public class FormLogin extends JFrame
      private void setIcon()
      {
     	 try {
-    		 this.setIconImage((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(icon)))).getImage());
+    		 this.setIconImage((new ImageIcon(url + icon)).getImage());
     	 } catch(Exception e)
     	 {
     		 System.out.print("error");

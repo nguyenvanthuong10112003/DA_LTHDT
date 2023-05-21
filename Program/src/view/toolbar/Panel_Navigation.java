@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import libary.ColorList;
 import libary.FONT;
 import libary.JLabelIcon;
+import view.screen.Screen;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -24,16 +25,21 @@ import controller.mouse;
 public class Panel_Navigation extends JPanel{
 	private JLabel iconback;
 	private JLabel iconforward;
-	private String back = "..//image//toolbar//back16.png";
-	private String forward = "..//image//toolbar//forward16.png";
+	private String back = "\\Icon\\toolbar\\navi\\back16.png";
+	private String forward = "\\Icon\\toolbar\\navi\\forward16.png";
+	private String folder = "\\Icon\\toolbar\\navi\\folder.png";
 	private mouse mouselisten;      
 	private JPanel address;
 	private JTextField input_show;
 	private JComboBox search;
 	private Boolean in_input = false;
-	public Panel_Navigation()
+	private Screen screen;
+	private String url;
+	public Panel_Navigation(Screen screen, String url)
 	{
 		super();
+		this.screen = screen;
+		this.url = url;
 		this.setBorder(new LineBorder(Color.black));
 		this.init();
 		this.EditObj();
@@ -45,9 +51,9 @@ public class Panel_Navigation extends JPanel{
 	{
 		try {
 			mouselisten = new mouse(this);
-			iconback = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(back))));
+			iconback = new JLabelIcon(new ImageIcon(url + back));
 			iconback.setToolTipText("back");
-			iconforward = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(forward))));
+			iconforward = new JLabelIcon(new ImageIcon(url + forward));
 			iconforward.setToolTipText("forward");
 			address = new JPanel();
 			input_show = new JTextField();
@@ -137,7 +143,7 @@ public class Panel_Navigation extends JPanel{
 		panel.setOpaque(true);
 		panel.setBackground(ColorList.Back_Ground);
 		address.setLayout(new BorderLayout());
-		address.add(new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource("..//image//toolbar//folder.png")))), BorderLayout.WEST);
+		address.add(new JLabelIcon(new ImageIcon(url + folder)), BorderLayout.WEST);
 		address.add(input_show);
 		panel.add(address);
 		panel.add(search);

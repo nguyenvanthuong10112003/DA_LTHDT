@@ -32,8 +32,8 @@ public class Screen extends JFrame
 	  private int dd;
 	  private int chenhlech;
 	  private Screen_MenuBar menubar;  
-	  private String iconApp1 = "..//image//screen//folder-icon1.png";
-	  private String iconApp2 = "..//image//screen//folder-icon2.png";
+	  private String iconApp1 = "\\Icon\\screen\\folder-icon1.png";
+	  private String iconApp2 = "\\image\\screen\\folder-icon2.png";
       private Font font = new Font("Arial", Font.PLAIN, 14);
       private Screen_ToolBar toolbar;
       private JPanel content;
@@ -41,31 +41,33 @@ public class Screen extends JFrame
       private mouse mouseListen = new mouse(this);
       private action actionlistener;
       private User user;
+      private String url;
       public Screen(String title)
       {
     	  try {
-	    	  user = null;
-	    	  this.setTitle(title);               //tieu de         
+    		  this.url = System.getProperty("user.dir");
+	    	  this.user = new User("", "");
+	    	  this.setTitle(title);                             //tieu de         
 	    	  this.setDefaultCloseOperation(EXIT_ON_CLOSE);     // tat han khi onclick close
-	    	  //this.setUndecorated(true); //full
-	    	  this.setMinimumSize(new Dimension(800,450));   // kich thuoc be nhat
-	    	  this.setIconImage();  // set icon app
-	    	  //this.setLocationRelativeTo(null); // Giua man hinh
+	    	  //this.setUndecorated(true);                      //full màn hình
+	    	  this.setMinimumSize(new Dimension(800,450));      // kich thuoc be nhat
+	    	  this.setIconImage();                              // set icon app
+	    	  //this.setLocationRelativeTo(null);               // Giua man hinh
 	    	  this.init(); // 
 	    	  this.addObj(); //   	  
 	    	  this.addListen();    
-	    	  this.setVisible(true);  // hien app
+	    	  this.setVisible(true);                            
 	          this.chenhlech = this.getSize().width - content_center.getSize().width;
 	          this.dd = this.getSize().height - chenhlech - content_center.getSize().height;
 	          this.menubar.setPanelContent(content_center);
 	          this.content_center.getPanelContentLeft().getTreeBar().setPanelContent(content_center);
-	          update();
+	          this.update();
 	          System.out.println("Tải thành công màn hình");
     	  }
     	  catch (Exception e) {
 			// TODO: handle exception
     		  System.out.println("Error màn hình");
-		}
+		  }
       }  
       
       public void setDD()
@@ -85,51 +87,6 @@ public class Screen extends JFrame
 			}
     		  
     	  });
-    	  this.addWindowListener(new WindowListener() {
-			
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("ok");
-			}
-			
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-
     }
     public void update()
     {
@@ -141,15 +98,15 @@ public class Screen extends JFrame
     	return super.getSize();
     }
 	private void init()
-      {
-    	  menubar = new Screen_MenuBar(this);
-    	  toolbar = new Screen_ToolBar(this);
+    {
+    	  menubar = new Screen_MenuBar(this, url);
+    	  toolbar = new Screen_ToolBar(this, url);
     	  content = new JPanel();
-    	  content_center = new PanelContent();
+    	  content_center = new PanelContent(this.user.getRoot(), url);
     	  actionlistener = new action(this);
-      }
-      private void addObj()
-      {
+    }
+    private void addObj()
+    {
     	  
     	  this.add(content);
     	  content.setLayout(new BorderLayout());
@@ -157,34 +114,33 @@ public class Screen extends JFrame
     	  content.add(toolbar, BorderLayout.NORTH);
     	  content.add(content_center, BorderLayout.CENTER);	  
     	  content_center.setSpace(5);
-
-      }
-      private void setIconImage()
-      {
+    }
+    private void setIconImage()
+    {
 	      try {
-	    	  this.setIconImage((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconApp1)))).getImage());
+	    	  this.setIconImage((new ImageIcon(url + iconApp1)).getImage());
 	      } catch (Exception e) {
 	    	  System.out.print("error");
 	      }
-      }
-      public Boolean CheckTool()
-      {
+    }
+    public Boolean CheckTool()
+    {
     	  return toolbar.isVisible();
-      }
-      public void setToolVisiable()
-      {
+    }
+    public void setToolVisiable()
+    {
           toolbar.Show_Hide_Function();
           this.setVisible(true);
           setDD();
           update();
-      } 
-      public void setUser(User user)
-      {
+    } 
+    public void setUser(User user)
+    {
     	  this.user = user;
     	  this.update();
-      }
-      public User getUser()
-      {
+    }
+    public User getUser()
+    {
     	  return user;
-      }
+    }
 }

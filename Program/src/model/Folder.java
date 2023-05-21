@@ -6,20 +6,28 @@ import java.util.LinkedList;
 import java.util.Set;
 public class Folder extends Element{
     private LinkedList<Element> childrens;
+    private String icon;
     public Folder(int id)
     {
     	super(id, "Folder new 1");
     	childrens = new LinkedList<Element>();
+    	icon = "folderIcon";
     }    
     public Folder(int id, String name)
     {
     	super(id, name);
     	childrens = new LinkedList<Element>();
+    	icon = "folderIcon";
     }
     public Folder(int id, String name, LinkedList<Element> childrens)
     {
     	super(id, name);
     	this.childrens = childrens;
+    	icon = "folderIcon";
+    }
+    public String getIcon()
+    {
+    	return icon;
     }
     @Override
 	public LinkedList<Element> getChildrents() {
@@ -52,12 +60,10 @@ public class Folder extends Element{
 	@Override
 	public Date getDateModified() {
 		// TODO Auto-generated method stub
-		return null;
+		return dateCreate;
 	}
 	@Override
 	public void setDateModified(Date dateModified) {
 		// TODO Auto-generated method stub	
 	}
-
-    
 }

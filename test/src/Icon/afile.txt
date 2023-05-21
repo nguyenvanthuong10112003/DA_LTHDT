@@ -1,0 +1,80 @@
+txt|Text|txt
+png|Portable Network Graphics|png
+jpg|Joint Photographic Experts Group|jpg
+gif|Graphics Interchange Format|gif
+eps|Encapsulated PostScript|eps
+pdf|Portable Document Format|pdf
+ai|Adobe Illustrator|ai
+tiff|Tagged Image File Format|tiff
+psd|Photoshop Document|psd
+avi|Audio Video Interleave|avi
+docx|Microsoft Word|docx
+mp3|MPEG3|mp3
+mp4|MPEG4|mp4
+jar|Java|jar
+html|HyperText Markup Language|html
+exe|Executable|exe
+wpd|WordPerfect|wdp
+wma|Windows Media|wma
+wmp|Windows Media|wmp
+pptx|Microsoft PowerPoint Presentation|pptx
+xlsx|Microsoft Excel Worksheet|xlsx
+zip|WinRAR ZIP archive|zip
+001|WinRAR archive|winrar
+7z|WinRAR archive|winrar
+arj|WinRAR archive|winrar
+bz|WinRAR archive|winrar
+bz2|WinRAR archive|winrar
+cab|WinRAR archive|winrar
+gz|WinRAR archive|winrar
+iso|WinRAR archive|winrar
+lha|WinRAR archive|winrar
+lz|WinRAR archive|winrar
+lzh|WinRAR archive|winrar
+r00|WinRAR archive|winrar
+r01|WinRAR archive|winrar
+r02|WinRAR archive|winrar
+r03|WinRAR archive|winrar
+r04|WinRAR archive|winrar
+r05|WinRAR archive|winrar
+r06|WinRAR archive|winrar
+r07|WinRAR archive|winrar
+r08|WinRAR archive|winrar
+r09|WinRAR archive|winrar
+r10|WinRAR archive|winrar
+r11|WinRAR archive|winrar
+r12|WinRAR archive|winrar
+r13|WinRAR archive|winrar
+r14|WinRAR archive|winrar
+r15|WinRAR archive|winrar
+r16|WinRAR archive|winrar
+r17|WinRAR archive|winrar
+r18|WinRAR archive|winrar
+r19|WinRAR archive|winrar
+r20|WinRAR archive|winrar
+r21|WinRAR archive|winrar
+r22|WinRAR archive|winrar
+r23|WinRAR archive|winrar
+r24|WinRAR archive|winrar
+r25|WinRAR archive|winrar
+r26|WinRAR archive|winrar
+r27|WinRAR archive|winrar
+r28|WinRAR archive|winrar
+r29|WinRAR archive|winrar
+rar|WinRAR archive|winrar
+rev|RAR recovery volume|winrar
+tar|WinRAR archive|winrar
+taz|WinRAR archive|winrar
+tbz|WinRAR archive|winrar
+tbz2|WinRAR archive|winrar
+tlz|WinRAR archive|winrar
+txz|WinRAR archive|winrar
+tzst|WinRAR archive|winrar
+uu|WinRAR archive|winrar
+uue|WinRAR archive|winrar
+xxe|WinRAR archive|winrar
+xz|WinRAR archive|winrar
+z|WinRAR archive|winrar
+zipx|WinRAR archive|winrar
+zst|WinRAR archive|winrar
+cpp|C++|cpp

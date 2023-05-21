@@ -3,26 +3,27 @@ package model;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 public class File extends Element{
     private String exName;
     private double size;
     private java.util.Date dateModified;
+    private static Map<String, String> type_link;
+    private static Map<String, String> type_name;
     public File(int id)
     {
   	    super(id, "File new 1");
-  	    exName = "";
-  	    size = 0;
-  	    this.dateModified = java.util.Calendar.getInstance().getTime();
-  	    
+  	    this.exName = "";
+  	    this.size = 0;
+  	    this.dateModified = java.util.Calendar.getInstance().getTime();	    
     }
     public File(int id, String name)
     {
   	    super(id, name);
-  	    exName = "";
-  	    size = 0;
+  	    this.exName = "";
+  	    this.size = 0;
   	    this.dateModified = java.util.Calendar.getInstance().getTime();
-  	    
     }
     public File(int id, String name, String dateCreate, 
     		    String exName, double size, String modifield)

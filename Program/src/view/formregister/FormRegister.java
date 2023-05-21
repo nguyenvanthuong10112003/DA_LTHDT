@@ -77,7 +77,7 @@ public class FormRegister extends JFrame
 	 private JLabel hoi;
 	 private JButton register;
 	 private Panel_Functions fun;
-	 private String icon = "..//image//formregister//icon-register.png";
+	 private String icon = "\\Icon\\formregister\\icon-register.png";
 	 private LinkedList <User> users;
 	 private Map<String, User> checkUser;
 	 private String thongbao = "Thông báo";
@@ -91,7 +91,8 @@ public class FormRegister extends JFrame
 	 private Color black = Color.BLACK;
 	 private Color white = Color.WHITE;
 	 private Color blue = Color.BLUE;
-     public FormRegister(Panel_Functions fun, LinkedList <User> users)
+	 private String url;
+     public FormRegister(Panel_Functions fun, LinkedList <User> users, String url)
      {
     	 try {
 	    	 if(fun != null)
@@ -110,6 +111,7 @@ public class FormRegister extends JFrame
 	    		 users = null;
 	    		 checkUser = null;
 	    	 }
+	    	 this.url = url;
 	    	 this.setTitle("Đăng ký");
 	    	 this.setSize(380, 480);
 	    	 //this.setLocationRelativeTo(null);
@@ -148,7 +150,7 @@ public class FormRegister extends JFrame
      private void setIcon()
      {
     	 try {
-    		 this.setIconImage((new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(icon)))).getImage());
+    		 this.setIconImage((new ImageIcon(url + icon)).getImage());
     	 } catch(Exception e)
     	 {
     		 System.out.print("error");
@@ -373,7 +375,7 @@ public class FormRegister extends JFrame
      }
      private void Accept()
      {
-    	 User us = new User(users.getLast().getId() + 1, tdn_input.getText(), pass_input.getText());
+    	 User us = new User(tdn_input.getText(), pass_input.getText());
     	 us.setName(full_name_input.getText());
     	 us.setSex(nam.isSelected());
     	 us.setEmail(email_input.getText());
@@ -411,7 +413,7 @@ public class FormRegister extends JFrame
              month.addItem(i);
          for(int i : date.day((Integer)month.getSelectedItem(), (Integer)year.getSelectedItem())) 
              day.addItem(i);
-         
+         year.setSelectedItem(year.getItemAt(year.getItemCount() - 1));
     	 year.addActionListener(new ActionListener() {
  			
 		    @Override
@@ -440,7 +442,7 @@ public class FormRegister extends JFrame
 		         else if((Integer)day.getSelectedItem() > (Integer)day.getItemAt(day.getItemCount() - 1))
 		        	 day.setSelectedItem((Integer)day.getItemAt(day.getItemCount() - 1));
 		         else if((Integer)day.getSelectedItem() < (Integer)day.getItemAt(0))
-		        	 day.setSelectedItem((Integer)day.getItemAt(0));	
+		        	 day.setSelectedItem((Integer)day.getItemAt(0));
 			}
 		 });
      }

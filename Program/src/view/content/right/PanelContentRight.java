@@ -21,20 +21,22 @@ import view.content.PanelContent;
 public class PanelContentRight extends JPanel{
 	   private PanelContent pc;
 	   private JLabel close;
-	   private String iconClose16 = "close16.png";
-	   private String iconClose24 = "close24.png";
+	   private String iconClose16 = "\\Icon\\content\\right\\close16.png";
+	   private String iconClose24 = "\\Icon\\content\\right\\close24.png";
 	   private mouse mouselisten;
 	   private Cursor cursorResize = new Cursor(Cursor.W_RESIZE_CURSOR);
-       public PanelContentRight(PanelContent pc)
+	   private String url;
+       public PanelContentRight(PanelContent pc, String url)
        {
     	   super();
     	   try {
 	    	   this.pc = pc;
+	    	   this.url = url;
 	    	   mouselisten = new mouse(this, pc);
 	    	   this.addMouseMotionListener(mouselisten);
 	    	   this.setBorder(new LineBorder(Color.black));
 	    	   this.setLayout(null);
-	    	   close = new JLabelIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(iconClose16))));
+	    	   close = new JLabelIcon(new ImageIcon(url + iconClose16));
 	    	   close.addMouseMotionListener(mouselisten);
 	    	   close.addMouseListener(mouselisten);
 	    	   close.setBorder(new EmptyBorder(0,0,0,0));

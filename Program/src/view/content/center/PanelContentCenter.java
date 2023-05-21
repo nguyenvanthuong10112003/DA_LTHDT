@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import model.File;
 import javax.swing.DefaultRowSorter;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -40,7 +40,7 @@ public class PanelContentCenter extends JScrollPane{
 	 private int width, height, space;
 	 private ScrollPaneTree scroll; 
 	 private mouse mouselisten;
-	 private String folder = ".//imageIcon//folder-icon24.png";
+	 private String folder = "\\Icon\\content\\center\\folder\\folderIcon16px.png";
 	 private static final long serialVersionUID = 1L;
 	 private JTable table;
 	 private JLabel myLabel = new JLabel("waiting");
@@ -48,21 +48,41 @@ public class PanelContentCenter extends JScrollPane{
 	 private int Height1 = 25;
 	 private int Height2 = 40;
 	 private int Height3 = 50;
-	 private ImageIcon folderIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(this.getClass().getResource(".//imageIcon////folder-icon24.png")));
+	 private ImageIcon folderIcon;
      private LinkedList <ImageIcon>icon = new LinkedList<ImageIcon>();
+     private String[] columnNames;
+     private Object[][] data;
      private Folder root;
-     private LinkedList <Element> nows;
+     private Element nows;
      private Font font16 = new Font("Arial", Font.PLAIN, 16);
-     public PanelContentCenter(Folder root)
+     private int row;
+     private int col;
+     private String px = "16px";
+     private String duoi = ".png";
+     private String url;
+     public PanelContentCenter(Folder root, Element now, String url)
      {
     	 super();
     	 try {
+    		 if(now != null) {
+    			 this.nows = now;
+    			 row = this.nows.getChildrents().size();
+    		 }
+    		 else
+    		 {
+    			 this.nows = root;
+    			 row = this.root.getChildrents().size();
+    		 }
+    		 this.url = url;
+    		 folderIcon = new ImageIcon(url + folder);
+    		 this.setColumn();
+    		 this.setData();
 	    	 this.init();
 	    	 this.root = root;
 	    	 this.addMouseMotionListener(mouselisten);
-	    	 String[] columnNames = {"", "Name", "Date", "Date Modifield", "Size"};
-	         Object[][] data = {{folderIcon, "About", "", "", ""}, {folderIcon, "Add", "", "", ""}, {folderIcon, "Copy", "", "", ""}, {folderIcon, "Copy", "", "", ""}};
-	         DefaultTableModel model = new DefaultTableModel(data, columnNames);
+	    	 //Object[][] data = {{folderIcon, "About", "", "", ""}, {folderIcon, "Add", "", "", ""}, {folderIcon, "Copy", "", "", ""}, {folderIcon, "Copy", "", "", ""}};
+	        
+	    	 DefaultTableModel model = new DefaultTableModel(data, columnNames);
 	         table = new JTable(model) {
 	             private static final long serialVersionUID = 1L;                                                  
 	             @Override
@@ -85,6 +105,51 @@ public class PanelContentCenter extends JScrollPane{
 		}
 
      }
+     public void setColumn()
+     {
+    	 columnNames = new String[] {"", "Name", "Date modified", "Type", "Size"};
+    	 col = 5;
+    	 
+     }
+     public void setData()
+     {
+    	 Folder folder1 = new Folder(1, "folder1");
+    	 Folder folder2 = new Folder(2, "folder2");
+    	 Folder folder3 = new Folder(3, "folder3");
+    	 Folder folder4 = new Folder(4, "folder4");
+    	 Folder folder5 = new Folder(5, "folder5");
+    	 Folder folder6 = new Folder(6, "folder6");
+    	 Folder folder7 = new Folder(7, "folder7");
+    	 LinkedList <Element> list = new LinkedList <Element>();
+    	 list.add(folder1);
+    	 list.add(folder2);
+    	 list.add(folder3);
+    	 list.add(folder4);
+    	 list.add(folder5);
+    	 list.add(folder6);
+    	 list.add(folder7);
+    	 list.add(new File(1, "File1"));
+    	 nows = new Folder(8, "Folder", list);
+    	 row = 8;
+    	 data = new Object[9][5];
+    	 if(nows == null)
+    	 {	 
+    	 }
+    	 else
+    	 {
+    		 int i = 0;
+    		 for(Element el : nows.getChildrents())
+    		 {
+    			 ImageIcon icon = new ImageIcon(url + "\\Icon\\content\\center\\folder\\" + el.getIcon() + this.px + this.duoi);
+    			 data[i][0] = icon;
+    			 data[i][1] = el.getName();
+    			 data[i][3] = "";
+    			 data[i][4] = el.getSize();
+	    		 data[i][2] = el.getDateModified().toLocaleString();
+    			 i++;
+    		 }
+    	 }
+     }
      public void Edit()
      {
     	 this.setColor();
@@ -93,16 +158,16 @@ public class PanelContentCenter extends JScrollPane{
     	 this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     	 this.setBorder(new LineBorder(Color.black));
          //myLabel.setPreferredSize(new Dimension(200, Height));
-         myLabel.setHorizontalAlignment(SwingConstants.CENTER);
-         table.setSelectionBackground(ColorList.Hover);
-         table.setSelectionForeground(ColorList.Fore_Ground);
-         table.setRowHeight(Height2);
-         table.setPreferredScrollableViewportSize(table.getPreferredSize());
-         table.setDefaultEditor(Object.class, null);
-         table.setShowHorizontalLines(false);
-         table.setShowVerticalLines(false);
-         table.getColumnModel().getColumn(0).setMaxWidth(50);
-         table.setBackground(ColorList.Back_Ground);
+         this.myLabel.setHorizontalAlignment(SwingConstants.CENTER);
+         this.table.setSelectionBackground(ColorList.Hover);
+         this.table.setSelectionForeground(ColorList.Fore_Ground);
+         this.table.setRowHeight(Height2);
+         this.table.setPreferredScrollableViewportSize(table.getPreferredSize());
+         this.table.setDefaultEditor(Object.class, null);
+         this.table.setShowHorizontalLines(false);
+         this.table.setShowVerticalLines(false);
+         this.table.getColumnModel().getColumn(0).setMaxWidth(50);
+         this.table.setBackground(ColorList.Back_Ground);
 
      }
      public void setListIcon(String file)
