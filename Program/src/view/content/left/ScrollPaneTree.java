@@ -11,9 +11,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import controller.mouse;
 import libary.JLabelIcon;
 import model.Element;
+import model.Folder;
 import view.content.PanelContent;
 import view.screen.Screen;
-
+import libary.MyTreeNode;
 public class ScrollPaneTree extends JScrollPane
 {
 	private PanelContent pc;
@@ -36,7 +37,7 @@ public class ScrollPaneTree extends JScrollPane
 				 this.root = null;
 			 this.pc = pc;
 			 this.url = url;
-	         this.tree = new TreeBar(new DefaultMutableTreeNode("This pc"), this.url);
+	         this.tree = new TreeBar(root, this.url);
 			 this.setViewportView(tree);
 	         this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 	         this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
@@ -61,7 +62,7 @@ public class ScrollPaneTree extends JScrollPane
 		super.setBounds(x, y, width, height);
 		tree.setSize(width - (width >= 20 ? 20 : 0), height - (height >= 20 ? 20 : 0));
 	}
-	public void setTree(DefaultMutableTreeNode root)
+	public void setTree(Element root)
 	{
 		tree = new TreeBar(root, this.url);
 	}

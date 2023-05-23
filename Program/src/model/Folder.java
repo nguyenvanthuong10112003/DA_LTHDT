@@ -12,18 +12,21 @@ public class Folder extends Element{
     	super(id, "Folder new 1");
     	childrens = new LinkedList<Element>();
     	icon = "folderIcon";
+        exName = "File folder";
     }    
     public Folder(int id, String name)
     {
     	super(id, name);
     	childrens = new LinkedList<Element>();
     	icon = "folderIcon";
+    	exName = "File folder";
     }
     public Folder(int id, String name, LinkedList<Element> childrens)
     {
-    	super(id, name);
+    	super(id ,name);
     	this.childrens = childrens;
     	icon = "folderIcon";
+    	exName = "File folder";
     }
     public String getIcon()
     {
@@ -38,16 +41,6 @@ public class Folder extends Element{
 		this.childrens = childrens;
 	}
 	@Override
-	public String getExName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void setExName(String exName) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
 	public double getSize() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -58,12 +51,23 @@ public class Folder extends Element{
 		
 	}
 	@Override
+	public String getExType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setExType(String exType) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
 	public Date getDateModified() {
 		// TODO Auto-generated method stub
-		return dateCreate;
+		return null;
 	}
 	@Override
 	public void setDateModified(Date dateModified) {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
+		
 	}
 }

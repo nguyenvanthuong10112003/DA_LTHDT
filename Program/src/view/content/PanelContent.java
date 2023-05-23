@@ -42,7 +42,7 @@ public class PanelContent extends JPanel{
     		   }
     		   this.url = url;
 	    	   this.contentLeft = new ScrollPaneTree(this, this.elements, this.url);
-	    	   this.contentCenter = new PanelContentCenter(new Folder(1), this.elements, this.url);
+	    	   this.contentCenter = new PanelContentCenter(new Folder(0), this.elements, this.url);
 	    	   this.contentRight = new PanelContentRight(this, this.url);
 	    	   this.space = 0;
 	    	   this.mouseEvent = new mouse(this);

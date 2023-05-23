@@ -42,10 +42,12 @@ public class Screen extends JFrame
       private action actionlistener;
       private User user;
       private String url;
+      private String fileIcon = "\\data\\iconfile.txt";
       public Screen(String title)
       {
     	  try {
     		  this.url = System.getProperty("user.dir");
+	    	  new model.File(url + fileIcon);
 	    	  this.user = new User("", "");
 	    	  this.setTitle(title);                             //tieu de         
 	    	  this.setDefaultCloseOperation(EXIT_ON_CLOSE);     // tat han khi onclick close

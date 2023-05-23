@@ -29,7 +29,7 @@ public class User {
         this.sex = null;
         this.Country = "";
         this.dateOfBirth = null;
-        this.root = new Folder(0);
+        this.root = null;
     } 
     public User(String tendangnhap, String password, String name, 
     		String phone, String email, String state, 

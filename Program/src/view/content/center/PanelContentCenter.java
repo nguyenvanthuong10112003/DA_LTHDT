@@ -1,25 +1,16 @@
 package view.content.center;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import model.File;
-import javax.swing.DefaultRowSorter;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTree;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import controller.mouse;
-import libary.ButtonEditor;
 import libary.ButtonRenderer;
 import libary.ColorList;
 import libary.FONT;
@@ -31,6 +22,8 @@ import model.User;
 import view.content.left.ScrollPaneTree;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -60,18 +53,20 @@ public class PanelContentCenter extends JScrollPane{
      private String px = "16px";
      private String duoi = ".png";
      private String url;
+     private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
+     private String urlIconFile = "\\Icon\\content\\center\\file\\";
+     private Boolean onclick = false;
      public PanelContentCenter(Folder root, Element now, String url)
      {
     	 super();
     	 try {
+    		 JPanel panel = new JPanel();
     		 if(now != null) {
     			 this.nows = now;
-    			 row = this.nows.getChildrents().size();
     		 }
     		 else
     		 {
     			 this.nows = root;
-    			 row = this.root.getChildrents().size();
     		 }
     		 this.url = url;
     		 folderIcon = new ImageIcon(url + folder);
@@ -80,23 +75,109 @@ public class PanelContentCenter extends JScrollPane{
 	    	 this.init();
 	    	 this.root = root;
 	    	 this.addMouseMotionListener(mouselisten);
-	    	 //Object[][] data = {{folderIcon, "About", "", "", ""}, {folderIcon, "Add", "", "", ""}, {folderIcon, "Copy", "", "", ""}, {folderIcon, "Copy", "", "", ""}};
-	        
 	    	 DefaultTableModel model = new DefaultTableModel(data, columnNames);
 	         table = new JTable(model) {
-	             private static final long serialVersionUID = 1L;                                                  
-	             @Override
-	             public Class getColumnClass(int column) {
-	                 return getValueAt(0, column).getClass();
-	             }
-	
-	             /*@Override
-	             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-	                 Component comp = super.prepareRenderer(renderer, row, column);
-	                 return comp;
-	             }*/
-	         };
+		             private static final long serialVersionUID = 1L;                                                  
+		             @Override
+		             public Class getColumnClass(int column) {
+		                 return getValueAt(0, column).getClass();
+		             }
+		             @Override
+		             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+		                 // TODO Auto-generated method stub
+		            	 Component compent = super.prepareRenderer(renderer, row, column);
+		            	 ((JLabel)compent).setBorder(new EmptyBorder(0, 2, 0, 0));
+		                 return compent;
+		             }  
+		     };
+		     onclick = false;
+		     TableEditer edit = new TableEditer(onclick);
+		     table.setDefaultEditor(Object.class, null);	
+		     table.getColumn("Name").setCellEditor(edit);
+		     table.addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+				    try {
+						Robot r = new Robot();
+						switch(table.getSelectedColumn())
+						{
+						    case 0: {
+						    	r.mouseMove(e.getXOnScreen() + table.getColumn(table.getColumnName(0)).getWidth(), e.getYOnScreen()); 
+						    }
+						    break;
+						    case 2: {
+						    	r.mouseMove(e.getXOnScreen() - table.getColumn(table.getColumnName(2)).getWidth(), e.getYOnScreen()); 
+						    }
+						    break;
+						    case 3: {
+						    	r.mouseMove(e.getXOnScreen() - table.getColumn(table.getColumnName(2)).getWidth() 
+						    			- table.getColumn(table.getColumnName(3)).getWidth(), e.getYOnScreen());
+						    }
+						    break;
+						    case 4: {
+						    	r.mouseMove(e.getXOnScreen() - table.getColumn(table.getColumnName(2)).getWidth() 
+						    			- table.getColumn(table.getColumnName(3)).getWidth() 
+						    			- table.getColumn(table.getColumnName(4)).getWidth(), e.getYOnScreen());
+						    }
+						}
+						r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+						r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+						r.mouseMove(e.getXOnScreen(), e.getYOnScreen());
+					} catch (AWTException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
 	         Edit();
+	         JButton button = new JButton("click");
+	         button.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(table.getSelectedRow() >= 0) {
+					 Component text = edit.getTableCellEditorComponent(table, table.getValueAt(table.getSelectedRow(), 1), true, table.getSelectedRow(), 1);
+				     if(text.getClass().equals(JTextField.class))
+				     {
+				    	 ((JTextField)text).setEditable(true);
+				    	 ((JTextField)text).setBorder(new LineBorder(ColorList.Fore_Ground, 1));
+				    	 ((JTextField)text).setBackground(ColorList.Back_Ground);
+				    	 ((JTextField)text).setForeground(Color.black);
+				    	 ((JTextField)text).setSelectedTextColor(Color.WHITE);
+				    	 ((JTextField)text).setSelectionColor(Color.BLUE);
+				     }
+					}
+				}
+			});
+	         panel.add(button);
+	         panel.add(table);
+	         this.setViewportView(panel);
 	         System.out.println("Tải thành công Content ở giữa");
     	 }
     	 catch (Exception e) {
@@ -113,13 +194,13 @@ public class PanelContentCenter extends JScrollPane{
      }
      public void setData()
      {
-    	 Folder folder1 = new Folder(1, "folder1");
-    	 Folder folder2 = new Folder(2, "folder2");
-    	 Folder folder3 = new Folder(3, "folder3");
-    	 Folder folder4 = new Folder(4, "folder4");
-    	 Folder folder5 = new Folder(5, "folder5");
-    	 Folder folder6 = new Folder(6, "folder6");
-    	 Folder folder7 = new Folder(7, "folder7");
+    	 Folder folder1 = new Folder(1,"folder1");
+    	 Folder folder2 = new Folder(2,"folder2");
+    	 Folder folder3 = new Folder(3,"folder3");
+    	 Folder folder4 = new Folder(4,"folder4");
+    	 Folder folder5 = new Folder(5,"folder5");
+    	 Folder folder6 = new Folder(6,"folder6");
+    	 Folder folder7 = new Folder(7,"folder7");
     	 LinkedList <Element> list = new LinkedList <Element>();
     	 list.add(folder1);
     	 list.add(folder2);
@@ -128,10 +209,10 @@ public class PanelContentCenter extends JScrollPane{
     	 list.add(folder5);
     	 list.add(folder6);
     	 list.add(folder7);
-    	 list.add(new File(1, "File1"));
-    	 nows = new Folder(8, "Folder", list);
+    	 list.add(new File(8,"File1", "txt"));
+    	 nows = new Folder(9,"Folder", list);
     	 row = 8;
-    	 data = new Object[9][5];
+    	 data = new Object[8][5];
     	 if(nows == null)
     	 {	 
     	 }
@@ -140,12 +221,13 @@ public class PanelContentCenter extends JScrollPane{
     		 int i = 0;
     		 for(Element el : nows.getChildrents())
     		 {
-    			 ImageIcon icon = new ImageIcon(url + "\\Icon\\content\\center\\folder\\" + el.getIcon() + this.px + this.duoi);
+    			 ImageIcon icon = new ImageIcon(url + (el.getClass().equals(Folder.class) == true
+    				? urlIconFolder : urlIconFile) + el.getIcon() + this.px + this.duoi);
     			 data[i][0] = icon;
     			 data[i][1] = el.getName();
-    			 data[i][3] = "";
-    			 data[i][4] = el.getSize();
-	    		 data[i][2] = el.getDateModified().toLocaleString();
+	    		 data[i][2] = (el.getClass().equals(Folder.class) == true ? el.getDateCreate() : el.getDateModified()).toLocaleString();
+    			 data[i][3] = el.getExName();
+    			 data[i][4] = el.getClass().equals(Folder.class) == true ? "" : ((Double)el.getSize()).intValue() + "kb";
     			 i++;
     		 }
     	 }
@@ -163,12 +245,11 @@ public class PanelContentCenter extends JScrollPane{
          this.table.setSelectionForeground(ColorList.Fore_Ground);
          this.table.setRowHeight(Height2);
          this.table.setPreferredScrollableViewportSize(table.getPreferredSize());
-         this.table.setDefaultEditor(Object.class, null);
+         //
          this.table.setShowHorizontalLines(false);
          this.table.setShowVerticalLines(false);
          this.table.getColumnModel().getColumn(0).setMaxWidth(50);
          this.table.setBackground(ColorList.Back_Ground);
-
      }
      public void setListIcon(String file)
      {
@@ -185,7 +266,6 @@ public class PanelContentCenter extends JScrollPane{
      }
      public void addObj()
      {
-        this.setViewportView(table);
      }
      public void setColor()
      {
