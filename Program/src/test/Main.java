@@ -25,7 +25,12 @@ public class Main {
 	            	UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 	            }
 	        }
-	        Screen form = new Screen("Chương trình quản lý file và folder");
+	        String urlUser = "\\data\\user.txt";
+	        String urlElement = "\\data\\element.txt";
+	        String urlQuyen = "\\data\\quyen.txt";
+	        String urlLuuTru = "\\data\\luutru.txt";
+	    	String fileIcon = "\\data\\iconfile.txt";
+	        Screen form = new Screen("Chương trình quản lý file và folder", urlUser, urlElement, urlLuuTru, urlQuyen, fileIcon);
 	        System.out.println("Tải chương trình thành công");
     	}
     	catch (Exception e) {

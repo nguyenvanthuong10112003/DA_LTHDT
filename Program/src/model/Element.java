@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 abstract public class Element{
-	protected static int id = -1;
+	protected int id;
 	protected String name;
     protected Date dateCreate;
     protected String icon;
@@ -19,6 +19,7 @@ abstract public class Element{
     }
     public Element(int id)
     {   	
+    	this.id = id;
     	this.name = "New Folder";
    	    this.parent = null;
    	    this.dateCreate = java.util.Calendar.getInstance().getTime();
@@ -27,6 +28,7 @@ abstract public class Element{
    	    this.authority = new LinkedList<Authority>();
     }
 	public Element(int id, String name) {
+		this.id = id;
 		this.dateCreate = java.util.Calendar.getInstance().getTime();
 		this.name = name;
 		this.parent = null;
@@ -36,6 +38,7 @@ abstract public class Element{
 	}
     public Element(int id, String name, Folder parent)
     {
+    	this.id = id;
     	this.name = name;
    	    this.dateCreate = java.util.Calendar.getInstance().getTime();
    	    this.parent = parent;
@@ -44,12 +47,22 @@ abstract public class Element{
    	    this.authority = new LinkedList<Authority>();
     }
     public Element(int id, String name, String icon, Folder parent) {
+   	    this.id = id;
 		this.name = name;
 		this.icon = icon;
 		this.parent = parent;
 		this.dateCreate = java.util.Calendar.getInstance().getTime();
    	    this.exName = "";
    	    this.authority = new LinkedList<Authority>();
+	}
+	public Element(int id, String name, Date dateCreate, Folder parent) {
+		this.id = id;
+		this.name = name;
+		this.dateCreate = dateCreate;
+		this.icon = "";
+		this.parent = parent;
+		this.exName = "";
+		this.authority = new LinkedList<Authority>();
 	}
 	public Element(int id, String name, Date dateCreate, String icon, Folder parent, String exName,
 			LinkedList<Authority> authority) {
@@ -59,6 +72,14 @@ abstract public class Element{
 		this.parent = parent;
 		this.exName = exName;
 		this.authority = authority;
+	}
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+	public int getId()
+	{
+		return id;
 	}
 	public Folder getParent() {
 		return parent;
@@ -99,6 +120,10 @@ abstract public class Element{
 	public void setName(String name)
 	{
 	    this.name = name;
+	}
+	public String getTime(Date date)
+	{
+		return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/" + date.getMonth() + "/" + date.getYear();
 	}
 	public abstract String getExType();
 	public abstract void setExType(String exType);

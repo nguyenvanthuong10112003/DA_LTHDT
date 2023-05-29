@@ -24,8 +24,24 @@ public class Folder extends Element{
     public Folder(int id, String name, LinkedList<Element> childrens)
     {
     	super(id ,name);
-    	this.childrens = childrens;
+    	if(childrens == null)
+      	  this.childrens = new LinkedList<Element>();	
+      	else
+      	  this.childrens = childrens;
     	icon = "folderIcon";
+    	exName = "File folder";
+    }
+    public Folder(int id, String name, Date create, LinkedList<Element> childrens, Folder parent)
+    {
+    	super(id ,name, create, parent);
+    	if(childrens == null)
+    	  this.childrens = new LinkedList<Element>();	
+    	else
+    	  this.childrens = childrens;
+    	if(parent == null)
+    		icon = "thispc";
+    	else
+    	    icon = "folderIcon";
     	exName = "File folder";
     }
     public String getIcon()
@@ -38,7 +54,10 @@ public class Folder extends Element{
 	}
     @Override
 	public void setChildrents(LinkedList<Element> childrens) {
-		this.childrens = childrens;
+    	if(childrens == null)
+      	  this.childrens = new LinkedList<Element>();	
+      	else
+      	  this.childrens = childrens;
 	}
 	@Override
 	public double getSize() {
@@ -69,5 +88,21 @@ public class Folder extends Element{
 	public void setDateModified(Date dateModified) {
 		// TODO Auto-generated method stub
 		
+	}
+	public Folder searchFolder(Folder folder, int id)
+	{
+        if(folder.id == id)
+            return folder;
+        Folder f = null;
+        if(childrens.size() > 0)
+        for(Element e : folder.childrens)
+        {
+        	if(e.getClass().equals(Folder.class))
+        	{
+        		if(searchFolder((Folder) e, id) != null)
+        		f = searchFolder((Folder) e, id);
+        	}
+        }
+        return f;
 	}
 }

@@ -1,16 +1,16 @@
 package libary;
 
 public class MyTreeNode {
-    private String id;
+    private int id;
     private String name;
     private String icon;
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	public MyTreeNode(String id, String name, String icon) {
+	public MyTreeNode(int id, String name, String icon) {
 		super();
 		this.id = id;
 		this.name = name;

@@ -46,7 +46,8 @@ public class File extends Element{
   	    this.exName = "";
   	    this.size = 0;
   	    this.exType = "";
-  	    this.dateModified = java.util.Calendar.getInstance().getTime();	    
+  	    this.dateModified = java.util.Calendar.getInstance().getTime();	  
+  	    this.icon = "null";
     }
     public File(int id, String name, String ex)
     {
@@ -65,6 +66,10 @@ public class File extends Element{
   	    if(type_link.get(ex) != null)
   	    {
   	    	this.icon = type_link.get(ex);
+  	    }
+  	    else
+  	    {
+  	    	this.icon = "null";
   	    }
     }
     public File(int id, String name, 
@@ -86,6 +91,10 @@ public class File extends Element{
   	    {
   	    	this.icon = type_link.get(ex);
   	    }
+  	    else
+  	    {
+  	    	this.icon = "null";
+  	    }
     }
     public File(int id, String name, Folder parent, 
 		    String ex, double size, String modifield)
@@ -100,11 +109,39 @@ public class File extends Element{
   	    }
   	    else
   	    {
-  	    	this.exType = "Unknown";
+  	    	this.exName = "Unknown";
   	    }
   	    if(type_link.get(ex) != null)
   	    {
   	    	this.icon = type_link.get(ex);
+  	    }
+  	    else
+  	    {
+  	    	this.icon = "null";
+  	    }
+    }
+    public File(int id, String name, Date create, Date modifield, String ex, 
+        	double size, Folder parent)
+    {
+    	super(id, name, create, parent);
+        this.exType = ex;
+        this.size = size;
+        this.dateModified = modifield;
+  	    if(type_name.get(ex) != null)
+  	    {
+  	    	this.exName = type_name.get(ex);
+  	    }
+  	    else
+  	    {
+  	    	this.exName = "Unknown";
+  	    }
+  	    if(type_link.get(ex) != null)
+  	    {
+  	    	this.icon = type_link.get(ex);
+  	    }
+  	    else
+  	    {
+  	    	this.icon = "null";
   	    }
     }
     private String[] tach(String text)

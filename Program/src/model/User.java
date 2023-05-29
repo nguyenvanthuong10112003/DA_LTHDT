@@ -16,7 +16,7 @@ public class User {
     private Boolean sex;
     private String Country;
     private Date dateOfBirth;
-    private Element root;
+    private Folder root;
     public User(String tendangnhap, String password)
     {
         this.tenDangNhap = tendangnhap;
@@ -33,7 +33,7 @@ public class User {
     } 
     public User(String tendangnhap, String password, String name, 
     		String phone, String email, String state, 
-    		Boolean sex, String country, Date birth, Element root)
+    		Boolean sex, String country, Date birth, Folder root)
     {
         this.tenDangNhap = tendangnhap;
         this.passWord = password;
@@ -47,10 +47,10 @@ public class User {
         this.dateOfBirth = birth;
         this.root = root;
     }
-	public Element getRoot() {
+	public Folder getRoot() {
 		return root;
 	}
-	public void setRoot(Element root) {
+	public void setRoot(Folder root) {
 		this.root = root;
 	}
 	public String getName() {
