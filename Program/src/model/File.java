@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.time.LocalDate;
 public class File extends Element{
     private Date dateModified;
     private String exType;
@@ -48,6 +49,7 @@ public class File extends Element{
   	    this.exType = "";
   	    this.dateModified = java.util.Calendar.getInstance().getTime();	  
   	    this.icon = "null";
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
     }
     public File(int id, String name, String ex)
     {
@@ -71,6 +73,31 @@ public class File extends Element{
   	    {
   	    	this.icon = "null";
   	    }
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
+    }
+    public File(int id, String name, String ex, Folder parent)
+    {
+  	    super(id, name, parent);
+  	    this.exType = ex;
+  	    this.size = 0;
+  	    this.dateModified = java.util.Calendar.getInstance().getTime();
+  	    if(type_name.get(ex) != null)
+  	    {
+  	    	this.exName = type_name.get(ex);
+  	    }
+  	    else
+  	    {
+  	    	this.exName = "Unknown";
+  	    }
+  	    if(type_link.get(ex) != null)
+  	    {
+  	    	this.icon = type_link.get(ex);
+  	    }
+  	    else
+  	    {
+  	    	this.icon = "null";
+  	    }
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
     }
     public File(int id, String name, 
     		    String ex, double size, String modifield)
@@ -95,6 +122,7 @@ public class File extends Element{
   	    {
   	    	this.icon = "null";
   	    }
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
     }
     public File(int id, String name, Folder parent, 
 		    String ex, double size, String modifield)
@@ -169,6 +197,7 @@ public class File extends Element{
 	public void setSize(double size) {
 		this.size = size;
 		this.dateModified = java.util.Calendar.getInstance().getTime();
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
 	}
 	@Override
 	public LinkedList<Element> getChildrents() {
@@ -190,6 +219,7 @@ public class File extends Element{
 		// TODO Auto-generated method stub
 		this.exType = exType;
 		this.dateModified = java.util.Calendar.getInstance().getTime();
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
 	}
 	@Override
 	public Date getDateModified() {
@@ -201,5 +231,6 @@ public class File extends Element{
 		// TODO Auto-generated method stub
 		this.dateModified = dateModified;
 		this.dateModified = java.util.Calendar.getInstance().getTime();
+   	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
 	} 
 }

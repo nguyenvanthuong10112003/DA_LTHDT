@@ -22,6 +22,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -47,7 +49,7 @@ public class PanelContentCenter extends JScrollPane {
 	private String[] columnNames;
 	private Object[][] data;
 	private Element root;
-	private LinkedList<Element> nows;
+	private Element nows;
 	private DefaultTableModel model;
 	private Font font16 = new Font("Arial", Font.PLAIN, 16);
 	private int row;
@@ -57,16 +59,19 @@ public class PanelContentCenter extends JScrollPane {
 	private String url;
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
+	private String local;
 	private TableEditer edit = new TableEditer(false);
+	private int maxID;
 
-	public PanelContentCenter(PanelContent pct, Element root, String url) {
+	public PanelContentCenter(PanelContent pct, Element root, String url, int maxID, String local) {
 		super();
 		try {
 			this.pct = pct;
 			this.url = url;
 			this.root = root;
-			nows = new LinkedList<Element>();
-			nows.add(root);
+			this.maxID = maxID;
+			this.local = local;
+			nows = null;
 			folderIcon = new ImageIcon(url + folder);
 			this.setColumn();
 			this.setData();
@@ -135,9 +140,8 @@ public class PanelContentCenter extends JScrollPane {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				if(table.getSelectedRow() >= 0)
-				{
-			        pct.SELECTtable(nows.get(table.getSelectedRow()));
+				if (table.getSelectedRow() >= 0) {
+					pct.SELECTtable(nows != null ? nows.getChildrents().get(table.getSelectedRow()) : root);
 				}
 			}
 		});
@@ -145,32 +149,46 @@ public class PanelContentCenter extends JScrollPane {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-	            for(Element el : nows)
-	            	if(el.getClass().equals(Folder.class))
-	            		if(el.getName().equals(data[table.getSelectedRow()][1])) {
-	            			nows = el.getChildrents();
-	            			break;
-	            		}
-	            setData();
-                setTable();
-                Edit();
-                pct.noSelected();
+				if (nows != null) {
+					if (nows.getChildrents().size() > 0) {
+						for (Element el : nows.getChildrents())
+							if (el.getClass().equals(Folder.class))
+								if (el.getName().equals(data[table.getSelectedRow()][1])) {
+									nows = el;
+									break;
+								}
+					}
+				} else {
+					nows = root;
+				}
+
+				setData();
+				setTable();
+				Edit();
+				pct.noSelected();
 			}
 		});
 	}
 
 	public void setData() {
-		data = new Object[nows != null ? nows.size() : 0][5];
+		data = new Object[nows != null ? nows.getChildrents().size() : 1][5];
 		if (nows == null) {
-		} else {
+			ImageIcon icon = new ImageIcon(url + urlIconFolder + root.getIcon() + this.px + this.duoi);
+			data[0][0] = icon;
+			data[0][1] = root.getName();
+			data[0][2] = root.getDateCreate();
+			data[0][3] = root.getExName();
+			data[0][4] = "";
+		} else if (nows.getChildrents().size() > 0) {
 			int i = 0;
-			for (Element el : nows) {
+			for (Element el : nows.getChildrents()) {
 				ImageIcon icon = new ImageIcon(
 						url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile) + el.getIcon()
 								+ this.px + this.duoi);
 				data[i][0] = icon;
 				data[i][1] = el.getName();
-				data[i][2] = el.getTime(el.getClass().equals(Folder.class) == true ? el.getDateCreate() : el.getDateModified());
+				data[i][2] = el.getTime(
+						el.getClass().equals(Folder.class) == true ? el.getDateCreate() : el.getDateModified());
 				data[i][3] = el.getExName();
 				data[i][4] = el.getClass().equals(Folder.class) == true ? ""
 						: ((Double) el.getSize()).intValue() + "kb";
@@ -210,7 +228,7 @@ public class PanelContentCenter extends JScrollPane {
 		this.jPopupMenu = new JPopupMenu();
 		this.open = new JMenuItem("Mở");
 		this.model = new DefaultTableModel();
-		this.table = new JTable(){
+		this.table = new JTable() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -253,29 +271,95 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	public void newRow(Boolean folder)
-	{
-		if(folder)
-		{
-			Object ob[] = {new ImageIcon(
-					url + urlIconFolder + (new Folder(-1)).getIcon() + this.px + this.duoi) 
-					, "Thư mục mới", 
-					((Date)java.util.Calendar.getInstance().getTime()).toLocaleString()
-					, "", ""};
-			model.addRow(ob);
+	public void newRow(Boolean folder) throws IOException {
+		if (nows != null) {
+			if (folder) {
+				maxID++;
+				String name = "Thư mục mới";
+				int i = 1;
+				for (int j = 0; j < nows.getChildrents().size(); j++) {
+					if (nows.getChildrents().get(j).getName().equals(name)) {
+						name = "Thư mục mới " + i;
+						i++;
+						j = -1;
+					}
+				}
+
+				nows.getChildrents().add(new Folder(maxID, name, (Folder) nows));
+				/*
+				 * Object []obj = {new ImageIcon(url + urlIconFolder +
+				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
+				 * duoi), nows.getChildrents().get(nows.getChildrents().size() - 1).getName(),
+				 * nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getTime(nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getDateCreate()), nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getExName(), ""}; model.addRow(obj);
+				 */
+				setData();
+				setTable();
+				Edit();
+			} else {
+				maxID++;
+				String name = "Tệp mới";
+				int i = 1;
+				for (int j = 0; j < nows.getChildrents().size(); j++) {
+					if (nows.getChildrents().get(j).getName().equals(name)) {
+						name = "Tệp mới " + i;
+						i++;
+						j = -1;
+					}
+				}
+
+				nows.getChildrents().add(new File(maxID, name, "", (Folder) nows));
+				/*
+				 * Object []obj = {new ImageIcon(url + urlIconFile +
+				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
+				 * duoi), nows.getChildrents().get(nows.getChildrents().size() - 1).getName(),
+				 * nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getTime(nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getDateCreate()), nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getExName(), nows.getChildrents().get(nows.getChildrents().size() -
+				 * 1).getSize()}; model.addRow(obj);
+				 */
+				setData();
+				setTable();
+				Edit();
+			}
+			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
+			table.clearSelection();
+			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
+			ghiFile();
 		}
-		else
-		{
-			Object ob[] = {new ImageIcon(
-					url + urlIconFile + (new File(-1)).getIcon() + this.px + this.duoi)
-					, "Tệp mới",
-					((Date)java.util.Calendar.getInstance().getTime()).toLocaleString()
-					, "", ""};
-			model.addRow(ob);
-		}
-		table.clearSelection();
-		table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
 	}
+
+	public void ghiFile() throws IOException {
+		FileWriter out = null;
+
+		try {
+			out = new FileWriter(local);
+			System.out.println("Mo file du lieu thanh cong");
+			All(root, out);
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
+	}
+
+	public void All(Element e, FileWriter out) throws IOException {
+		if (e == null)
+			return;
+		out.write(e.getId() + "|" + e.getName() + "|" + e.getTime(e.getDateCreate()) + "|"
+				+ e.getTime(e.getDateModified()) + "|" + e.getExType() + "|"
+				+ (e.getClass().equals(Folder.class) == true ? "" : e.getSize()) + "|"
+				+ (e.getParent() != null ? e.getParent().getId() : "") + '\n');
+		if (e.getClass().equals(Folder.class)) {
+			for (Element el : e.getChildrents()) {
+				All(el, out);
+			}
+		}
+	}
+
 	public JTable getTable() {
 		return table;
 	}
@@ -291,9 +375,8 @@ public class PanelContentCenter extends JScrollPane {
 	public void Selected() {
 		open.setEnabled(true);
 	}
-	
-	public PanelContent getPanelContent()
-	{
+
+	public PanelContent getPanelContent() {
 		return pct;
 	}
 }

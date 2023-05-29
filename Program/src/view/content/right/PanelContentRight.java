@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -36,7 +37,7 @@ import libary.FONT;
 import model.Element;
 import model.Folder;
 import view.content.PanelContent;
-
+import java.time.LocalDate;
 public class PanelContentRight extends JPanel {
 	private PanelContent pc;
 	private JLabel close;
@@ -61,11 +62,13 @@ public class PanelContentRight extends JPanel {
 	private JLabel typeText;
 	private JLabel type;
 	private String url;
+	private JLabel save;
 	private String px = "32px";
 	private String duoi = ".png";
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private JPanel panel;
+	private Element select;
 	public PanelContentRight(PanelContent pc, String url) {
 		super();
 		try {
@@ -109,6 +112,7 @@ public class PanelContentRight extends JPanel {
 		contain.setVisible(false);
 		modifieldText.setVisible(false);
 		modifield.setVisible(false);
+		save = new JLabel("Lưu");
 	}
 	
 	
@@ -118,6 +122,8 @@ public class PanelContentRight extends JPanel {
 		this.setBorder(new LineBorder(Color.black));	
 		close.addMouseMotionListener(mouselisten);
 		close.addMouseListener(mouselisten);  
+		save.addMouseListener(mouselisten);
+		save.addMouseMotionListener(mouselisten);
 	}
 	
 	public void Edit()
@@ -143,30 +149,39 @@ public class PanelContentRight extends JPanel {
 		scrollName.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollName.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		nameContent.setFont(FONT.font_mac_dinh);
-		locationText.setBounds(5, iconContent.getHeight() + iconContent.getBounds().y + 10, 50, 20);
+		locationText.setBounds(5, iconContent.getHeight() + iconContent.getBounds().y + 10, 55, 20);
 		scrollLocation.setBounds(locationText.getBounds().width + 10, locationText.getBounds().y, 
 				panel.getSize().width - locationText.getSize().width - 15, 30);
-		typeText.setBounds(5, locationText.getHeight() + locationText.getBounds().y + 10, 50, 20);
+		typeText.setBounds(5, locationText.getHeight() + locationText.getBounds().y + 10, 55, 20);
 		type.setBounds(typeText.getBounds().width + 10, typeText.getBounds().y, 
 				panel.getSize().width - typeText.getSize().width - 15, 20);
-		sizeText.setBounds(5, typeText.getHeight() + typeText.getBounds().y + 5, 50, 20);
+		sizeText.setBounds(5, typeText.getHeight() + typeText.getBounds().y + 5, 55, 20);
 		size.setBounds(sizeText.getBounds().width + 10, sizeText.getBounds().y, 
 				panel.getSize().width - sizeText.getSize().width - 15, 20);
 		if(containText.isVisible())
 		{
-			containText.setBounds(5, sizeText.getHeight() + sizeText.getBounds().y + 5, 50, 20);
+			containText.setBounds(5, sizeText.getHeight() + sizeText.getBounds().y + 5, 55, 20);
 			contain.setBounds(containText.getBounds().width + 10, containText.getBounds().y, 
 					panel.getSize().width - containText.getSize().width - 15, 20);
 		}
-		createdText.setBounds(5, (containText.isVisible() == true ? (containText.getHeight() + containText.getBounds().y) : (sizeText.getHeight() + sizeText.getBounds().y)) + 5, 50, 20);
+		createdText.setBounds(5, (containText.isVisible() == true ? (containText.getHeight() + containText.getBounds().y) : (sizeText.getHeight() + sizeText.getBounds().y)) + 5, 55, 20);
 		create.setBounds(createdText.getBounds().width + 10, createdText.getBounds().y,
 				panel.getSize().width - createdText.getSize().width - 15, 20);
 	    if(modifieldText.isVisible())
 	    {
-	    	modifieldText.setBounds(5, createdText.getHeight() + createdText.getBounds().y + 5, 50, 20);
+	    	modifieldText.setBounds(5, createdText.getHeight() + createdText.getBounds().y + 5, 55, 20);
 	    	modifield.setBounds(modifieldText.getBounds().width + 10, modifieldText.getBounds().y, 
 					panel.getSize().width - modifieldText.getSize().width - 15, 20);
 	    }
+	    save.setBounds(panel.getSize().width - 55, 
+	    		(modifield.isVisible() == true ? 
+	    				modifield.getSize().height + modifield.getBounds().y : 
+	    				create.getSize().height + create.getBounds().y) + 5,50,30);
+	    save.setFont(FONT.font_IN_DAM);
+	    save.setForeground(ColorList.Back_Ground);
+	    save.setOpaque(true);
+	    save.setBackground(ColorList.Fore_Ground);
+	    save.setHorizontalAlignment(JLabel.CENTER);
 	}
 	
 	public void setFont()
@@ -208,6 +223,7 @@ public class PanelContentRight extends JPanel {
 		panel.add(modifield);
 		panel.add(typeText);
 		panel.add(type);
+		panel.add(save);
 	}
 	
 	public int getWidth() {
@@ -264,17 +280,20 @@ public class PanelContentRight extends JPanel {
 	
 	public void selected(Element e)
 	{
+		select = e;
 		if(e.getClass().equals(Folder.class))
 		{
 			location.setText(searchLocation(e.getParent()));
 			size.setText("aa");
-			contain.setText("bb");
+			contain.setText("Folder(" + countFolder(e) + ")  File(" + countFile(e) + ")");
 			create.setText(e.getTime(e.getDateCreate()));
 			type.setText(e.getExName());
 			iconContent.setIcon(new ImageIcon(url + urlIconFolder + e.getIcon() + px + duoi));
 		    nameContent.setText(e.getName());
 			containText.setVisible(!false);
 			contain.setVisible(!false);
+			modifieldText.setVisible(false);
+			modifield.setVisible(false);
 			Edit();
 		}
 		else
@@ -285,12 +304,11 @@ public class PanelContentRight extends JPanel {
 			modifield.setText(e.getTime(e.getDateModified()));
 			type.setText(e.getExName());
 			iconContent.setIcon(new ImageIcon(url + urlIconFile + e.getIcon() + px + duoi));
-		    nameContent.setText(e.getName());
-			iconContent.setVisible(!false);
-			scrollName.setVisible(!false);
-			nameContent.setVisible(!false);
+		    nameContent.setText(e.getName() + (e.getExType().equals("") == true ? "" : ".") + e.getExType());
 			modifieldText.setVisible(!false);
 			modifield.setVisible(!false);
+			containText.setVisible(false);
+			contain.setVisible(false);
 			Edit();
 		}
 
@@ -316,5 +334,81 @@ public class PanelContentRight extends JPanel {
 		if(e == null)
 		   return "/";
 		return searchLocation(e.getParent()) + e.getName() + "/";
+	}
+	
+	public int countFolder(Element root)
+	{
+		int n = 0;  
+		for(Element e : root.getChildrents())
+			if(e.getClass().equals(Folder.class))
+			{
+				n += 1 + countFolder(e);
+			}
+		return n;
+	}
+	
+	public int countFile(Element root)
+	{
+		int n = 0;
+		for(Element e : root.getChildrents())
+			if(e.getClass().equals(Folder.class))
+				n += countFile(e);
+			else 
+				n++;
+		return n;
+	}
+	
+	public JLabel getSave()
+	{
+		return save;
+	}
+	
+	public void hoverSave()
+	{
+		save.setBackground(ColorList.Back_Ground);
+		save.setForeground(ColorList.Fore_Ground);
+		save.setBorder(new LineBorder(ColorList.Fore_Ground));
+	}
+	
+	public void exitSave()
+	{
+	    save.setForeground(ColorList.Back_Ground);
+	    save.setBackground(ColorList.Fore_Ground);
+	    save.setBorder(new EmptyBorder(0, 0, 0, 0));
+	}
+	
+	public void clickedSave() throws IOException
+	{
+		String s = nameContent.getText();
+		
+		if(s.equals("") || s.equals(select.getName()))
+		{
+			nameContent.setText(select.getName());
+			return;
+		}
+		
+		while(s.charAt(s.length() - 1) == ' ')
+		{
+			if(s.length() > 1)
+			s = s.substring(0, s.length() - 1);
+			else
+				break;
+		}
+
+		if(s.equals(" ")) {
+			nameContent.setText(select.getName());
+			return;
+		}
+		
+		else
+		{
+			select.setName(s);
+			pc.getCenter().setData();
+			pc.getCenter().setTable();
+			pc.getCenter().Edit();
+			pc.getCenter().ghiFile();
+		}
+		
+		
 	}
 }

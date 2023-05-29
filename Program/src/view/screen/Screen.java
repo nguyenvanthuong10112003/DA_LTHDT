@@ -53,6 +53,7 @@ public class Screen extends JFrame {
 	private String urlQuyen;
 	private String url;
 	private String fileIcon;
+	private int maxId;
 	public Screen(String title, String urlUser, String urlElements, String urlLuuTru, String urlQuyen,
 			String fileIcon) {
 		try {
@@ -100,6 +101,8 @@ public class Screen extends JFrame {
 				    String line;
 				    while ((line = br.readLine()) != null){
 				       Vector <String>arr = tach(line);
+				       if(Integer.parseInt(arr.get(0)) > maxId)
+		    		   maxId = Integer.parseInt(arr.get(0));
 				       if(arr.get(arr.size() - 1).equals(""))
 				       {
 				    	   root = new Folder(Integer.parseInt(arr.get(0)), arr.get(1),toDate(arr.get(2)), null, null); 
@@ -216,7 +219,7 @@ public class Screen extends JFrame {
 		menubar = new Screen_MenuBar(this, url);
 		toolbar = new Screen_ToolBar(this, url);
 		content = new JPanel();
-		content_center = new PanelContent(this.root, url);
+		content_center = new PanelContent(this.root, url, this.maxId, this.url + this.urlLuuTru);
 		actionlistener = new action(this);
 	}
 
@@ -262,12 +265,12 @@ public class Screen extends JFrame {
 		this.content_center.getCenter().Rename();
 	}
 	
-	public void New(Boolean b)
+	public void New(Boolean b) throws IOException
 	{
 		this.content_center.getCenter().newRow(b);
 	}
 	
-	public void runfun(int n)
+	public void runfun(int n) throws IOException
 	{
 		switch(n)
 		{

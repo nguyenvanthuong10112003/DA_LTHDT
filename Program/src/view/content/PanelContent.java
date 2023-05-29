@@ -35,8 +35,9 @@ public class PanelContent extends JPanel {
 	private Folder root;
 	private String url;
 	private mouse mouslisten = new mouse(this);
-
-	public PanelContent(Folder root, String url) {
+    private int maxId;
+    private String local;
+	public PanelContent(Folder root, String url, int max, String local) {
 		super();
 		try {
 			if (root != null) {
@@ -44,9 +45,11 @@ public class PanelContent extends JPanel {
 			} else {
 				this.root = null;
 			}
+			this.local = local;
+			this.maxId = max;
 			this.url = url;
 			this.contentLeft = new ScrollPaneTree(this, this.root, this.url);
-			this.contentCenter = new PanelContentCenter(this, root, this.url);
+			this.contentCenter = new PanelContentCenter(this, root, this.url, this.maxId, this.local);
 			this.contentRight = new PanelContentRight(this, this.url);
 			this.mouseEvent = new mouse(this);
 			this.Show_Content_Left = true;

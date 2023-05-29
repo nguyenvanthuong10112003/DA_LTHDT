@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -98,6 +99,15 @@ public class mouse extends MouseAdapter implements MouseListener {
 				// System.out.println(e.getSource());
 				cr.closeClick();
 			}
+			else if(e.getSource().equals(cr.getSave()))
+			{
+				try {
+					cr.clickedSave();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		} else if (menu != null) {
 			menu.onClick(e.getSource().hashCode());
 		} else if (pf != null) {
@@ -170,8 +180,12 @@ public class mouse extends MouseAdapter implements MouseListener {
 				tree.exitClose();
 			}
 		} else if (cr != null) {
-			if (e.getSource().equals(cr.getLabelIconClose())) {
+			if(e.getSource().equals(cr.getLabelIconClose())) {
 				cr.exitClose();
+			}
+			else if(e.getSource().equals(cr.getSave()))
+			{
+				cr.exitSave();
 			}
 		} else if (tb != null) {
 			tb.setHover(e.getSource().hashCode(), ColorList.Back_Ground);
@@ -221,6 +235,10 @@ public class mouse extends MouseAdapter implements MouseListener {
 			else if (e.getSource().equals(cr.getLabelIconClose())) {
 				cr.setDefaultCursor();
 				cr.hoverClose();
+			}
+			else if(e.getSource().equals(cr.getSave()))
+			{
+				cr.hoverSave();
 			}
 		} else if (pf != null) {
 			if (e.getSource().getClass().equals(JLabel.class)) {

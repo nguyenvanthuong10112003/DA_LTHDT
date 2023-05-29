@@ -3,9 +3,8 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Set;
-
 import javax.swing.tree.DefaultMutableTreeNode;
-
+import java.time.LocalDate;
 abstract public class Element{
 	protected int id;
 	protected String name;
@@ -26,6 +25,7 @@ abstract public class Element{
    	    this.icon = "";
    	    this.exName = "";
    	    this.authority = new LinkedList<Authority>();
+   	    this.dateCreate.setYear(java.time.LocalDate.now().getYear());
     }
 	public Element(int id, String name) {
 		this.id = id;
@@ -35,6 +35,7 @@ abstract public class Element{
 		this.icon = "";
 		this.exName = "";
 		this.authority = new LinkedList<Authority>();
+   	    this.dateCreate.setYear(java.time.LocalDate.now().getYear());
 	}
     public Element(int id, String name, Folder parent)
     {
@@ -45,6 +46,7 @@ abstract public class Element{
    	    this.icon = "";
    	    this.exName = "";
    	    this.authority = new LinkedList<Authority>();
+   	    this.dateCreate.setYear(java.time.LocalDate.now().getYear());
     }
     public Element(int id, String name, String icon, Folder parent) {
    	    this.id = id;
@@ -54,6 +56,7 @@ abstract public class Element{
 		this.dateCreate = java.util.Calendar.getInstance().getTime();
    	    this.exName = "";
    	    this.authority = new LinkedList<Authority>();
+   	    this.dateCreate.setYear(java.time.LocalDate.now().getYear());
 	}
 	public Element(int id, String name, Date dateCreate, Folder parent) {
 		this.id = id;
@@ -123,7 +126,22 @@ abstract public class Element{
 	}
 	public String getTime(Date date)
 	{
-		return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/" + date.getMonth() + "/" + date.getYear();
+		if(date != null)
+		  return check(date.getDate()) + "/" + check(date.getMonth()) + "/" + check(date.getYear()) + " " + check(date.getHours()) + ":" + check(date.getMinutes());
+		return "";
+	}
+	public String check(String a)
+	{
+		if(a.length() >= 2)
+			return a;
+		return "0" + a;
+	}
+	
+	public String check(int a)
+	{
+		if(a >= 10)
+			return ((Integer)a).toString();
+		return "0" + a;
 	}
 	public abstract String getExType();
 	public abstract void setExType(String exType);

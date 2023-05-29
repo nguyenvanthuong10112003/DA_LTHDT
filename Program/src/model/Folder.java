@@ -21,6 +21,13 @@ public class Folder extends Element{
     	icon = "folderIcon";
     	exName = "File folder";
     }
+    public Folder(int id, String name, Folder parent)
+    {
+    	super(id, name, parent);
+    	childrens = new LinkedList<Element>();
+    	icon = "folderIcon";
+    	exName = "File folder";
+    }
     public Folder(int id, String name, LinkedList<Element> childrens)
     {
     	super(id ,name);
@@ -72,7 +79,7 @@ public class Folder extends Element{
 	@Override
 	public String getExType() {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 	@Override
 	public void setExType(String exType) {

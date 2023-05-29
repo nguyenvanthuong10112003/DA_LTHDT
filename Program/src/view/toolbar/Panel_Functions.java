@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.im.InputContext;
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -468,7 +470,7 @@ public class Panel_Functions extends JToolBar {
 		}
 	}
 
-	public void setClicked(int hash) {
+	public void setClicked(int hash) throws IOException {
 		int n = -1;
 		if (hash == rename_icon.hashCode() || hash == rename_text.hashCode()) {
 			n = 8;
