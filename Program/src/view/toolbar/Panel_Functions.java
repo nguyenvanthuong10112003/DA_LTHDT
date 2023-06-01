@@ -1,6 +1,8 @@
 package view.toolbar;
 import libary.ColorList;
 import libary.FONT;
+import model.User;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +13,8 @@ import java.awt.Toolkit;
 import java.awt.im.InputContext;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -81,16 +85,19 @@ public class Panel_Functions extends JToolBar {
 	private JPanel NewFile;
 	private JPanel NewFolder;
 	private mouse mouseListen;
-	private String url;
-
-	public Panel_Functions(Screen screen, String url) {
+    private Connection con;
+    private JLabel tdn;
+    private JButton dang_xuat;
+    private Boolean islogin;
+	public Panel_Functions(Screen screen, Connection con, Boolean islogin) {
 		super();
 		try {
 			if (screen != null)
 				this.screen = screen;
 			else
 				this.screen = null;
-			this.url = url;
+			this.islogin = islogin;
+			this.con = con;
 			init();
 			setFont();
 			setText();
@@ -117,6 +124,8 @@ public class Panel_Functions extends JToolBar {
 		new_file_text.setFont(FONT.font_mac_dinh);
 		new_folder_text.setFont(FONT.font_mac_dinh);
 		pinTo_text.setFont(FONT.font_11);
+		tdn.setFont(FONT.font_IN_DAM);
+        dang_xuat.setFont(FONT.font_IN_DAM);
 	}
 
 	private void setColor() {
@@ -166,7 +175,9 @@ public class Panel_Functions extends JToolBar {
 		NewFile.setBackground(ColorList.Back_Ground);
 		NewFolder.setOpaque(true);
 		NewFolder.setBackground(ColorList.Back_Ground);
-
+		tdn.setOpaque(true);
+        tdn.setBackground(ColorList.Back_Ground);
+        dang_xuat.setBackground(Color.BLUE);
 		// ;
 	}
 
@@ -193,16 +204,18 @@ public class Panel_Functions extends JToolBar {
 		Rename = new JPanel();
 		NewFile = new JPanel();
 		NewFolder = new JPanel();
-		pin_to_access_icon = new JLabel(new ImageIcon(url + pin_to));
-		cut_icon = new JLabel(new ImageIcon(url + cut));
-		copy_icon = new JLabel(new ImageIcon(url + copy));
-		paste_icon = new JLabel(new ImageIcon(url + paste));
-		move_to_icon = new JLabel(new ImageIcon(url + move_to));
-		copy_to_icon = new JLabel(new ImageIcon(url + copy_to));
-		delete_icon = new JLabel(new ImageIcon(url + delete));
-		rename_icon = new JLabel(new ImageIcon(url + rename));
-		new_folder_icon = new JLabel(new ImageIcon(url + new_folder));
-		new_file_icon = new JLabel(new ImageIcon(url + new_file));
+		pin_to_access_icon = new JLabel(new ImageIcon(libary.URL.url + pin_to));
+		cut_icon = new JLabel(new ImageIcon(libary.URL.url + cut));
+		copy_icon = new JLabel(new ImageIcon(libary.URL.url + copy));
+		paste_icon = new JLabel(new ImageIcon(libary.URL.url + paste));
+		move_to_icon = new JLabel(new ImageIcon(libary.URL.url + move_to));
+		copy_to_icon = new JLabel(new ImageIcon(libary.URL.url + copy_to));
+		delete_icon = new JLabel(new ImageIcon(libary.URL.url + delete));
+		rename_icon = new JLabel(new ImageIcon(libary.URL.url + rename));
+		new_folder_icon = new JLabel(new ImageIcon(libary.URL.url + new_folder));
+		new_file_icon = new JLabel(new ImageIcon(libary.URL.url + new_file));
+		tdn = new JLabel();
+		dang_xuat = new JButton();
 	}
 
 	private void setText() {
@@ -219,14 +232,24 @@ public class Panel_Functions extends JToolBar {
 		delete_text.setText("Xóa");
 		new_file_text.setText("Tệp mới");
 		new_folder_text.setText("Thư mục mới");
+		dang_xuat.setText("Đăng xuất");
+		if(screen.getUser() != null)
+		   tdn.setText(screen.getUser().getName());
 	}
 
 	private void addObj() {
 		this.setLayout(new BorderLayout());
 		// this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		content.setLayout(new GridLayout(2, 1, 5, 5));
-		content.add(login);
-		content.add(register);
+		if(!islogin) {
+			content.add(login);
+			content.add(register);
+		}
+		else
+		{ 
+			content.add(tdn);
+			content.add(dang_xuat);
+		}
 		content.setBorder(new EmptyBorder(10, 0, 10, 0));
 
 		container_icon_function.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -303,12 +326,15 @@ public class Panel_Functions extends JToolBar {
 		cut_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
 		copy_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
 		paste_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
+		
+		tdn.setHorizontalAlignment(JLabel.CENTER);
 	}
 
 	public void addEvent() {
 		this.addMouseMotionListener(mouseListen);
 		login.addMouseListener(mouseListen);
 		register.addMouseListener(mouseListen);
+		dang_xuat.addMouseListener(mouseListen);
 
 		pin_to_access_icon.addMouseMotionListener(mouseListen);
 		pinTo_text.addMouseMotionListener(mouseListen);
@@ -375,7 +401,7 @@ public class Panel_Functions extends JToolBar {
 			if (Flogin != null)
 				if (Flogin.isVisible())
 					Flogin.setVisible(false);
-			Flogin = new FormLogin(this, null, url);
+			Flogin = new FormLogin(this);
 			Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
 		} else if (bt.equals(register)) {
 			if (Flogin != null) {
@@ -384,8 +410,13 @@ public class Panel_Functions extends JToolBar {
 			if (Fregister != null)
 				if (Fregister.isVisible())
 					Fregister.setVisible(false);
-			Fregister = new FormRegister(this, null, url);
+			Fregister = new FormRegister(this);
 			Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
+		}
+		else if(bt.equals(dang_xuat))
+		{
+			screen.setVisible(false);
+			screen = new Screen(screen.getTitle(), screen.imageIcon(), null, screen.getConnect(), false);
 		}
 
 	}
@@ -398,7 +429,7 @@ public class Panel_Functions extends JToolBar {
 			if (Flogin != null)
 				if (Flogin.isVisible())
 					Flogin.setVisible(false);
-			Flogin = new FormLogin(this, null, url);
+			Flogin = new FormLogin(this);
 			Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
 		} else {
 			if (Flogin != null) {
@@ -407,7 +438,7 @@ public class Panel_Functions extends JToolBar {
 			if (Fregister != null)
 				if (Fregister.isVisible())
 					Fregister.setVisible(false);
-			Fregister = new FormRegister(this, null, url);
+			Fregister = new FormRegister(this);
 			Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
 		}
 
@@ -489,5 +520,18 @@ public class Panel_Functions extends JToolBar {
 
 	public Screen getScreen() {
 		return screen;
+	}
+	
+	public Connection getConnection()
+	{
+		if(con != null)
+		  return con;
+		return null;
+	}
+	
+	public void resert(User user)
+	{
+		screen.setVisible(false);
+		screen = new Screen(screen.getTitle(), screen.imageIcon(), user, screen.getConnect(), true);
 	}
 }

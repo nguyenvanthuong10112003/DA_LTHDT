@@ -12,7 +12,6 @@ public class User {
     private String phoneNumber;
     private String email;
     private Date dateCreated;
-    private String state;
     private Boolean sex;
     private String Country;
     private Date dateOfBirth;
@@ -25,14 +24,14 @@ public class User {
         this.phoneNumber = "";
         this.email = "";
         this.dateCreated = java.util.Calendar.getInstance().getTime();
-        this.state = "";
+   	    this.dateCreated.setYear(java.time.LocalDate.now().getYear());
         this.sex = null;
         this.Country = "";
         this.dateOfBirth = null;
         this.root = null;
     } 
     public User(String tendangnhap, String password, String name, 
-    		String phone, String email, String state, 
+    		String phone, String email, 
     		Boolean sex, String country, Date birth, Folder root)
     {
         this.tenDangNhap = tendangnhap;
@@ -41,7 +40,22 @@ public class User {
         this.phoneNumber = phone;
         this.email = email;
         this.dateCreated = (Date) java.util.Calendar.getInstance().getTime();
-        this.state = state;
+   	    this.dateCreated.setYear(java.time.LocalDate.now().getYear());
+        this.sex = sex;
+        this.Country = country;
+        this.dateOfBirth = birth;
+        this.root = root;
+    }
+    public User(String tendangnhap, String password, String name, 
+    		String phone, String email, 
+    		Boolean sex, String country, Date create, Date birth, Folder root)
+    {
+        this.tenDangNhap = tendangnhap;
+        this.passWord = password;
+        this.name = name;
+        this.phoneNumber = phone;
+        this.email = email;
+        this.dateCreated = create;
         this.sex = sex;
         this.Country = country;
         this.dateOfBirth = birth;
@@ -88,12 +102,6 @@ public class User {
 	}
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
-	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
 	}
 	public Boolean getSex() {
 		return sex;

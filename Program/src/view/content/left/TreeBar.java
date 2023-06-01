@@ -25,7 +25,6 @@ public class TreeBar extends JTree {
 	private String iconClose16 = "\\Icon\\content\\left\\close16.png";
 	private String iconClose24 = "\\Icon\\content\\left\\close24.png";
 	private String iconFolder = "\\Icon\\content\\left\\folder\\folderIcon16px.png";
-	private String url;
 	private String px = "16px";
 	private String duoi = ".png";
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
@@ -33,18 +32,17 @@ public class TreeBar extends JTree {
 	private DefaultMutableTreeNode rootTree;
 	private Element root;
 
-	public TreeBar(PanelContent pc, Element root, String url) {
+	public TreeBar(PanelContent pc, Element root) {
 		super();
 		this.pc = pc;
 		this.root = root;
-		this.url = url;
 		this.setRootTree();
 		this.setModel(new DefaultTreeModel(rootTree));
 		//this.setCellRenderer(new MyNodeTreeCellRender(url, iconFolder));
 		this.setShowsRootHandles(true);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setBackground(Color.white);
-		close = new JLabel(new ImageIcon(url + iconClose16));
+		close = new JLabel(new ImageIcon(libary.URL.url + iconClose16));
 		this.add(close);
 		mouseListen = new mouse(this);
 		this.addMouseListener(mouseListen);
@@ -127,12 +125,12 @@ public class TreeBar extends JTree {
 	}
 
 	public void hoverClose() {
-		close.setIcon(new ImageIcon(url + iconClose24));
+		close.setIcon(new ImageIcon(libary.URL.url + iconClose24));
 		setIconClose(24);
 	}
 
 	public void exitClose() {
-		close.setIcon(new ImageIcon(url + iconClose16));
+		close.setIcon(new ImageIcon(libary.URL.url + iconClose16));
 		setIconClose(18);
 	}
 

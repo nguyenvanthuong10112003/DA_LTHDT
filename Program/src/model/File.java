@@ -218,6 +218,22 @@ public class File extends Element{
 	public void setExType(String exType) {
 		// TODO Auto-generated method stub
 		this.exType = exType;
+  	    if(type_name.get(exType) != null)
+  	    {
+  	    	this.exName = type_name.get(exType);
+  	    }
+  	    else
+  	    {
+  	    	this.exName = "Unknown";
+  	    }
+  	    if(type_link.get(exType) != null)
+  	    {
+  	    	this.icon = type_link.get(exType);
+  	    }
+  	    else
+  	    {
+  	    	this.icon = "null";
+  	    }
 		this.dateModified = java.util.Calendar.getInstance().getTime();
    	    this.dateModified.setYear(java.time.LocalDate.now().getYear());
 	}

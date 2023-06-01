@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.util.LinkedList;
 
 import model.Element;
@@ -33,11 +34,11 @@ public class PanelContent extends JPanel {
 	private Cursor cursorDefault = new Cursor(Cursor.DEFAULT_CURSOR);
 	private Font font;
 	private Folder root;
-	private String url;
 	private mouse mouslisten = new mouse(this);
     private int maxId;
-    private String local;
-	public PanelContent(Folder root, String url, int max, String local) {
+    private Boolean islogin;
+    private Connection conn;
+	public PanelContent(Folder root, int max, Boolean islogin, Connection conn) {
 		super();
 		try {
 			if (root != null) {
@@ -45,12 +46,12 @@ public class PanelContent extends JPanel {
 			} else {
 				this.root = null;
 			}
-			this.local = local;
+			this.conn = conn;
+			this.islogin = islogin;
 			this.maxId = max;
-			this.url = url;
-			this.contentLeft = new ScrollPaneTree(this, this.root, this.url);
-			this.contentCenter = new PanelContentCenter(this, root, this.url, this.maxId, this.local);
-			this.contentRight = new PanelContentRight(this, this.url);
+			this.contentLeft = new ScrollPaneTree(this, this.root);
+			this.contentCenter = new PanelContentCenter(this, root, this.maxId);
+			this.contentRight = new PanelContentRight(this);
 			this.mouseEvent = new mouse(this);
 			this.Show_Content_Left = true;
 			this.Show_Content_Right = true;
@@ -212,5 +213,20 @@ public class PanelContent extends JPanel {
 	public void noSelected()
 	{
 		contentRight.noselected();
+	}
+	
+	public void setRootCenter(Folder folder)
+	{
+		contentCenter.setRoot(folder);
+	}
+	
+	public Boolean isLogin()
+	{
+		return islogin;
+	}
+	
+	public Connection getConnection()
+	{
+		return conn;
 	}
 }

@@ -16,6 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -28,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import libary.JTextFieldPassWord;
 import model.User;
-
+import model.Folder;
 public class FormLogin extends JFrame {
 	private JPanel content;
 	private JLabel login_text;
@@ -50,7 +55,6 @@ public class FormLogin extends JFrame {
 	private Color black = Color.BLACK;
 	private Color white = Color.WHITE;
 	private Color blue = Color.BLUE;
-	private LinkedList<User> users;
 	private Map<String, User> checkUser;
 	private Panel_Functions fun;
 	private JOptionPane option;
@@ -59,29 +63,17 @@ public class FormLogin extends JFrame {
 	private String text_no = "Thông tin đăng nhập không tồn tại!\nHãy tạo tài khoản mới.";
 	private String text_error = "Thông tin đăng nhập không chính xác!";
 	private String text_thieu = "Yêu cầu nhập đầy đủ thông tin đăng nhập!";
-	private String url;
 
-	public FormLogin(Panel_Functions fun, LinkedList<User> users, String url) {
+	public FormLogin(Panel_Functions fun) {
 		try {
 			if (fun != null)
 				this.fun = fun;
-			if (users != null) {
-				this.users = users;
-				checkUser = new HashMap<String, User>();
-				for (User user : this.users) {
-					checkUser.put(user.getTenDangNhap(), user);
-				}
-			} else {
-				users = null;
-				checkUser = null;
-			}
-			this.url = url;
 			this.setTitle("Đăng nhập");
 			this.setSize(500, 250);
-			// this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 			this.setBackground(getForeground());
 			this.setResizable(false);
+			this.setData();
 			this.init();
 			this.setIcon();
 			this.setColor(blue, black);
@@ -96,6 +88,65 @@ public class FormLogin extends JFrame {
 		}
 	}
 
+	private void setData()
+	{
+    	checkUser = new HashMap<String, User>();
+    	try {
+    	    String sql = "SELECT * FROM _User";
+    	    Connection con = fun.getConnection();
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next())
+			{
+				///Fullname 
+				//tdn
+				//pass 
+				//phone 
+				//email 
+				//country 
+				//birth 
+				//created 
+				//rootFolder
+				//sex
+				User user = new User(
+				rs.getString("tdn"), 
+				rs.getString("pass"),
+				rs.getString("Fullname"),
+				rs.getString("phone"),
+				rs.getString("email"),
+				rs.getInt("sex") == 1 ? true : false,
+				rs.getString("country"),
+				toDate(rs.getString("created")),
+				toDate(rs.getString("birth")),
+				new Folder(rs.getInt("rootFolder")));
+				checkUser.put(user.getTenDangNhap(), user);
+			}
+			sta.close();
+			rs.close();
+			System.out.println("Tải dữ liệu user thành công");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	private java.util.Date toDate(String d)
+	{
+		return new Date(
+			Integer.parseInt(d.substring(0, 4)), 
+			Integer.parseInt(d.substring(5, 7)), 
+			Integer.parseInt(d.substring(8, 10)));
+	}
+	
+	private java.util.Date toDateTime(String d)
+	{
+		return new Date(
+			Integer.parseInt(d.substring(0, 4)), 
+			Integer.parseInt(d.substring(5, 7)), 
+			Integer.parseInt(d.substring(8, 10)),
+			Integer.parseInt(d.substring(11, 13)),
+			Integer.parseInt(d.substring(14, 16)));
+	}
 	private void setColor(Color back, Color font) {
 		cancel.setOpaque(true);
 		register.setOpaque(true);
@@ -110,7 +161,7 @@ public class FormLogin extends JFrame {
 
 	private void setIcon() {
 		try {
-			this.setIconImage((new ImageIcon(url + icon)).getImage());
+			this.setIconImage((new ImageIcon(libary.URL.url + icon)).getImage());
 		} catch (Exception e) {
 			System.out.print("error");
 		}
@@ -227,15 +278,16 @@ public class FormLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println(tdn_input.getText().equals(""));
 				if (!(tdn_input.getText().equals("") || pass_input.getText().equals(""))) {
 					if (checkUser != null) {
 						if (checkUser.get(tdn_input.getText()) != null) {
-							if (checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getText())) {
+							if (checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getPass())) {
 								JOptionPane.showMessageDialog(login, text_accept, thongbao,
 										JOptionPane.INFORMATION_MESSAGE);
+								success(checkUser.get(tdn_input.getText()));
+								setVisible(false);
 								if (fun.getScreen() != null)
-									fun.getScreen().setUser(checkUser.get(tdn_input.getText()));
+									fun.resert(checkUser.get(tdn_input.getText()));
 							} else {
 								JOptionPane.showMessageDialog(login, text_error, thongbao, JOptionPane.WARNING_MESSAGE);
 							}
@@ -250,5 +302,24 @@ public class FormLogin extends JFrame {
 				}
 			}
 		});
+	}
+	private void success(User user)
+	{
+		try {
+			String sql = "SELECT * FROM _Folder WHERE id = " + user.getRoot().getId();
+			Connection con = fun.getConnection();
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			rs.next();
+			user.getRoot().setName(rs.getString("Fullname"));
+			user.getRoot().setDateCreate(toDateTime(rs.getString("date_create")));
+			System.out.println("Update thành công");
+			sta.close();
+			rs.close();
+		} catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		 
 	}
 }

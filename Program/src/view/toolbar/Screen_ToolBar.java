@@ -3,6 +3,8 @@ package view.toolbar;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.sql.Connection;
+import java.util.LinkedList;
 
 import view.screen.Screen;
 import view.toolbar.Panel_Functions;
@@ -10,23 +12,24 @@ import javax.swing.JPanel;
 
 import libary.ColorList;
 import libary.FONT;
-
+import model.User;
 public class Screen_ToolBar extends JPanel {
 	private Panel_Functions function;
 	private Panel_Navigation navigation;
 	private Screen screen;
-	private String url;
-
-	public Screen_ToolBar(Screen screen, String url) {
+    private Connection con;
+    private Boolean islogin;
+	public Screen_ToolBar(Screen screen, Connection con, Boolean islogin) {
 		super();
 		try {
 			if (screen != null)
 				this.screen = screen;
 			else
 				this.screen = null;
-			this.url = url;
-			this.function = new Panel_Functions(this.screen, this.url);
-			this.navigation = new Panel_Navigation(this.screen, this.url);
+			this.islogin = islogin;
+			this.con = con;
+			this.function = new Panel_Functions(this.screen, this.con, this.islogin);
+			this.navigation = new Panel_Navigation(this.screen);
 			this.setColor();
 			this.setLayout(new BorderLayout());
 			this.add(function, BorderLayout.CENTER);

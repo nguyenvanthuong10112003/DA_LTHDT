@@ -16,6 +16,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Map;
@@ -45,7 +49,6 @@ import java.util.Map;
 public class FormRegister extends JFrame {
 	private JPanel content;
 	private JLabel register_text;
-
 	private JPanel form;
 	private JLabel tdn_text;
 	private JTextField tdn_input;
@@ -53,15 +56,12 @@ public class FormRegister extends JFrame {
 	private JTextFieldPassWord pass_input;
 	private JLabel pass_check;
 	private JTextFieldPassWord pass_check_input;
-
 	private JLabel full_name;
 	private JTextField full_name_input;
-
 	private JLabel date_of_birth;
 	private JComboBox day;
 	private JComboBox month;
 	private JComboBox year;
-
 	private JLabel sex;
 	private JPanel check_sex;
 	private JRadioButton nam;
@@ -79,12 +79,13 @@ public class FormRegister extends JFrame {
 	private JButton register;
 	private Panel_Functions fun;
 	private String icon = "\\Icon\\formregister\\icon-register.png";
-	private LinkedList<User> users;
-	private Map<String, User> checkUser;
+	private Map<String, Boolean> checkUser;
 	private String thongbao = "Thông báo";
 	private String text_accept = "Thành công!";
 	private String text_thieu = "Yêu cầu nhập đầy đủ thông tin!";
 	private String da_ton_tai = "Thông tin tên đăng nhập đã tồn tại! Hãy đặt tên đăng nhập khác.";
+	private String errorList = "Error List User is null";
+	private String passno = "Mật khẩu nhập lại không trùng khớp với mật khẩu!";
 	private DATE date = new DATE(LocalDateTime.now().getYear());
 	private Font font32 = new Font("Arial", Font.BOLD, 24);
 	private Font fontp = new Font("Arial", Font.PLAIN, 14);
@@ -92,36 +93,23 @@ public class FormRegister extends JFrame {
 	private Color black = Color.BLACK;
 	private Color white = Color.WHITE;
 	private Color blue = Color.BLUE;
-	private String url;
 
-	public FormRegister(Panel_Functions fun, LinkedList<User> users, String url) {
+	public FormRegister(Panel_Functions fun) {
 		try {
 			if (fun != null)
 				this.fun = fun;
-			if (users != null) {
-				this.users = users;
-				checkUser = new HashMap<String, User>();
-				for (User user : this.users) {
-					checkUser.put(user.getTenDangNhap(), user);
-				}
-			} else {
-				users = null;
-				checkUser = null;
-			}
-			this.url = url;
 			this.setTitle("Đăng ký");
 			this.setSize(380, 480);
-			// this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 			this.setBackground(getForeground());
 			this.setResizable(false);
+			this.setData();
 			this.init();
 			this.setIcon();
 			this.setColor(blue, black);
 			this.setText();
 			this.Edit();
 			this.setTime();
-			// this.updateTime();
 			this.addObj();
 			this.setCusor();
 			this.setVisible(true);
@@ -131,7 +119,24 @@ public class FormRegister extends JFrame {
 			System.out.println("Error form đăng ký");
 		}
 	}
-
+    private void setData()
+    {
+    	checkUser = new HashMap<String, Boolean>();
+    	try {
+    	    String sql = "SELECT TDN FROM _User";
+    	    Connection con = fun.getConnection();
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next())
+				checkUser.put(rs.getString("TDN"), true);
+			sta.close();
+			rs.close();
+			System.out.println("Tải dữ liệu user thành công");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+    }
 	private void setColor(Color back, Color font) {
 		cancel.setOpaque(true);
 		register.setOpaque(true);
@@ -146,7 +151,7 @@ public class FormRegister extends JFrame {
 
 	private void setIcon() {
 		try {
-			this.setIconImage((new ImageIcon(url + icon)).getImage());
+			this.setIconImage((new ImageIcon(libary.URL.url + icon)).getImage());
 		} catch (Exception e) {
 			System.out.print("error");
 		}
@@ -334,6 +339,10 @@ public class FormRegister extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (CheckInput()) {
+			        if (!pass_check_input.getPass().equals(pass_input.getPass())) {
+			        	JOptionPane.showMessageDialog(day, passno, thongbao, JOptionPane.WARNING_MESSAGE);
+			        }
+			        else
 					if (checkUser != null) {
 						if (checkUser.size() == 0) {
 							JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
@@ -343,11 +352,11 @@ public class FormRegister extends JFrame {
 								JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
 								Accept();
 							} else {
-								JOptionPane.showMessageDialog(day, text_accept, da_ton_tai, JOptionPane.OK_OPTION);
+								JOptionPane.showMessageDialog(day, da_ton_tai, thongbao, JOptionPane.OK_OPTION);
 							}
 						}
 					} else {
-						JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
+						JOptionPane.showMessageDialog(day, errorList, thongbao, JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(day, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
@@ -359,16 +368,50 @@ public class FormRegister extends JFrame {
 	}
 
 	private void Accept() {
-		User us = new User(tdn_input.getText(), pass_input.getText());
-		us.setName(full_name_input.getText());
-		us.setSex(nam.isSelected());
-		us.setEmail(email_input.getText());
-		us.setPhoneNumber(phone_number_input.getText());
-		us.setDateOfBirth(new Date((Integer) year.getSelectedItem(), (Integer) month.getSelectedItem(),
-				(Integer) day.getSelectedItem()));
-		users.add(us);
-		checkUser.put(us.getTenDangNhap(), us);
+		Connection con = fun.getConnection();
+		if (con != null) {
+			try {
+				java.time.LocalDate.now();
+				String sql1 = "SELECT MAX(ID) AS ID FROM _Folder";
+				Statement sta = con.createStatement();
+				ResultSet result = sta.executeQuery(sql1);
+				result.next();
+				int idMax = result.getInt("ID");
+				String sql2 = "INSERT INTO _USER(Fullname, tdn, pass, phone, "
+						+ "email, birth, created, rootFolder, sex)" + "VALUES (N'" + full_name_input.getText() + "', '"
+						+ tdn_input.getText() + "', '" + pass_input.getPass() + "', '" + phone_number_input.getText()
+						+ "', '" + email_input.getText() + "', '" + year.getSelectedItem() + "-"
+						+ month.getSelectedItem() + "-" + day.getSelectedItem() + "', '"
+						+ java.time.LocalDate.now().getYear() + "-" + java.time.LocalDate.now().getMonth() + "-"
+						+ java.time.LocalDate.now().getDayOfMonth() + "', " + (idMax + 1) + ", "
+						+ (nam.isSelected() == true ? 1 : 0) + ")";
+				String sql3 = "INSERT INTO _FOLDER(id, Fullname, date_create)" + "VALUES (" + (idMax + 1)
+						+ ", 'This pc', '" + +java.time.LocalDateTime.now().getYear() + "-"
+						+ two(((Integer) java.time.LocalDateTime.now().getMonthValue()).toString()) + "-"
+						+ two(((Integer) java.time.LocalDateTime.now().getDayOfMonth()).toString()) + " "
+						+ two(((Integer) java.time.LocalDateTime.now().getHour()).toString()) + ":"
+						+ two(((Integer) java.time.LocalDateTime.now().getMinute()).toString()) + ":"
+						+ two(((Integer) java.time.LocalDateTime.now().getSecond()).toString()) + "')";
+				int check = sta.executeUpdate(sql3);
+				if (check > 0) {
+					check = sta.executeUpdate(sql2);
+				}
+				sta.close();
+				result.close();
+			} catch (Exception e) {
+				System.out.println("Error" + e.getMessage());
+			}
+		} else
+			return;
+		checkUser.put(tdn_input.getText(), true);
 		this.setVisible(false);
+	}
+
+	private String two(String s) {
+		if (s.length() == 2)
+			return s;
+		else
+			return "0" + s;
 	}
 
 	private Boolean CheckInput() {
@@ -379,7 +422,6 @@ public class FormRegister extends JFrame {
 				// ((String)year.getSelectedItem()).equals("") ||
 				phone_number_input.getText().equals("") || email_input.getText().equals(""))
 			return false;
-
 		return true;
 	}
 

@@ -1,12 +1,14 @@
 package test;
 
+import java.sql.Connection;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import view.formlogin.FormLogin;
 import view.formregister.FormRegister;
 import view.screen.Screen;
-
+import test.ConnectSQL;
 public class Main {
     public static void main(String [] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
     {
@@ -25,12 +27,15 @@ public class Main {
 	            	UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 	            }
 	        }
-	        String urlUser = "\\data\\user.txt";
-	        String urlElement = "\\data\\element.txt";
-	        String urlQuyen = "\\data\\quyen.txt";
-	        String urlLuuTru = "\\data\\luutru.txt";
 	    	String fileIcon = "\\data\\iconfile.txt";
-	        Screen form = new Screen("Chương trình quản lý file và folder", urlUser, urlElement, urlLuuTru, urlQuyen, fileIcon);
+	    	String database = "ADMIN";
+			Connection conn = ConnectSQL.getJDBCConnection(database);
+			if (conn != null) {
+				System.out.println("Ket noi database thanh cong");
+			}else {
+				System.out.println("Ket noi database that bai");
+			}
+	        Screen form = new Screen("Chương trình quản lý file và folder", fileIcon, null, conn, false);
 	        System.out.println("Tải chương trình thành công");
     	}
     	catch (Exception e) {

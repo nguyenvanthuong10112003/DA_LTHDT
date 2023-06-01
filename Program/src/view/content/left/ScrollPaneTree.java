@@ -25,9 +25,8 @@ public class ScrollPaneTree extends JScrollPane {
 	private Cursor[] resizeCursor = { new Cursor(Cursor.N_RESIZE_CURSOR), new Cursor(Cursor.W_RESIZE_CURSOR),
 			new Cursor(Cursor.SE_RESIZE_CURSOR) };
 	private Element root;
-	private String url;
 
-	public ScrollPaneTree(PanelContent pc, Element root, String url) {
+	public ScrollPaneTree(PanelContent pc, Element root) {
 		super();
 		try {
 			if (root != null)
@@ -35,8 +34,7 @@ public class ScrollPaneTree extends JScrollPane {
 			else
 				this.root = null;
 			this.pc = pc;
-			this.url = url;
-			this.tree = new TreeBar(pc, root, this.url);
+			this.tree = new TreeBar(pc, root);
 			this.setViewportView(tree);
 			this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 			this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
@@ -62,7 +60,7 @@ public class ScrollPaneTree extends JScrollPane {
 	}
 
 	public void setTree(Element root) {
-		tree = new TreeBar(pc, root, this.url);
+		tree = new TreeBar(pc, root);
 	}
 
 	public void SetCusorTreeBar() {

@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
@@ -21,6 +22,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -61,7 +63,6 @@ public class PanelContentRight extends JPanel {
 	private JLabel modifield;
 	private JLabel typeText;
 	private JLabel type;
-	private String url;
 	private JLabel save;
 	private String px = "32px";
 	private String duoi = ".png";
@@ -69,11 +70,10 @@ public class PanelContentRight extends JPanel {
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private JPanel panel;
 	private Element select;
-	public PanelContentRight(PanelContent pc, String url) {
+	public PanelContentRight(PanelContent pc) {
 		super();
 		try {
 			this.pc = pc;
-			this.url = url;
             this.init();
             this.addEvent();
             this.Edit();
@@ -89,7 +89,7 @@ public class PanelContentRight extends JPanel {
 	public void init()
 	{
 		mouselisten = new mouse(this, pc);
-		close = new JLabel(new ImageIcon(url + iconClose16));
+		close = new JLabel(new ImageIcon(libary.URL.url + iconClose16));
 		iconContent = new JLabel();
 		nameContent = new JTextArea();
 	    locationText = new JLabel("Location:");
@@ -288,7 +288,7 @@ public class PanelContentRight extends JPanel {
 			contain.setText("Folder(" + countFolder(e) + ")  File(" + countFile(e) + ")");
 			create.setText(e.getTime(e.getDateCreate()));
 			type.setText(e.getExName());
-			iconContent.setIcon(new ImageIcon(url + urlIconFolder + e.getIcon() + px + duoi));
+			iconContent.setIcon(new ImageIcon(libary.URL.url + urlIconFolder + e.getIcon() + px + duoi));
 		    nameContent.setText(e.getName());
 			containText.setVisible(!false);
 			contain.setVisible(!false);
@@ -303,7 +303,7 @@ public class PanelContentRight extends JPanel {
 			create.setText(e.getTime(e.getDateCreate()));
 			modifield.setText(e.getTime(e.getDateModified()));
 			type.setText(e.getExName());
-			iconContent.setIcon(new ImageIcon(url + urlIconFile + e.getIcon() + px + duoi));
+			iconContent.setIcon(new ImageIcon(libary.URL.url + urlIconFile + e.getIcon() + px + duoi));
 		    nameContent.setText(e.getName() + (e.getExType().equals("") == true ? "" : ".") + e.getExType());
 			modifieldText.setVisible(!false);
 			modifield.setVisible(!false);
@@ -381,32 +381,70 @@ public class PanelContentRight extends JPanel {
 	{
 		String s = nameContent.getText();
 		
+		while(s.charAt(0) == ' ')
+			s = s.substring(1, s.length());
+		while(s.charAt(s.length() - 1) == ' ')
+			s = s.substring(0, s.length() - 1);
+		for(int i = 0; i < s.length(); )
+		{
+			if(s.charAt(i) == '\n')
+				s = s.substring(0, i) + s.substring(i + 1, s.length());
+			else
+				i++;
+		}
+		
 		if(s.equals("") || s.equals(select.getName()))
 		{
 			nameContent.setText(select.getName());
 			return;
 		}
 		
-		while(s.charAt(s.length() - 1) == ' ')
+		
+		for(Element e : select.getParent().getChildrents())
+			if(e.getName().equals(s) && !e.equals(select))
+			{
+				nameContent.setText(select.getName());
+				JOptionPane.showMessageDialog(typeText, "Tên đã tồn tại!\nHãy đặt tên khác.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+		
+		if(select.getClass().equals(model.File.class))
 		{
-			if(s.length() > 1)
-			s = s.substring(0, s.length() - 1);
-			else
-				break;
-		}
-
-		if(s.equals(" ")) {
-			nameContent.setText(select.getName());
-			return;
+			int in = -1;
+            for(int i = s.length() - 1; i >= 0; i--)
+            	if(s.charAt(i) == '.') {
+            		in = i;
+            	    break;
+            	}
+			if(in != -1) {
+				select.setExType(s.substring(in + 1, s.length()));
+				s = s.substring(0, in);
+				while(s.charAt(s.length() - 1) == ' ')
+					s = s.substring(0, s.length() - 1);
+				if(!s.equals(""))
+				{
+					for(Element e : select.getParent().getChildrents())
+						if(e.getName().equals(s) && !e.equals(select))
+						{
+							nameContent.setText(select.getName());
+							JOptionPane.showMessageDialog(typeText, "Tên đã tồn tại!\nHãy đặt tên khác.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+					iconContent.setIcon(new ImageIcon(libary.URL.url + urlIconFile + select.getIcon() + px + duoi));
+				}
+				else
+					return;
+			}
 		}
 		
-		else
 		{
+			type.setText(select.getExName());
 			select.setName(s);
 			pc.getCenter().setData();
 			pc.getCenter().setTable();
 			pc.getCenter().Edit();
-			pc.getCenter().ghiFile();
+			if(!pc.isLogin())
+			   pc.getCenter().ghiFile();
 		}
 		
 		

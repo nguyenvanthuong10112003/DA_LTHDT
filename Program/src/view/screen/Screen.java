@@ -9,10 +9,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Vector;
 import java.awt.*;
 import controller.action;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import javax.imageio.ImageIO;
 import javax.lang.model.element.Element;
 import javax.swing.*;
@@ -32,7 +37,6 @@ import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
 import view.toolbar.Screen_ToolBar;
 import view.toolbar.Panel_Functions;
-
 public class Screen extends JFrame {
 	private int dd;
 	private int chenhlech;
@@ -47,23 +51,17 @@ public class Screen extends JFrame {
 	private action actionlistener;
 	private User user;
 	private Folder root;
-	private String urlUser;
-	private String urlElements;
-	private String urlLuuTru;
-	private String urlQuyen;
-	private String url;
 	private String fileIcon;
 	private int maxId;
-	public Screen(String title, String urlUser, String urlElements, String urlLuuTru, String urlQuyen,
-			String fileIcon) {
+	private Connection connect;
+	private Boolean islogin;
+	public Screen(String title, String fileIcon, User user, Connection conn, Boolean islogin) {
 		try {
-			this.url = System.getProperty("user.dir");
-			this.urlUser = urlUser;
-			this.urlElements = urlElements;
-			this.urlLuuTru = urlLuuTru;
-			this.urlQuyen = urlQuyen;
 			this.fileIcon = fileIcon;
-			new model.File(url + fileIcon);
+			this.connect = conn;
+			this.islogin = islogin;
+			this.user = user;
+			new model.File(libary.URL.url + fileIcon);
 			this.setRoot();
 			this.setTitle(title); // tieu de
 			this.setDefaultCloseOperation(EXIT_ON_CLOSE); // tat han khi onclick close
@@ -91,11 +89,8 @@ public class Screen extends JFrame {
 	{
 		if(user == null)
 		{
-			if(urlLuuTru != null)
-			{
 			    try {
-			    	
-			    	java.io.File read = new java.io.File(url + urlLuuTru);
+			    	java.io.File read = new java.io.File(libary.URL.url + libary.URL.urlLuuTru);
 				    FileReader fr = new FileReader(read);
 				    BufferedReader br = new BufferedReader(fr);
 				    String line;
@@ -150,9 +145,71 @@ public class Screen extends JFrame {
 					// TODO: handle exception
 					System.out.println("Loi doc file: "+ ex);
 				}
-			}
+		}
+		else
+		{
+			root = user.getRoot();
+			this.setRoot((Folder)this.root);
 		}
 	}
+	
+	private void setRoot(Folder e)
+	{
+		try {
+			String sql = "SELECT * FROM _Folder WHERE id_parent = " + e.getId();
+			Statement sta = connect.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			LinkedList<model.Element> els = new LinkedList<model.Element>();
+			while(rs.next())
+			{
+			    Folder folder = new Folder(
+			    		rs.getInt("id"),
+			    		rs.getString("Fullname"), 
+			    		toDateTime(rs.getString("date_create")),
+			    		null,
+			    		e
+			    		);	
+			    els.add((model.Element) folder);
+			}
+			sql = "SELECT * FROM _File WHERE id_parent = " + e.getId();
+			rs = sta.executeQuery(sql);
+			while(rs.next())
+			{
+				/*
+				        id int primary key,
+						Fullname ntext,
+						date_create datetime,
+						date_modifield datetime,
+						size decimal,
+						exType char(10),
+						id_parent int
+				 */
+				//int id, String name, Date create, Date modifield, String ex, 
+	        	//double size, Folder parent
+			    System.out.println("|" + rs.getString("exType") + "|");
+				model.File file = new model.File(
+						rs.getInt("id"),
+						rs.getString("Fullname"),
+					    toDateTime(rs.getString("date_create")),
+					    toDateTime(rs.getString("date_modifield")),
+					    rs.getString("exType"),
+					    rs.getDouble("size"),
+					    e
+						);
+				els.add((model.Element) file);
+			}
+			e.setChildrents(els);
+			sta.close();
+			rs.close();
+			for(model.Element el : e.getChildrents())
+				if(el.getClass().equals(Folder.class))
+					setRoot((Folder)el);		
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	public void show(model.Element folder)
 	{
 		System.out.println(folder.getName());
@@ -204,6 +261,56 @@ public class Screen extends JFrame {
 			}
 
 		});
+		this.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					connect.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+	
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	public void update() {
@@ -216,10 +323,10 @@ public class Screen extends JFrame {
 	}
 
 	private void init() {
-		menubar = new Screen_MenuBar(this, url);
-		toolbar = new Screen_ToolBar(this, url);
+		menubar = new Screen_MenuBar(this);
+		toolbar = new Screen_ToolBar(this, connect, islogin);
 		content = new JPanel();
-		content_center = new PanelContent(this.root, url, this.maxId, this.url + this.urlLuuTru);
+		content_center = new PanelContent(this.root, this.maxId, islogin, connect);
 		actionlistener = new action(this);
 	}
 
@@ -235,7 +342,7 @@ public class Screen extends JFrame {
 
 	private void setIconImage() {
 		try {
-			this.setIconImage((new ImageIcon(url + iconApp1)).getImage());
+			this.setIconImage((new ImageIcon(libary.URL.url + iconApp1)).getImage());
 		} catch (Exception e) {
 			System.out.print("error");
 		}
@@ -251,18 +358,24 @@ public class Screen extends JFrame {
 		setDD();
 		update();
 	}
-
-	public void setUser(User user) {
-		this.user = user;
-		this.update();
+	
+	
+	private java.util.Date toDateTime(String d)
+	{
+		return new Date(
+			Integer.parseInt(d.substring(0, 4)), 
+			Integer.parseInt(d.substring(5, 7)), 
+			Integer.parseInt(d.substring(8, 10)),
+			Integer.parseInt(d.substring(11, 13)),
+			Integer.parseInt(d.substring(14, 16)));
 	}
-
+	
 	public User getUser() {
 		return user;
 	}
 
 	public void Rename() {
-		this.content_center.getCenter().Rename();
+		this.content_center.ShowPanelRight();
 	}
 	
 	public void New(Boolean b) throws IOException
@@ -279,4 +392,14 @@ public class Screen extends JFrame {
 		    case 10: New(true); break;
 		}
 	}
+	
+	public Connection getConnect()
+	{
+		return connect;
+	}
+	
+	public String imageIcon()
+	{
+		return fileIcon;
+    }
 }

@@ -32,12 +32,10 @@ public class Panel_Navigation extends JPanel {
 	private JComboBox search;
 	private Boolean in_input = false;
 	private Screen screen;
-	private String url;
 
-	public Panel_Navigation(Screen screen, String url) {
+	public Panel_Navigation(Screen screen) {
 		super();
 		this.screen = screen;
-		this.url = url;
 		this.setBorder(new LineBorder(Color.black));
 		this.init();
 		this.EditObj();
@@ -49,9 +47,9 @@ public class Panel_Navigation extends JPanel {
 	private void init() {
 		try {
 			mouselisten = new mouse(this);
-			iconback = new JLabel(new ImageIcon(url + back));
+			iconback = new JLabel(new ImageIcon(libary.URL.url + back));
 			iconback.setToolTipText("back");
-			iconforward = new JLabel(new ImageIcon(url + forward));
+			iconforward = new JLabel(new ImageIcon(libary.URL.url + forward));
 			iconforward.setToolTipText("forward");
 			address = new JPanel();
 			input_show = new JTextField();
@@ -134,7 +132,7 @@ public class Panel_Navigation extends JPanel {
 		panel.setOpaque(true);
 		panel.setBackground(ColorList.Back_Ground);
 		address.setLayout(new BorderLayout());
-		address.add(new JLabel(new ImageIcon(url + folder)), BorderLayout.WEST);
+		address.add(new JLabel(new ImageIcon(libary.URL.url + folder)), BorderLayout.WEST);
 		address.add(input_show);
 		panel.add(address);
 		panel.add(search);

@@ -36,7 +36,9 @@ class Key implements KeyListener
 		else
 		{
 			if(tf.getText().length() > tf.getPass().length())
-			  tf.setPass(tf.getPass() + tf.getText().charAt(tf.getText().length() - 1));
+			  tf.setPass(tf.getPass() + e.getKeyChar());
+			else
+			  tf.setPass(tf.getPass().substring(0, tf.getText().length() - 1) + e.getKeyChar());
 		}
 		String t = "";
 		for(int i = 0; i < tf.getText().length(); i++)

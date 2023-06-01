@@ -28,7 +28,7 @@ import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.util.*;
-
+import java.sql.*;
 public class PanelContentCenter extends JScrollPane {
 	private PanelContent pct;
 	private int width, height, space;
@@ -56,23 +56,19 @@ public class PanelContentCenter extends JScrollPane {
 	private int col;
 	private String px = "16px";
 	private String duoi = ".png";
-	private String url;
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
-	private String local;
 	private TableEditer edit = new TableEditer(false);
 	private int maxID;
 
-	public PanelContentCenter(PanelContent pct, Element root, String url, int maxID, String local) {
+	public PanelContentCenter(PanelContent pct, Element root, int maxID) {
 		super();
 		try {
 			this.pct = pct;
-			this.url = url;
 			this.root = root;
 			this.maxID = maxID;
-			this.local = local;
-			nows = null;
-			folderIcon = new ImageIcon(url + folder);
+			this.nows = null;
+			this.folderIcon = new ImageIcon(libary.URL.url + folder);
 			this.setColumn();
 			this.setData();
 			this.init();
@@ -81,16 +77,15 @@ public class PanelContentCenter extends JScrollPane {
 			this.Edit();
 			this.setViewportView(table);
 			this.add(jPopupMenu);
-			table.add(jPopupMenu);
+			this.table.add(jPopupMenu);
 			jPopupMenu.add(open);
 			System.out.println("Tải thành công Content ở giữa");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error Content ở giữa");
 		}
-
 	}
-
+	
 	public void setTable() {
 		model.setDataVector(data, columnNames);
 		table.setModel(model);
@@ -161,19 +156,29 @@ public class PanelContentCenter extends JScrollPane {
 				} else {
 					nows = root;
 				}
-
-				setData();
-				setTable();
-				Edit();
-				pct.noSelected();
+				Update();
 			}
 		});
 	}
 
+	public void Update()
+	{
+		setData();
+		setTable();
+		Edit();
+		pct.noSelected();
+	}
+	public void setRoot(Folder root)
+	{
+		this.root = root;
+		this.nows = null;
+		this.Update();
+	}
+	
 	public void setData() {
 		data = new Object[nows != null ? nows.getChildrents().size() : 1][5];
 		if (nows == null) {
-			ImageIcon icon = new ImageIcon(url + urlIconFolder + root.getIcon() + this.px + this.duoi);
+			ImageIcon icon = new ImageIcon(libary.URL.url + urlIconFolder + root.getIcon() + this.px + this.duoi);
 			data[0][0] = icon;
 			data[0][1] = root.getName();
 			data[0][2] = root.getDateCreate();
@@ -183,7 +188,7 @@ public class PanelContentCenter extends JScrollPane {
 			int i = 0;
 			for (Element el : nows.getChildrents()) {
 				ImageIcon icon = new ImageIcon(
-						url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile) + el.getIcon()
+						libary.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile) + el.getIcon()
 								+ this.px + this.duoi);
 				data[i][0] = icon;
 				data[i][1] = el.getName();
@@ -284,8 +289,10 @@ public class PanelContentCenter extends JScrollPane {
 						j = -1;
 					}
 				}
-
-				nows.getChildrents().add(new Folder(maxID, name, (Folder) nows));
+                int id = getMaxDB(true);
+                if(id == -1) return;
+                id++;
+				nows.getChildrents().add(new Folder(pct.isLogin() == true ? id : maxID, name, (Folder) nows));
 				/*
 				 * Object []obj = {new ImageIcon(url + urlIconFolder +
 				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
@@ -295,9 +302,6 @@ public class PanelContentCenter extends JScrollPane {
 				 * 1).getDateCreate()), nows.getChildrents().get(nows.getChildrents().size() -
 				 * 1).getExName(), ""}; model.addRow(obj);
 				 */
-				setData();
-				setTable();
-				Edit();
 			} else {
 				maxID++;
 				String name = "Tệp mới";
@@ -309,8 +313,10 @@ public class PanelContentCenter extends JScrollPane {
 						j = -1;
 					}
 				}
-
-				nows.getChildrents().add(new File(maxID, name, "", (Folder) nows));
+                int id = getMaxDB(false);
+                if(id == -1) return;
+                id++;
+				nows.getChildrents().add(new File(pct.isLogin() == true ?  id : maxID, name, "", (Folder) nows));
 				/*
 				 * Object []obj = {new ImageIcon(url + urlIconFile +
 				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
@@ -321,22 +327,98 @@ public class PanelContentCenter extends JScrollPane {
 				 * 1).getExName(), nows.getChildrents().get(nows.getChildrents().size() -
 				 * 1).getSize()}; model.addRow(obj);
 				 */
-				setData();
-				setTable();
-				Edit();
 			}
+			setData();
+			setTable();
+			Edit();
 			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
 			table.clearSelection();
 			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
-			ghiFile();
+			if(!pct.isLogin())
+			   ghiFile();
+			else
+			   ghiDB();
 		}
 	}
 
+	private int getMaxDB(Boolean folder)
+	{
+		int kq = -1;
+		String sql = "SELECT MAX(id) AS idMax FROM ";
+		if(folder)
+		{
+			sql += "_Folder";
+		}
+		else {
+			sql += "_File";
+		}
+		try {
+			Statement sta = pct.getConnection().createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			rs.next();
+			kq = rs.getInt("idMax");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return kq;
+	}
+	
+	public void ghiDB()
+	{
+		String sql;
+		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
+		if(e.getClass().equals(Folder.class))
+		{
+			sql = "INSERT INTO _Folder VALUES (" + e.getId() + ", N'" + e.getName() + "', '" 
+		          + toDateTimeSQL(e.getDateCreate()) + "', " + e.getParent().getId() + ")";
+		}
+		else
+		{
+			sql = "INSERT INTO _File VALUES (" + e.getId() + ", N'" + e.getName() + "', '" 
+			          + toDateTimeSQL(e.getDateCreate()) + "', '" + toDateTimeSQL(e.getDateModified()) + "', " + 
+					  e.getSize() + ", '" + e.getExType() + "', " +  e.getParent().getId() + ")";
+		}
+		try {
+			Statement statement = pct.getConnection().createStatement();
+			int check = statement.executeUpdate(sql);
+			if(check > 0)
+				System.out.println("Thêm dữ liệu trên SQL thành công");
+			else
+				System.out.println("Thêm dữ liệu trên SQL thất bại");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			nows.getChildrents().remove(nows.getChildrents().size() - 1);
+			setData();
+			setTable();
+			Edit();
+			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
+			table.clearSelection();
+			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
+			e1.printStackTrace();
+		}
+	}
+	
+	public String toDateTimeSQL(java.util.Date date)
+	{
+		return date.getYear() + "-" + to2(((Integer)date.getMonth()).toString()) + "-" + 
+				to2(((Integer)date.getDate()).toString()) + " " + to2(((Integer)date.getHours()).toString()) + ":" + 
+				to2(((Integer)date.getMinutes()).toString()) + ":" + to2(((Integer)date.getSeconds()).toString());
+	}
+	
+	public String to2(String s)
+	{
+	    if(s.length() > 1)
+	    	return s;
+	    else
+	    	return "0" + s;
+	}
+	
 	public void ghiFile() throws IOException {
 		FileWriter out = null;
 
 		try {
-			out = new FileWriter(local);
+			out = new FileWriter(libary.URL.url + libary.URL.urlLuuTru);
 			System.out.println("Mo file du lieu thanh cong");
 			All(root, out);
 		} finally {

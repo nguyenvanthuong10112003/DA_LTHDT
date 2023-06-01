@@ -11,14 +11,14 @@ public class Folder extends Element{
     {
     	super(id, "Folder new 1");
     	childrens = new LinkedList<Element>();
-    	icon = "folderIcon";
+		icon = "thispc";
         exName = "File folder";
     }    
     public Folder(int id, String name)
     {
     	super(id, name);
     	childrens = new LinkedList<Element>();
-    	icon = "folderIcon";
+		icon = "thispc";
     	exName = "File folder";
     }
     public Folder(int id, String name, Folder parent)
