@@ -56,4 +56,9 @@ public class Screen_ToolBar extends JPanel {
 		} else
 			this.function.setVisible(true);
 	}
+	
+	public Panel_Functions getFunction()
+	{
+		return function;
+	}
 }

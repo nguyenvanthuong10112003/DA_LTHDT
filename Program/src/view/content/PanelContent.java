@@ -21,8 +21,10 @@ import model.Folder;
 import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
 import view.content.right.PanelContentRight;
+import view.screen.Screen;
 
 public class PanelContent extends JPanel {
+	private Screen screen;
 	private ScrollPaneTree contentLeft;
 	private PanelContentCenter contentCenter;
 	private PanelContentRight contentRight;
@@ -38,7 +40,7 @@ public class PanelContent extends JPanel {
     private int maxId;
     private Boolean islogin;
     private Connection conn;
-	public PanelContent(Folder root, int max, Boolean islogin, Connection conn) {
+	public PanelContent(Screen screen, Folder root, int max, Boolean islogin, Connection conn) {
 		super();
 		try {
 			if (root != null) {
@@ -46,6 +48,7 @@ public class PanelContent extends JPanel {
 			} else {
 				this.root = null;
 			}
+			this.screen = screen;
 			this.conn = conn;
 			this.islogin = islogin;
 			this.maxId = max;
@@ -228,5 +231,15 @@ public class PanelContent extends JPanel {
 	public Connection getConnection()
 	{
 		return conn;
+	}
+	
+	public void showNew()
+	{
+		this.screen.showNew();
+	}
+	
+	public void setFunSelectedTablie(Boolean select)
+	{
+		this.screen.setSelectTable(select);
 	}
 }

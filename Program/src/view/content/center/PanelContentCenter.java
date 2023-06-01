@@ -137,6 +137,7 @@ public class PanelContentCenter extends JScrollPane {
 				// TODO Auto-generated method stub
 				if (table.getSelectedRow() >= 0) {
 					pct.SELECTtable(nows != null ? nows.getChildrents().get(table.getSelectedRow()) : root);
+					pct.setFunSelectedTablie(true);
 				}
 			}
 		});
@@ -155,6 +156,7 @@ public class PanelContentCenter extends JScrollPane {
 					}
 				} else {
 					nows = root;
+					pct.showNew();
 				}
 				Update();
 			}
@@ -399,6 +401,30 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 	
+	public void updateDB(Element e)
+	{
+		String sql = "UPDATE ";
+		if(e.getClass().equals(Folder.class))
+		{
+			sql += "_Folder SET Fullname = N'" + e.getName() + "' "; 
+		}
+		else
+		{
+			sql += "_File SET Fullname = N'" + e.getName() + "', exType = '" + e.getExType() + "' ";
+		}
+		sql += "WHERE id = " + e.getId();
+		try {
+			Statement sta = pct.getConnection().createStatement();
+			int check = sta.executeUpdate(sql);
+			if(check > 0)
+				System.out.println("Cập nhật dữ liệu thành công");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+	
 	public String toDateTimeSQL(java.util.Date date)
 	{
 		return date.getYear() + "-" + to2(((Integer)date.getMonth()).toString()) + "-" + 
@@ -442,6 +468,53 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
+	public void deleteChilds(Folder folder)
+	{
+		if(folder.getChildrents().size() == 0)
+		{
+			String sql = "";
+		}
+	}
+	
+	public void deletedRow()
+	{
+		if(pct.isLogin()) {
+			String sql = "DELETE ";
+			Element e = nows.getChildrents().get(table.getSelectedRow());
+			if(e.getClass().equals(Folder.class))
+			{
+				sql += "_Folder WHERE id = " + e.getId();
+			}
+			else
+			{
+				sql += "_File WHERE id = " + e.getId();
+			}
+			try {
+				Statement sta = pct.getConnection().createStatement();
+				int check = sta.executeUpdate(sql);
+				if(check > 0)
+					System.out.println("Xóa dữ liệu thành công");
+			}
+			catch(Exception p)
+			{
+				System.out.println("Lỗi xóa" + p.getMessage());
+			}
+		}
+		nows.getChildrents().remove(table.getSelectedRow());
+		setData();
+		setTable();
+		Edit();
+		table.clearSelection();
+		pct.noSelected();
+		if(!pct.isLogin())
+			try {
+				ghiFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
 	public JTable getTable() {
 		return table;
 	}

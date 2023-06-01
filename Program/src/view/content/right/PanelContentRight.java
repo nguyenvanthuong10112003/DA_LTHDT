@@ -322,6 +322,7 @@ public class PanelContentRight extends JPanel {
 		contain.setVisible(false);
 		modifieldText.setVisible(false);
 		modifield.setVisible(false);
+		pc.setFunSelectedTablie(false);
 	}
 	
 	public JPanel getPanel()
@@ -443,8 +444,11 @@ public class PanelContentRight extends JPanel {
 			pc.getCenter().setData();
 			pc.getCenter().setTable();
 			pc.getCenter().Edit();
+			this.noselected();
 			if(!pc.isLogin())
-			   pc.getCenter().ghiFile();
+			    pc.getCenter().ghiFile();
+			else
+				pc.getCenter().updateDB(select);
 		}
 		
 		

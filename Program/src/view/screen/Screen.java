@@ -186,7 +186,6 @@ public class Screen extends JFrame {
 				 */
 				//int id, String name, Date create, Date modifield, String ex, 
 	        	//double size, Folder parent
-			    System.out.println("|" + rs.getString("exType") + "|");
 				model.File file = new model.File(
 						rs.getInt("id"),
 						rs.getString("Fullname"),
@@ -326,7 +325,7 @@ public class Screen extends JFrame {
 		menubar = new Screen_MenuBar(this);
 		toolbar = new Screen_ToolBar(this, connect, islogin);
 		content = new JPanel();
-		content_center = new PanelContent(this.root, this.maxId, islogin, connect);
+		content_center = new PanelContent(this, this.root, this.maxId, islogin, connect);
 		actionlistener = new action(this);
 	}
 
@@ -383,6 +382,11 @@ public class Screen extends JFrame {
 		this.content_center.getCenter().newRow(b);
 	}
 	
+	public void Delete()
+	{
+	    this.content_center.getCenter().deletedRow();	
+	}
+	
 	public void runfun(int n) throws IOException
 	{
 		switch(n)
@@ -390,6 +394,7 @@ public class Screen extends JFrame {
 		    case 8: Rename(); break;
 		    case 9: New(false); break;
 		    case 10: New(true); break;
+		    case 7: Delete(); break;
 		}
 	}
 	
@@ -402,4 +407,14 @@ public class Screen extends JFrame {
 	{
 		return fileIcon;
     }
+	
+	public void showNew()
+	{
+		toolbar.getFunction().setNew();
+	}
+	
+	public void setSelectTable(Boolean select)
+	{
+		toolbar.getFunction().SETselected(select);
+	}
 }
