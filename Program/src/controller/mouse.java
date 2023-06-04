@@ -113,10 +113,12 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (pf != null) {
 			// System.out.println(e.getSource());
 			pf.mouseOnclick(e.getSource().hashCode());
+			pf.Onclick(e.getSource().hashCode());
 		} else if(pct != null)
 		{
 			pct.getTable().clearSelection();
 		    pct.getPanelContent().noSelected();
+		    pct.getPanelContent().getScreen().FunEnablueRoot(true);
 		}
 
 	}

@@ -61,4 +61,9 @@ public class Screen_ToolBar extends JPanel {
 	{
 		return function;
 	}
+	
+	public Panel_Navigation getNavi()
+	{
+		return navigation;
+	}
 }

@@ -57,6 +57,8 @@ public class Panel_Functions extends JToolBar {
 	private String rename = "\\Icon\\toolbar\\fun\\rename32.png";
 	private String new_folder = "\\Icon\\toolbar\\fun\\new_folder24.png";
 	private String new_file = "\\Icon\\toolbar\\fun\\new_file24.png";
+	private String select_all_icon = "\\Icon\\toolbar\\fun\\selectall24.png";
+	private String select_no_icon = "\\Icon\\toolbar\\fun\\noselect24.png";
 	private JLabel pin_to_access_icon;
 	private JTextArea pinTo_text;
 	private JLabel cut_icon;
@@ -74,6 +76,8 @@ public class Panel_Functions extends JToolBar {
 	private JLabel new_folder_text;
 	private JLabel new_file_icon;
 	private JLabel new_file_text;
+	private JLabel select_all;
+	private JLabel select_no;
 	private JPanel Cut;
 	private JPanel Copy;
 	private JPanel Paste;
@@ -84,6 +88,7 @@ public class Panel_Functions extends JToolBar {
 	private JPanel Rename;
 	private JPanel NewFile;
 	private JPanel NewFolder;
+	private JPanel Select;
 	private mouse mouseListen;
     private Connection con;
     private JLabel tdn;
@@ -128,6 +133,8 @@ public class Panel_Functions extends JToolBar {
 		tdn.setFont(FONT.font_IN_DAM);
         dang_xuat.setFont(FONT.font_IN_DAM);
         hello.setFont(FONT.font_mac_dinh);
+        select_no.setFont(FONT.font_mac_dinh);
+        select_all.setFont(FONT.font_mac_dinh);
 	}
 
 	private void setColor() {
@@ -182,6 +189,12 @@ public class Panel_Functions extends JToolBar {
         dang_xuat.setBackground(Color.BLUE);
         hello.setOpaque(true);
         hello.setBackground(ColorList.Back_Ground);
+        select_all.setOpaque(true);
+        select_all.setBackground(ColorList.Back_Ground);
+        select_no.setOpaque(true);
+        select_no.setBackground(ColorList.Back_Ground);
+        Select.setOpaque(true);
+        Select.setBackground(ColorList.Back_Ground);
 		// ;
 	}
 
@@ -221,6 +234,9 @@ public class Panel_Functions extends JToolBar {
 		tdn = new JLabel();
 		dang_xuat = new JButton();
 		hello = new JLabel();
+		select_no = new JLabel(new ImageIcon(libary.URL.url + select_no_icon));
+		select_all = new JLabel(new ImageIcon(libary.URL.url + select_all_icon));
+		Select = new JPanel();
 	}
 
 	private void setText() {
@@ -239,6 +255,8 @@ public class Panel_Functions extends JToolBar {
 		new_folder_text.setText("Thư mục mới");
 		dang_xuat.setText("Đăng xuất");
 		hello.setText("Xin chào,");
+		select_all.setText("Chọn tất cả");
+		select_no.setText("Bỏ chọn");
 		if(screen.getUser() != null)
 		   tdn.setText(screen.getUser().getName());
 	}
@@ -316,6 +334,11 @@ public class Panel_Functions extends JToolBar {
 		panel.add(NewFile);
 		container_icon_function.add(panel);
 
+		Select.setLayout(new GridLayout(2, 1, 0, 0));
+		Select.add(select_all);
+		Select.add(select_no);
+		container_icon_function.add(Select);
+		
 		this.add(content, BorderLayout.EAST);
 		this.add(container_icon_function, BorderLayout.CENTER);
 		// this.addSeparator();
@@ -335,9 +358,14 @@ public class Panel_Functions extends JToolBar {
 		cut_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
 		copy_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
 		paste_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
+		select_all.setBorder(new EmptyBorder(3, 3, 3, 3));
+		select_no.setBorder(new EmptyBorder(3, 3, 3, 3));
 		
 		tdn.setHorizontalAlignment(JLabel.CENTER);
 		hello.setHorizontalAlignment(JLabel.CENTER);
+
+		select_all.setHorizontalAlignment(JLabel.LEFT);
+		select_no.setHorizontalAlignment(JLabel.LEFT);
 		
         SETselected(false);
 		
@@ -350,8 +378,25 @@ public class Panel_Functions extends JToolBar {
 		new_folder_text.setEnabled(false);
 		
 		paste_icon.setEnabled(false);
+	    EnableRoot(true);	
 	}
 
+	public void EnableRoot(Boolean root)
+	{
+		Delete.setEnabled(!root);
+		delete_icon.setEnabled(!root);
+		delete_text.setEnabled(!root);
+		
+		Rename.setEnabled(!root);
+		rename_icon.setEnabled(!root);
+		rename_text.setEnabled(!root);
+		
+		MoveTo.setEnabled(!root);
+		move_to_icon.setEnabled(!root);
+		move_to_text.setEnabled(!root);
+		cut_icon.setEnabled(!root);
+	}
+	
 	public void addEvent() {
 		this.addMouseMotionListener(mouseListen);
 		login.addMouseListener(mouseListen);
@@ -409,6 +454,13 @@ public class Panel_Functions extends JToolBar {
 		new_folder_icon.addMouseMotionListener(mouseListen);
 		new_folder_text.addMouseListener(mouseListen);
 		new_folder_text.addMouseMotionListener(mouseListen);
+		
+		select_all.addMouseListener(mouseListen);
+		select_all.addMouseMotionListener(mouseListen);
+		select_no.addMouseListener(mouseListen);
+		select_no.addMouseMotionListener(mouseListen);
+		Select.addMouseListener(mouseListen);
+		Select.addMouseMotionListener(mouseListen);
 	}
 
 	public JButton btlogin() {
@@ -489,13 +541,13 @@ public class Panel_Functions extends JToolBar {
 			if (paste_icon.isEnabled()) {
 				paste_icon.setBackground(color);
 			}
-		} else if (hash == delete_icon.hashCode() || hash == delete_text.hashCode()) {
+		} else if (hash == delete_icon.hashCode() || hash == delete_text.hashCode() || hash == Delete.hashCode()) {
 			if (Delete.isEnabled()) {
 				Delete.setBackground(color);
 				delete_icon.setBackground(color);
 				delete_text.setBackground(color);
 			}
-		} else if (hash == rename_icon.hashCode() || hash == rename_text.hashCode()) {
+		} else if (hash == rename_icon.hashCode() || hash == rename_text.hashCode() || hash == Rename.hashCode()) {
 			if (Rename.isEnabled()) {
 				rename_icon.setBackground(color);
 				rename_text.setBackground(color);
@@ -507,8 +559,7 @@ public class Panel_Functions extends JToolBar {
 				new_file_text.setBackground(color);
 				NewFile.setBackground(color);
 			}
-		} else if (hash == new_folder_icon.hashCode() || hash == new_folder_text.hashCode()
-				|| hash == NewFolder.hashCode()) {
+		} else if (hash == new_folder_icon.hashCode() || hash == new_folder_text.hashCode() || hash == NewFolder.hashCode()) {
 			if (NewFolder.isEnabled()) {
 				NewFolder.setBackground(color);
 				new_folder_icon.setBackground(color);
@@ -524,6 +575,12 @@ public class Panel_Functions extends JToolBar {
 				copy_to_icon.setBackground(color);
 				copy_to_text.setBackground(color);
 			}
+		} else if(hash == select_no.hashCode())
+		{
+			    select_no.setBackground(color);
+		} else if(hash == select_all.hashCode())
+		{
+			    select_all.setBackground(color);
 		}
 	}
 
@@ -548,6 +605,17 @@ public class Panel_Functions extends JToolBar {
 			   delete_icon.setBackground(ColorList.Back_Ground);
 			   delete_text.setBackground(ColorList.Back_Ground);
 			}
+		}
+		else if(hash == select_all.hashCode())
+		{
+			n = 11;
+			Rename.setEnabled(false);
+			rename_text.setEnabled(false);
+			rename_icon.setEnabled(false);
+		}
+		else if(hash == select_no.hashCode())
+		{
+			n = 12;
 		}
 		if(0 < n && n < 13)
 			screen.runfun(n);
@@ -583,23 +651,11 @@ public class Panel_Functions extends JToolBar {
 	
 	public void SETselected(Boolean selected)
 	{
-		Rename.setEnabled(selected);
-		Delete.setEnabled(selected);
-		delete_icon.setEnabled(selected);
-		delete_text.setEnabled(selected);
-		rename_icon.setEnabled(selected);
-		rename_text.setEnabled(selected);
-		
 		PinTo.setEnabled(selected);
 		pin_to_access_icon.setEnabled(selected);
 		pinTo_text.setEnabled(selected);
 
-		cut_icon.setEnabled(selected);
 		copy_icon.setEnabled(selected);
-
-		MoveTo.setEnabled(selected);
-		move_to_icon.setEnabled(selected);
-		move_to_text.setEnabled(selected);
 
 		CopyTo.setEnabled(selected);
 		copy_to_icon.setEnabled(selected);

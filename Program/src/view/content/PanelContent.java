@@ -242,4 +242,9 @@ public class PanelContent extends JPanel {
 	{
 		this.screen.setSelectTable(select);
 	}
+	
+	public Screen getScreen()
+	{
+		return screen;
+	}
 }

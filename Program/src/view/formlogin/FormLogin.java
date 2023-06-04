@@ -282,8 +282,7 @@ public class FormLogin extends JFrame {
 					if (checkUser != null) {
 						if (checkUser.get(tdn_input.getText()) != null) {
 							if (checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getPass())) {
-								JOptionPane.showMessageDialog(login, text_accept, thongbao,
-										JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(login, text_accept, thongbao, JOptionPane.INFORMATION_MESSAGE);
 								success(checkUser.get(tdn_input.getText()));
 								setVisible(false);
 								if (fun.getScreen() != null)

@@ -294,7 +294,6 @@ public class PanelContentRight extends JPanel {
 			contain.setVisible(!false);
 			modifieldText.setVisible(false);
 			modifield.setVisible(false);
-			Edit();
 		}
 		else
 		{
@@ -309,9 +308,8 @@ public class PanelContentRight extends JPanel {
 			modifield.setVisible(!false);
 			containText.setVisible(false);
 			contain.setVisible(false);
-			Edit();
 		}
-
+		Edit();
 		panel.setVisible(true);
 	}
 	
@@ -380,8 +378,11 @@ public class PanelContentRight extends JPanel {
 	
 	public void clickedSave() throws IOException
 	{
+		if(select.getParent() == null)
+		{
+			return;
+		}
 		String s = nameContent.getText();
-		
 		while(s.charAt(0) == ' ')
 			s = s.substring(1, s.length());
 		while(s.charAt(s.length() - 1) == ' ')
@@ -444,6 +445,7 @@ public class PanelContentRight extends JPanel {
 			pc.getCenter().setData();
 			pc.getCenter().setTable();
 			pc.getCenter().Edit();
+			pc.getScreen().FunEnablueRoot(true);
 			this.noselected();
 			if(!pc.isLogin())
 			    pc.getCenter().ghiFile();

@@ -78,7 +78,9 @@ public class Panel_Navigation extends JPanel {
 		search.setEditable(true);
 		input_show.setEditable(false);
 		input_show.setBackground(ColorList.Back_Ground);
-		//
+		
+		iconback.setEnabled(false);
+		iconforward.setEnabled(false);
 	}
 
 	private void setFonts() {
@@ -152,5 +154,41 @@ public class Panel_Navigation extends JPanel {
 			if (iconforward.isEnabled())
 				iconforward.setBackground(color);
 		}
+	}
+	
+	public void setEnableBack(Boolean bool)
+	{
+		if(bool == false)
+			iconback.setBackground(ColorList.Back_Ground);
+		iconback.setEnabled(bool);
+	}
+	
+	public void setEnableForward(Boolean bool)
+	{
+		if(bool == false)
+			iconforward.setBackground(ColorList.Back_Ground);
+		iconforward.setEnabled(bool);
+	}
+	
+	public void Onclick(int hash)
+	{
+		if(hash == iconback.hashCode() && iconback.isEnabled())
+		{
+			back();
+		}
+		else if(hash == iconforward.hashCode() && iconforward.isEnabled())
+		{
+			forward();
+		}
+	}
+	
+	public void back()
+	{
+		screen.Back();
+	}
+	
+	public void forward()
+	{
+		screen.Forward();
 	}
 }

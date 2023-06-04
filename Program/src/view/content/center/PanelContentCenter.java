@@ -1,5 +1,4 @@
 package view.content.center;
-
 import model.File;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -34,7 +33,6 @@ public class PanelContentCenter extends JScrollPane {
 	private int width, height, space;
 	private ScrollPaneTree scroll;
 	private mouse mouselisten;
-	private String folder = "\\Icon\\content\\center\\folder\\folderIcon16px.png";
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private JLabel myLabel = new JLabel("waiting");
@@ -56,17 +54,19 @@ public class PanelContentCenter extends JScrollPane {
 	private int col;
 	private String px = "16px";
 	private String duoi = ".png";
+	private String folder = "\\Icon\\content\\center\\folder\\folderIcon16px.png";
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private TableEditer edit = new TableEditer(false);
 	private int maxID;
-
+    private Element cuoi;
 	public PanelContentCenter(PanelContent pct, Element root, int maxID) {
 		super();
 		try {
 			this.pct = pct;
 			this.root = root;
 			this.maxID = maxID;
+			this.cuoi = null;
 			this.nows = null;
 			this.folderIcon = new ImageIcon(libary.URL.url + folder);
 			this.setColumn();
@@ -85,7 +85,7 @@ public class PanelContentCenter extends JScrollPane {
 			System.out.println("Error Content ở giữa");
 		}
 	}
-	
+
 	public void setTable() {
 		model.setDataVector(data, columnNames);
 		table.setModel(model);
@@ -135,9 +135,14 @@ public class PanelContentCenter extends JScrollPane {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				if (table.getSelectedRow() >= 0) {
+				if (table.getSelectedRow() >= 0 && table.getSelectedRowCount() == 1) {
 					pct.SELECTtable(nows != null ? nows.getChildrents().get(table.getSelectedRow()) : root);
 					pct.setFunSelectedTablie(true);
+					if (nows == null)
+						pct.getScreen().FunEnablueRoot(true);
+					else {
+						pct.getScreen().FunEnablueRoot(false);
+					}
 				}
 			}
 		});
@@ -155,28 +160,104 @@ public class PanelContentCenter extends JScrollPane {
 								}
 					}
 				} else {
+					
 					nows = root;
 					pct.showNew();
 				}
+				if(cuoi == null)
+				{
+					if(nows.getParent() == cuoi)
+						cuoi = nows;
+				}
+				else
+				{
+					if(nows != root) {
+						if(nows.getParent() == cuoi)
+							cuoi = nows;
+						else if(!isChild(cuoi, nows))
+							cuoi = nows;
+							
+					}
+				}
+				check();
+				pct.getScreen().FunEnablueRoot(true);
 				Update();
 			}
 		});
 	}
 
-	public void Update()
+	public Boolean isChild(Element con, Element cha)
 	{
+		if(cha == null)
+		    return true;
+		if(con == null)
+			return false;
+		if(con.equals(cha))
+			return true;
+		else
+			return isChild(con.getParent(), cha);		
+	}
+	
+	public void check()
+	{
+		if(nows != null)
+		{
+            pct.getScreen().setBack(true);    
+		}
+		else
+		{
+			pct.getScreen().setBack(false); 
+		}
+        if(cuoi.equals(nows))
+		{
+			pct.getScreen().setForward(false);
+		}
+        else
+        {
+        	pct.getScreen().setForward(true);
+        }
+	}
+	
+	public void back()
+	{
+		nows = nows.getParent();
+		setData();
+		setTable();
+		Edit();
+		check();
+	}
+	
+	public void forward()
+	{
+		nows = timCon(cuoi, nows);
+		setData();
+		setTable();
+		Edit();
+		check();
+	}
+	
+    public Element timCon(Element e, Element cha)
+    {
+    	if(e.getParent() == null)
+    		return e;
+    	if(e.getParent().equals((Folder)cha))
+    	   return e;
+    	return timCon(e.getParent(), cha);
+    }
+    
+	public void Update() {
 		setData();
 		setTable();
 		Edit();
 		pct.noSelected();
 	}
-	public void setRoot(Folder root)
-	{
+
+	public void setRoot(Folder root) {
 		this.root = root;
 		this.nows = null;
 		this.Update();
 	}
-	
+
 	public void setData() {
 		data = new Object[nows != null ? nows.getChildrents().size() : 1][5];
 		if (nows == null) {
@@ -190,8 +271,8 @@ public class PanelContentCenter extends JScrollPane {
 			int i = 0;
 			for (Element el : nows.getChildrents()) {
 				ImageIcon icon = new ImageIcon(
-						libary.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile) + el.getIcon()
-								+ this.px + this.duoi);
+						libary.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile)
+								+ el.getIcon() + this.px + this.duoi);
 				data[i][0] = icon;
 				data[i][1] = el.getName();
 				data[i][2] = el.getTime(
@@ -264,7 +345,7 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void Rename() {
-		if (table.getSelectedRow() >= 0) {
+		if (table.getSelectedRow() == 1) {
 			Component text = edit.getTableCellEditorComponent(table, table.getValueAt(table.getSelectedRow(), 1), true,
 					table.getSelectedRow(), 1);
 			if (text.getClass().equals(JTextField.class)) {
@@ -291,9 +372,10 @@ public class PanelContentCenter extends JScrollPane {
 						j = -1;
 					}
 				}
-                int id = getMaxDB(true);
-                if(id == -1) return;
-                id++;
+				int id = getMaxDB(true);
+				if (id == -1)
+					return;
+				id++;
 				nows.getChildrents().add(new Folder(pct.isLogin() == true ? id : maxID, name, (Folder) nows));
 				/*
 				 * Object []obj = {new ImageIcon(url + urlIconFolder +
@@ -315,10 +397,11 @@ public class PanelContentCenter extends JScrollPane {
 						j = -1;
 					}
 				}
-                int id = getMaxDB(false);
-                if(id == -1) return;
-                id++;
-				nows.getChildrents().add(new File(pct.isLogin() == true ?  id : maxID, name, "", (Folder) nows));
+				int id = getMaxDB(false);
+				if (id == -1)
+					return;
+				id++;
+				nows.getChildrents().add(new File(pct.isLogin() == true ? id : maxID, name, "", (Folder) nows));
 				/*
 				 * Object []obj = {new ImageIcon(url + urlIconFile +
 				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
@@ -336,22 +419,19 @@ public class PanelContentCenter extends JScrollPane {
 			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
 			table.clearSelection();
 			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
-			if(!pct.isLogin())
-			   ghiFile();
+			if (!pct.isLogin())
+				ghiFile();
 			else
-			   ghiDB();
+				ghiDB();
 		}
 	}
 
-	private int getMaxDB(Boolean folder)
-	{
+	private int getMaxDB(Boolean folder) {
 		int kq = -1;
 		String sql = "SELECT MAX(id) AS idMax FROM ";
-		if(folder)
-		{
+		if (folder) {
 			sql += "_Folder";
-		}
-		else {
+		} else {
 			sql += "_File";
 		}
 		try {
@@ -359,35 +439,34 @@ public class PanelContentCenter extends JScrollPane {
 			ResultSet rs = sta.executeQuery(sql);
 			rs.next();
 			kq = rs.getInt("idMax");
+			sta.close();
+			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return kq;
 	}
-	
-	public void ghiDB()
-	{
+
+	public void ghiDB() {
 		String sql;
 		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
-		if(e.getClass().equals(Folder.class))
-		{
-			sql = "INSERT INTO _Folder VALUES (" + e.getId() + ", N'" + e.getName() + "', '" 
-		          + toDateTimeSQL(e.getDateCreate()) + "', " + e.getParent().getId() + ")";
-		}
-		else
-		{
-			sql = "INSERT INTO _File VALUES (" + e.getId() + ", N'" + e.getName() + "', '" 
-			          + toDateTimeSQL(e.getDateCreate()) + "', '" + toDateTimeSQL(e.getDateModified()) + "', " + 
-					  e.getSize() + ", '" + e.getExType() + "', " +  e.getParent().getId() + ")";
+		if (e.getClass().equals(Folder.class)) {
+			sql = "INSERT INTO _Folder VALUES (" + e.getId() + ", N'" + e.getName() + "', '"
+					+ toDateTimeSQL(e.getDateCreate()) + "', " + e.getParent().getId() + ")";
+		} else {
+			sql = "INSERT INTO _File VALUES (" + e.getId() + ", N'" + e.getName() + "', '"
+					+ toDateTimeSQL(e.getDateCreate()) + "', '" + toDateTimeSQL(e.getDateModified()) + "', "
+					+ e.getSize() + ", '" + e.getExType() + "', " + e.getParent().getId() + ")";
 		}
 		try {
 			Statement statement = pct.getConnection().createStatement();
 			int check = statement.executeUpdate(sql);
-			if(check > 0)
+			if (check > 0)
 				System.out.println("Thêm dữ liệu trên SQL thành công");
 			else
 				System.out.println("Thêm dữ liệu trên SQL thất bại");
+			statement.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			nows.getChildrents().remove(nows.getChildrents().size() - 1);
@@ -400,46 +479,41 @@ public class PanelContentCenter extends JScrollPane {
 			e1.printStackTrace();
 		}
 	}
-	
-	public void updateDB(Element e)
-	{
+
+	public void updateDB(Element e) {
 		String sql = "UPDATE ";
-		if(e.getClass().equals(Folder.class))
-		{
-			sql += "_Folder SET Fullname = N'" + e.getName() + "' "; 
-		}
-		else
-		{
+		if (e.getClass().equals(Folder.class)) {
+			sql += "_Folder SET Fullname = N'" + e.getName() + "' ";
+		} else {
 			sql += "_File SET Fullname = N'" + e.getName() + "', exType = '" + e.getExType() + "' ";
 		}
 		sql += "WHERE id = " + e.getId();
 		try {
 			Statement sta = pct.getConnection().createStatement();
 			int check = sta.executeUpdate(sql);
-			if(check > 0)
+			if (check > 0)
 				System.out.println("Cập nhật dữ liệu thành công");
+			sta.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 	}
-	
-	public String toDateTimeSQL(java.util.Date date)
-	{
-		return date.getYear() + "-" + to2(((Integer)date.getMonth()).toString()) + "-" + 
-				to2(((Integer)date.getDate()).toString()) + " " + to2(((Integer)date.getHours()).toString()) + ":" + 
-				to2(((Integer)date.getMinutes()).toString()) + ":" + to2(((Integer)date.getSeconds()).toString());
+
+	public String toDateTimeSQL(java.util.Date date) {
+		return date.getYear() + "-" + to2(((Integer) date.getMonth()).toString()) + "-"
+				+ to2(((Integer) date.getDate()).toString()) + " " + to2(((Integer) date.getHours()).toString()) + ":"
+				+ to2(((Integer) date.getMinutes()).toString()) + ":" + to2(((Integer) date.getSeconds()).toString());
 	}
-	
-	public String to2(String s)
-	{
-	    if(s.length() > 1)
-	    	return s;
-	    else
-	    	return "0" + s;
+
+	public String to2(String s) {
+		if (s.length() > 1)
+			return s;
+		else
+			return "0" + s;
 	}
-	
+
 	public void ghiFile() throws IOException {
 		FileWriter out = null;
 
@@ -447,6 +521,7 @@ public class PanelContentCenter extends JScrollPane {
 			out = new FileWriter(libary.URL.url + libary.URL.urlLuuTru);
 			System.out.println("Mo file du lieu thanh cong");
 			All(root, out);
+			System.out.println("Ghi file thanh cong");
 		} finally {
 			if (out != null) {
 				out.close();
@@ -468,45 +543,79 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	public void deleteChilds(Folder folder)
-	{
-		if(folder.getChildrents().size() == 0)
-		{
-			String sql = "";
+	public void deleteChilds(Folder folder) {
+		String sql = "";
+		if (folder.getChildrents().size() == 0) {
+			sql = "DELETE _Folder WHERE id = " + folder.getId();
+		} else {
+			for (Element e : folder.getChildrents()) {
+				if (e.getClass().equals(File.class)) {
+					String sql1 = "DELETE _File WHERE id = " + e.getId();
+					Statement sta;
+					try {
+						sta = pct.getConnection().createStatement();
+						int check = sta.executeUpdate(sql1);
+						if (check > 0)
+							System.out.println("Xoa thanh cong");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
+					deleteChilds((Folder) e);
+			}
 		}
+		try {
+			Statement sta = pct.getConnection().createStatement();
+			int check = sta.executeUpdate(sql);
+			if (check > 0)
+				System.out.println("Xoa thanh cong");
+			sta.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
-	
-	public void deletedRow()
-	{
-		if(pct.isLogin()) {
-			String sql = "DELETE ";
-			Element e = nows.getChildrents().get(table.getSelectedRow());
-			if(e.getClass().equals(Folder.class))
-			{
-				sql += "_Folder WHERE id = " + e.getId();
+
+	public void deletedRow() {
+		int[] sl = table.getSelectedRows();
+		int n = table.getSelectedRowCount();
+		for(int i = 0; i < n - 1; i++)
+			for(int j = i + 1; j < n; j++)
+				if(sl[i] < sl[j])
+				{
+					int sq = sl[i];
+					sl[i] = sl[j];
+					sl[j] = sq;
+				}
+		
+		for (int i = 0; i < n; i++) {
+			Element e = nows.getChildrents().get(sl[i]);
+			if (pct.isLogin()) {
+				if (e.getClass().equals(Folder.class)) {
+					deleteChilds((Folder) e);
+				} else {
+					String sql = "DELETE ";
+					sql += "_File WHERE id = " + e.getId();
+					try {
+						Statement sta = pct.getConnection().createStatement();
+						int check = sta.executeUpdate(sql);
+						if (check > 0)
+							System.out.println("Xóa dữ liệu thành công");
+					} catch (Exception p) {
+						System.out.println("Lỗi xóa" + p.getMessage());
+					}
+				}
 			}
-			else
-			{
-				sql += "_File WHERE id = " + e.getId();
-			}
-			try {
-				Statement sta = pct.getConnection().createStatement();
-				int check = sta.executeUpdate(sql);
-				if(check > 0)
-					System.out.println("Xóa dữ liệu thành công");
-			}
-			catch(Exception p)
-			{
-				System.out.println("Lỗi xóa" + p.getMessage());
-			}
+			nows.getChildrents().remove(sl[i]);
 		}
-		nows.getChildrents().remove(table.getSelectedRow());
 		setData();
 		setTable();
 		Edit();
 		table.clearSelection();
 		pct.noSelected();
-		if(!pct.isLogin())
+		if (!pct.isLogin())
 			try {
 				ghiFile();
 			} catch (IOException e) {
@@ -514,7 +623,7 @@ public class PanelContentCenter extends JScrollPane {
 				e.printStackTrace();
 			}
 	}
-	
+
 	public JTable getTable() {
 		return table;
 	}
@@ -525,6 +634,18 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void NoSelected() {
 		open.setEnabled(false);
+		table.clearSelection();
+		pct.noSelected();
+		pct.getScreen().FunEnablueRoot(true);
+	}
+
+	public void selectAll() {
+		table.selectAll();
+		pct.setFunSelectedTablie(true);
+		if (nows == null)
+			pct.getScreen().FunEnablueRoot(true);
+		else
+			pct.getScreen().FunEnablueRoot(false);
 	}
 
 	public void Selected() {

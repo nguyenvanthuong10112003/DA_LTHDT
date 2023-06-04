@@ -395,7 +395,19 @@ public class Screen extends JFrame {
 		    case 9: New(false); break;
 		    case 10: New(true); break;
 		    case 7: Delete(); break;
+		    case 11: SelectAll(); break;
+		    case 12: NoSelect(); break;
 		}
+	}
+	// table chọn tất cả các dòng
+	public void SelectAll()
+	{
+	     this.content_center.getCenter().selectAll();	
+	}
+	// table bỏ chọn tất cả các dòng
+	public void NoSelect()
+	{
+		 this.content_center.getCenter().NoSelected();
 	}
 	
 	public Connection getConnect()
@@ -408,6 +420,7 @@ public class Screen extends JFrame {
 		return fileIcon;
     }
 	
+	// hiển thị nút new folder, file
 	public void showNew()
 	{
 		toolbar.getFunction().setNew();
@@ -416,5 +429,30 @@ public class Screen extends JFrame {
 	public void setSelectTable(Boolean select)
 	{
 		toolbar.getFunction().SETselected(select);
+	}
+	
+	public void FunEnablueRoot(Boolean root)
+	{
+		toolbar.getFunction().EnableRoot(root);
+	}
+	
+	public void setBack(Boolean bool)
+	{
+		toolbar.getNavi().setEnableBack(bool);
+	}
+	
+	public void setForward(Boolean bool)
+	{
+		toolbar.getNavi().setEnableForward(bool);
+	}
+	
+	public void Back()
+	{
+		content_center.getCenter().back();
+	}
+	
+	public void Forward()
+	{
+		content_center.getCenter().forward();
 	}
 }

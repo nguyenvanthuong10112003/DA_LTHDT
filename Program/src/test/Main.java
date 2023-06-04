@@ -33,6 +33,7 @@ public class Main {
 			if (conn != null) {
 				System.out.println("Ket noi database thanh cong");
 			}else {
+				conn.close();
 				System.out.println("Ket noi database that bai");
 			}
 	        Screen form = new Screen("Chương trình quản lý file và folder", fileIcon, null, conn, false);
