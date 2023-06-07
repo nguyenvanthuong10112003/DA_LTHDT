@@ -97,7 +97,7 @@ public class Screen extends JFrame {
 				    while ((line = br.readLine()) != null){
 				       Vector <String>arr = tach(line);
 				       if(Integer.parseInt(arr.get(0)) > maxId)
-		    		   maxId = Integer.parseInt(arr.get(0));
+		    		       maxId = Integer.parseInt(arr.get(0));
 				       if(arr.get(arr.size() - 1).equals(""))
 				       {
 				    	   root = new Folder(Integer.parseInt(arr.get(0)), arr.get(1),toDate(arr.get(2)), null, null); 
@@ -143,7 +143,7 @@ public class Screen extends JFrame {
 			    }
 				catch (Exception ex) {
 					// TODO: handle exception
-					System.out.println("Loi doc file: "+ ex);
+					System.out.println("Loi doc file data: "+ ex);
 				}
 		}
 		else
@@ -373,6 +373,41 @@ public class Screen extends JFrame {
 		return user;
 	}
 
+	public void Pin()
+	{
+		this.content_center.getCenter().Pin();
+	}
+	
+	public void Cut()
+	{
+		this.content_center.getCenter().Cut();
+	}
+
+	public void Copy()
+	{
+		this.content_center.getCenter().Copy();
+	}
+	
+	public void Paste()
+	{
+		this.content_center.getCenter().Paste();
+	}
+	
+	public void MoveTo()
+	{
+		this.content_center.getCenter().MoveTo();
+	}
+	
+	public void CopyTo()
+	{
+		this.content_center.getCenter().CopyTo();
+	}
+	
+	public void Delete()
+	{
+	    this.content_center.getCenter().deletedRow();	
+	}
+	
 	public void Rename() {
 		this.content_center.ShowPanelRight();
 	}
@@ -382,23 +417,6 @@ public class Screen extends JFrame {
 		this.content_center.getCenter().newRow(b);
 	}
 	
-	public void Delete()
-	{
-	    this.content_center.getCenter().deletedRow();	
-	}
-	
-	public void runfun(int n) throws IOException
-	{
-		switch(n)
-		{
-		    case 8: Rename(); break;
-		    case 9: New(false); break;
-		    case 10: New(true); break;
-		    case 7: Delete(); break;
-		    case 11: SelectAll(); break;
-		    case 12: NoSelect(); break;
-		}
-	}
 	// table chọn tất cả các dòng
 	public void SelectAll()
 	{
@@ -408,6 +426,25 @@ public class Screen extends JFrame {
 	public void NoSelect()
 	{
 		 this.content_center.getCenter().NoSelected();
+	}
+	
+	public void runfun(int n) throws IOException
+	{
+		switch(n)
+		{
+		    case 1: Pin(); break;
+		    case 2: Cut(); break;
+		    case 3: Copy(); break;
+		    case 4: Paste(); break;
+		    case 5: MoveTo(); break;
+		    case 6: CopyTo(); break;
+	        case 7: Delete(); break;
+		    case 8: Rename(); break;
+		    case 9: New(false); break;
+		    case 10: New(true); break;
+		    case 11: SelectAll(); break;
+		    case 12: NoSelect(); break;
+		}
 	}
 	
 	public Connection getConnect()
@@ -444,6 +481,11 @@ public class Screen extends JFrame {
 	public void setForward(Boolean bool)
 	{
 		toolbar.getNavi().setEnableForward(bool);
+	}
+	
+	public void setEnPaste(Boolean bool)
+	{
+		toolbar.getFunction().setEnPaste(bool);
 	}
 	
 	public void Back()

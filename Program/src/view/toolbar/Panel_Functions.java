@@ -78,9 +78,6 @@ public class Panel_Functions extends JToolBar {
 	private JLabel new_file_text;
 	private JLabel select_all;
 	private JLabel select_no;
-	private JPanel Cut;
-	private JPanel Copy;
-	private JPanel Paste;
 	private JPanel PinTo;
 	private JPanel MoveTo;
 	private JPanel CopyTo;
@@ -148,51 +145,75 @@ public class Panel_Functions extends JToolBar {
 		content.setBackground(ColorList.Back_Ground);
 		container_icon_function.setOpaque(true);
 		container_icon_function.setBackground(ColorList.Back_Ground);
+		pinTo_text.setOpaque(true);
+		pinTo_text.setBackground(ColorList.Back_Ground);
+		pinTo_text.setForeground(ColorList.Fore_Ground);
 		pin_to_access_icon.setOpaque(true);
 		pin_to_access_icon.setBackground(ColorList.Back_Ground);
+		pin_to_access_icon.setForeground(ColorList.Fore_Ground);
 		cut_icon.setOpaque(true);
 		cut_icon.setBackground(ColorList.Back_Ground);
+		cut_icon.setForeground(ColorList.Fore_Ground);
 		copy_icon.setOpaque(true);
 		copy_icon.setBackground(ColorList.Back_Ground);
+		copy_icon.setForeground(ColorList.Fore_Ground);
 		paste_icon.setOpaque(true);
 		paste_icon.setBackground(ColorList.Back_Ground);
+		paste_icon.setForeground(ColorList.Fore_Ground);
 		copy_to_text.setOpaque(true);
 		copy_to_text.setBackground(ColorList.Back_Ground);
+		copy_to_text.setForeground(ColorList.Fore_Ground);
 		copy_to_icon.setOpaque(true);
 		copy_to_icon.setBackground(ColorList.Back_Ground);
+		copy_to_icon.setForeground(ColorList.Fore_Ground);
 		move_to_text.setOpaque(true);
 		move_to_text.setBackground(ColorList.Back_Ground);
+		move_to_text.setForeground(ColorList.Fore_Ground);
 		move_to_icon.setOpaque(true);
 		move_to_icon.setBackground(ColorList.Back_Ground);
+		move_to_icon.setForeground(ColorList.Fore_Ground);
 		rename_icon.setOpaque(true);
 		rename_icon.setBackground(ColorList.Back_Ground);
+		rename_icon.setForeground(ColorList.Fore_Ground);
 		rename_text.setOpaque(true);
 		rename_text.setBackground(ColorList.Back_Ground);
+		rename_text.setForeground(ColorList.Fore_Ground);
 		delete_icon.setOpaque(true);
 		delete_icon.setBackground(ColorList.Back_Ground);
+		delete_icon.setForeground(ColorList.Fore_Ground);
 		delete_text.setOpaque(true);
 		delete_text.setBackground(ColorList.Back_Ground);
+		delete_text.setForeground(ColorList.Fore_Ground);
 		new_file_icon.setOpaque(true);
 		new_file_icon.setBackground(ColorList.Back_Ground);
+		new_file_icon.setForeground(ColorList.Fore_Ground);
 		new_file_text.setOpaque(true);
 		new_file_text.setBackground(ColorList.Back_Ground);
+		new_file_text.setForeground(ColorList.Fore_Ground);
 		new_folder_icon.setOpaque(true);
 		new_folder_icon.setBackground(ColorList.Back_Ground);
+		new_folder_icon.setForeground(ColorList.Fore_Ground);
 		new_folder_text.setOpaque(true);
 		new_folder_text.setBackground(ColorList.Back_Ground);
+		new_folder_text.setForeground(ColorList.Fore_Ground);
 		NewFile.setOpaque(true);
 		NewFile.setBackground(ColorList.Back_Ground);
 		NewFolder.setOpaque(true);
 		NewFolder.setBackground(ColorList.Back_Ground);
 		tdn.setOpaque(true);
         tdn.setBackground(ColorList.Back_Ground);
+        tdn.setForeground(ColorList.Fore_Ground);
         dang_xuat.setBackground(Color.BLUE);
+        dang_xuat.setForeground(ColorList.Fore_Ground);
         hello.setOpaque(true);
         hello.setBackground(ColorList.Back_Ground);
+        hello.setForeground(ColorList.Fore_Ground);
         select_all.setOpaque(true);
         select_all.setBackground(ColorList.Back_Ground);
+        select_all.setForeground(ColorList.Fore_Ground);
         select_no.setOpaque(true);
         select_no.setBackground(ColorList.Back_Ground);
+        select_no.setForeground(ColorList.Fore_Ground);
         Select.setOpaque(true);
         Select.setBackground(ColorList.Back_Ground);
 		// ;
@@ -212,9 +233,6 @@ public class Panel_Functions extends JToolBar {
 		new_folder_text = new JLabel();
 		pinTo_text = new JTextArea();
 		PinTo = new JPanel();
-		Cut = new JPanel();
-		Copy = new JPanel();
-		Paste = new JPanel();
 		MoveTo = new JPanel();
 		CopyTo = new JPanel();
 		Delete = new JPanel();
@@ -586,16 +604,29 @@ public class Panel_Functions extends JToolBar {
 
 	public void setClicked(int hash) throws IOException {
 		int n = -1;
-		if (hash == rename_icon.hashCode() || hash == rename_text.hashCode() || hash == Rename.hashCode()) {
-			n = 8;
-		}
-		else if(hash == new_file_icon.hashCode() || hash == new_file_text.hashCode() || hash == NewFile.hashCode())
+		if(hash == pin_to_access_icon.hashCode() || hash == PinTo.hashCode() || hash == pinTo_text.hashCode())
 		{
-			n = 9;
+			n = 1;
 		}
-		else if(hash == new_folder_icon.hashCode() || hash == new_folder_text.hashCode() || hash == NewFolder.hashCode())
+		else if(hash == cut_icon.hashCode())
 		{
-			n = 10;
+			n = 2;
+		}
+		else if(hash == copy_icon.hashCode())
+		{
+			n = 3;
+		}
+		else if(hash == paste_icon.hashCode())
+		{
+			n = 4;
+		}
+		else if(hash == move_to_icon.hashCode() || hash == move_to_text.hashCode() || hash == MoveTo.hashCode())
+		{
+			n = 5;
+		}
+		else if(hash == copy_to_icon.hashCode() || hash == copy_to_text.hashCode() || hash == CopyTo.hashCode())
+		{
+			n = 6;
 		}
 		else if(hash == Delete.hashCode() || hash == delete_icon.hashCode() || hash == delete_text.hashCode())
 		{
@@ -605,6 +636,18 @@ public class Panel_Functions extends JToolBar {
 			   delete_icon.setBackground(ColorList.Back_Ground);
 			   delete_text.setBackground(ColorList.Back_Ground);
 			}
+		}
+		else if (hash == rename_icon.hashCode() || hash == rename_text.hashCode() || hash == Rename.hashCode()) 
+		{
+			n = 8;
+		}
+		else if(hash == new_file_icon.hashCode() || hash == new_file_text.hashCode() || hash == NewFile.hashCode())
+		{
+			n = 9;
+		}
+		else if(hash == new_folder_icon.hashCode() || hash == new_folder_text.hashCode() || hash == NewFolder.hashCode())
+		{
+			n = 10;
 		}
 		else if(hash == select_all.hashCode())
 		{
@@ -660,5 +703,10 @@ public class Panel_Functions extends JToolBar {
 		CopyTo.setEnabled(selected);
 		copy_to_icon.setEnabled(selected);
 		copy_to_text.setEnabled(selected);
+	}
+	
+	public void setEnPaste(Boolean bool)
+	{
+		paste_icon.setEnabled(bool);
 	}
 }
