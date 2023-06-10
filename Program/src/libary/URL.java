@@ -6,4 +6,7 @@ public interface URL {
   	public final String urlLuuTru = "\\data\\luutru.txt";
   	public final String urlQuyen = "\\data\\quyen.txt";
 	public final String url = System.getProperty("user.dir");
+	public final String urlContentLeft = "\\Icon\\content\\left\\";
+	public final String urlContentLeftFolder = "\\Icon\\content\\left\\folder\\";
+	public final String urlContentLeftIcon = "\\Icon\\content\\left\\icon\\";
 }

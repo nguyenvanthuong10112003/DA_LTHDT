@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import java.sql.Statement;
 import java.time.LocalDate;
 abstract public class Element{
 	protected int id;
@@ -12,6 +14,7 @@ abstract public class Element{
     protected String icon;
     protected Folder parent;
     protected String exName;
+    protected String table;
     private LinkedList<Authority> authority;
     public Element()
     {   	
@@ -143,6 +146,28 @@ abstract public class Element{
 			return ((Integer)a).toString();
 		return "0" + a;
 	}
+	
+	public String to2(String s) {
+		if (s.length() > 1)
+			return s;
+		else
+			return "0" + s;
+	}
+	
+	public String toDateTimeSQL(java.util.Date date) {
+		return date.getYear() + "-" + to2(((Integer) date.getMonth()).toString()) + "-"
+				+ to2(((Integer) date.getDate()).toString()) + " " + to2(((Integer) date.getHours()).toString()) + ":"
+				+ to2(((Integer) date.getMinutes()).toString()) + ":" + to2(((Integer) date.getSeconds()).toString());
+	}
+	
+	public Element timCon(Element e, Element cha) {
+		if (e.getParent() == null)
+			return e;
+		if (e.getParent().equals((Folder) cha))
+			return e;
+		return timCon(e.getParent(), cha);
+	}
+	public abstract int getMax();
 	public abstract String getExType();
 	public abstract void setExType(String exType);
 	public abstract Date getDateModified();
@@ -151,4 +176,7 @@ abstract public class Element{
 	public abstract void setChildrents(LinkedList<Element> childrens);
 	public abstract double getSize();
 	public abstract void setSize(double size);
+	public abstract void updateToDB(Statement sta, String name, int id);
+	public abstract void addToDB(Statement sta);
+    public abstract void deleteToDB(Statement sta);
 }

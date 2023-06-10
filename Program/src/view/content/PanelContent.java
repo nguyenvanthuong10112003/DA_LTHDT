@@ -247,4 +247,9 @@ public class PanelContent extends JPanel {
 	{
 		return screen;
 	}
+	
+	public void UpdateLeft()
+	{
+		contentLeft.getTreeBar().Update();
+	}
 }

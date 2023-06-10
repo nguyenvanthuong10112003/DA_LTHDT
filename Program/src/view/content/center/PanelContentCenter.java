@@ -1,4 +1,5 @@
 package view.content.center;
+
 import model.File;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -30,6 +31,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.*;
 import java.sql.*;
+
 public class PanelContentCenter extends JScrollPane {
 	private PanelContent pct;
 	private int width, height, space;
@@ -50,11 +52,11 @@ public class PanelContentCenter extends JScrollPane {
 	private Object[][] data;
 	private Element root;
 	private Element nows;
-    private Element cuoi;
-    private Element dau;
-    private LinkedList<Element> copy;
-    private LinkedList<Element> cut;
-    private int countCut;
+	private Element cuoi;
+	private Element dau;
+	private LinkedList<Element> copy;
+	private LinkedList<Element> cut;
+	private int countCut;
 	private DefaultTableModel model;
 	private Font font16 = new Font("Arial", Font.PLAIN, 16);
 	private int row;
@@ -67,6 +69,7 @@ public class PanelContentCenter extends JScrollPane {
 	private TableEditer edit = new TableEditer(false);
 	private int maxID;
 	private LinkedList<Integer> selectCut;
+
 	public PanelContentCenter(PanelContent pct, Element root, int maxID) {
 		super();
 		try {
@@ -118,13 +121,11 @@ public class PanelContentCenter extends JScrollPane {
 				((JLabel) compent).setBorder(new EmptyBorder(0, 2, 0, 0));
 				((JLabel) compent).setOpaque(true);
 				((JLabel) compent).setForeground(ColorList.Fore_Ground);
-				if(selectCut != null)
-				{
-					if(selectCut.size() > 0)
-					{
-						for(int e : selectCut)
-							if(e == row) {
-								((JLabel) compent).setForeground(new Color(0,0,0,64));
+				if (selectCut != null) {
+					if (selectCut.size() > 0) {
+						for (int e : selectCut)
+							if (e == row) {
+								((JLabel) compent).setForeground(new Color(0, 0, 0, 64));
 							}
 					}
 				}
@@ -132,7 +133,7 @@ public class PanelContentCenter extends JScrollPane {
 			}
 		};
 	}
-	
+
 	public void Edit() {
 		this.setColor();
 		this.setBackground(ColorList.Back_Ground);
@@ -149,7 +150,7 @@ public class PanelContentCenter extends JScrollPane {
 		this.table.getColumnModel().getColumn(0).setMaxWidth(50);
 		this.table.setBackground(ColorList.Back_Ground);
 	}
-	
+
 	public void setTable() {
 		model.setDataVector(data, columnNames);
 		table.setModel(model);
@@ -225,27 +226,23 @@ public class PanelContentCenter extends JScrollPane {
 								}
 					}
 				} else {
-					
 					nows = root;
 					pct.showNew();
 				}
-				if(cuoi == null)
-				{
-					if(nows.getParent() == cuoi)
+				if (cuoi == null) {
+					if (nows.getParent() == cuoi)
 						cuoi = nows;
-				}
-				else
-				{
-					if(nows != root) {
-						if(nows.getParent() == cuoi)
+				} else {
+					if (nows != root) {
+						if (nows.getParent() == cuoi)
 							cuoi = nows;
-						else if(!isChild(cuoi, nows))
+						else if (!isChild(cuoi, nows))
 							cuoi = nows;
-							
+
 					}
 				}
 				check();
-				if(cut == null && copy == null)
+				if (cut == null && copy == null)
 					pct.getScreen().setEnPaste(false);
 				else
 					pct.getScreen().setEnPaste(true);
@@ -255,69 +252,49 @@ public class PanelContentCenter extends JScrollPane {
 		});
 	}
 
-	public Boolean isChild(Element con, Element cha)
-	{
-		if(cha == null)
-		    return true;
-		if(con == null)
+	public Boolean isChild(Element con, Element cha) {
+		if (cha == null)
+			return true;
+		if (con == null)
 			return false;
-		if(con.equals(cha))
+		if (con.equals(cha))
 			return true;
 		else
-			return isChild(con.getParent(), cha);		
+			return isChild(con.getParent(), cha);
 	}
-	
-	public void check()
-	{
-		if(nows != null)
-		{
-            pct.getScreen().setBack(true);    
+
+	public void check() {
+		if (nows != null) {
+			pct.getScreen().setBack(true);
+		} else {
+			pct.getScreen().setBack(false);
 		}
-		else
-		{
-			pct.getScreen().setBack(false); 
-		}
-        if(cuoi.equals(nows))
-		{
+		if (cuoi.equals(nows)) {
 			pct.getScreen().setForward(false);
+		} else {
+			pct.getScreen().setForward(true);
 		}
-        else
-        {
-        	pct.getScreen().setForward(true);
-        }
 	}
-	
-	public void back()
-	{
+
+	public void back() {
 		nows = nows.getParent();
-		setData();
-		setTable();
-		Edit();
+		Update();
 		check();
 	}
-	
-	public void forward()
-	{
-		nows = timCon(cuoi, nows);
-		setData();
-		setTable();
-		Edit();
+
+	public void forward() {
+		nows = nows.timCon(cuoi, nows);
+		Update();
 		check();
 	}
-	
-    public Element timCon(Element e, Element cha)
-    {
-    	if(e.getParent() == null)
-    		return e;
-    	if(e.getParent().equals((Folder)cha))
-    	   return e;
-    	return timCon(e.getParent(), cha);
-    }
-    
+
+
+
 	public void Update() {
 		setData();
 		setTable();
 		Edit();
+		table.clearSelection();
 		pct.noSelected();
 	}
 
@@ -353,7 +330,7 @@ public class PanelContentCenter extends JScrollPane {
 			}
 		}
 	}
-	
+
 	public boolean isCellEditable(int row, int column) {
 		return false;
 	};
@@ -383,92 +360,34 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	private int getMaxDB(Boolean folder) {
-		int kq = -1;
-		String sql = "SELECT MAX(id) AS idMax FROM ";
-		if (folder) {
-			sql += "_Folder";
-		} else {
-			sql += "_File";
-		}
-		try {
-			Statement sta = pct.getConnection().createStatement();
-			ResultSet rs = sta.executeQuery(sql);
-			rs.next();
-			kq = rs.getInt("idMax");
-			sta.close();
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return kq;
-	}
-	
 	public void ghiDBAddRow() {
 		String sql;
 		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
-		if (e.getClass().equals(Folder.class)) {
-			sql = "INSERT INTO _Folder VALUES (" + e.getId() + ", N'" + e.getName() + "', '"
-					+ toDateTimeSQL(e.getDateCreate()) + "', " + e.getParent().getId() + ")";
-		} else {
-			sql = "INSERT INTO _File VALUES (" + e.getId() + ", N'" + e.getName() + "', '"
-					+ toDateTimeSQL(e.getDateCreate()) + "', '" + toDateTimeSQL(e.getDateModified()) + "', "
-					+ e.getSize() + ", '" + e.getExType() + "', " + e.getParent().getId() + ")";
-		}
+
 		try {
 			Statement statement = pct.getConnection().createStatement();
-			int check = statement.executeUpdate(sql);
-			if (check > 0)
-				System.out.println("Thêm dữ liệu trên SQL thành công");
-			else
-				System.out.println("Thêm dữ liệu trên SQL thất bại");
+			e.addToDB(statement);
 			statement.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
+			Update();
 			nows.getChildrents().remove(nows.getChildrents().size() - 1);
-			setData();
-			setTable();
-			Edit();
 			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
-			table.clearSelection();
 			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
 			e1.printStackTrace();
 		}
 	}
 
 	public void updateDB(Element e) {
-		String sql = "UPDATE ";
-		if (e.getClass().equals(Folder.class)) {
-			sql += "_Folder SET Fullname = N'" + e.getName() + "' ";
-		} else {
-			sql += "_File SET Fullname = N'" + e.getName() + "', exType = '" + e.getExType() + "' ";
-		}
-		sql += "WHERE id = " + e.getId();
 		try {
 			Statement sta = pct.getConnection().createStatement();
-			int check = sta.executeUpdate(sql);
-			if (check > 0)
-				System.out.println("Cập nhật dữ liệu thành công");
+			e.updateToDB(sta, e.getName(), e.getId());
 			sta.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
-	}
-
-	public String toDateTimeSQL(java.util.Date date) {
-		return date.getYear() + "-" + to2(((Integer) date.getMonth()).toString()) + "-"
-				+ to2(((Integer) date.getDate()).toString()) + " " + to2(((Integer) date.getHours()).toString()) + ":"
-				+ to2(((Integer) date.getMinutes()).toString()) + ":" + to2(((Integer) date.getSeconds()).toString());
-	}
-
-	public String to2(String s) {
-		if (s.length() > 1)
-			return s;
-		else
-			return "0" + s;
 	}
 
 	public void ghiFile() throws IOException {
@@ -500,85 +419,39 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	public void deleteChilds(Folder folder) {
-		String sql = "";
-		if (folder.getChildrents().size() == 0) {
-			sql = "DELETE _Folder WHERE id = " + folder.getId();
-		} else {
-			for (Element e : folder.getChildrents()) {
-				if (e.getClass().equals(File.class)) {
-					String sql1 = "DELETE _File WHERE id = " + e.getId();
-					Statement sta;
-					try {
-						sta = pct.getConnection().createStatement();
-						int check = sta.executeUpdate(sql1);
-						if (check > 0)
-							System.out.println("Xoa thanh cong");
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else
-					deleteChilds((Folder) e);
-			}
-		}
-		try {
-			Statement sta = pct.getConnection().createStatement();
-			int check = sta.executeUpdate(sql);
-			if (check > 0)
-				System.out.println("Xoa thanh cong");
-			sta.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
 	public void deletedRow() {
 		int[] sl = table.getSelectedRows();
 		int n = table.getSelectedRowCount();
-		for(int i = 0; i < n - 1; i++)
-			for(int j = i + 1; j < n; j++)
-				if(sl[i] < sl[j])
-				{
+		for (int i = 0; i < n - 1; i++)
+			for (int j = i + 1; j < n; j++)
+				if (sl[i] < sl[j]) {
 					int sq = sl[i];
 					sl[i] = sl[j];
 					sl[j] = sq;
 				}
-		
-		for (int i = 0; i < n; i++) {
-			Element e = nows.getChildrents().get(sl[i]);
-			if (pct.isLogin()) {
-				if (e.getClass().equals(Folder.class)) {
-					deleteChilds((Folder) e);
-				} else {
-					String sql = "DELETE ";
-					sql += "_File WHERE id = " + e.getId();
-					try {
-						Statement sta = pct.getConnection().createStatement();
-						int check = sta.executeUpdate(sql);
-						if (check > 0)
-							System.out.println("Xóa dữ liệu thành công");
-					} catch (Exception p) {
-						System.out.println("Lỗi xóa" + p.getMessage());
-					}
+
+		try {
+			Statement sta = pct.getConnection().createStatement();
+			for (int i = 0; i < n; i++) {
+				Element e = nows.getChildrents().get(sl[i]);
+				if (pct.isLogin()) {
+					e.deleteToDB(sta);
 				}
+				nows.getChildrents().remove(sl[i]);
 			}
-			nows.getChildrents().remove(sl[i]);
+			sta.close();
+			if (!pct.isLogin())
+				try {
+					ghiFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		if (!pct.isLogin())
-			try {
-				ghiFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		setData();
-		setTable();
-		Edit();
-		table.clearSelection();
-		pct.noSelected();
+		Update();
 	}
 
 	public JTable getTable() {
@@ -589,305 +462,174 @@ public class PanelContentCenter extends JScrollPane {
 		return jPopupMenu;
 	}
 
-	public void Pin()
-	{
-		
+	public void Pin() {
+
 	}
-	
-	public void Cut()
-	{
+
+	public void Cut() {
 		cut = new LinkedList<Element>();
 		selectCut = new LinkedList<Integer>();
-		for(int i = 0; i < table.getSelectedRowCount(); i++) {
+		for (int i = 0; i < table.getSelectedRowCount(); i++) {
 			cut.add(nows.getChildrents().get(table.getSelectedRows()[i]));
 			selectCut.add(table.getSelectedRows()[i]);
 		}
 		table.setVisible(false);
 		table.setVisible(true);
-		if(nows != null)
-		   pct.getScreen().setEnPaste(true);
+		if (nows != null)
+			pct.getScreen().setEnPaste(true);
 		copy = null;
 		countCut = 0;
 	}
-	
-	public void Copy()
-	{
+
+	public void Copy() {
 		copy = new LinkedList<Element>();
 		selectCut = null;
 		int arr[] = table.getSelectedRows();
-		if(nows != null) {
-			for(int i = 0; i < table.getSelectedRowCount(); i++)
+		if (nows != null) {
+			for (int i = 0; i < table.getSelectedRowCount(); i++)
 				copy.add(nows.getChildrents().get(arr[i]));
-		}
-		else
-		{
+		} else {
 			copy.add(root);
 		}
 		table.setVisible(false);
 		table.setVisible(true);
-		if(nows != null)
-		   pct.getScreen().setEnPaste(true);
+		if (nows != null)
+			pct.getScreen().setEnPaste(true);
 		cut = null;
 	}
+
 	
-	private Element setIdChilds(Element e)
-	{ 
-		 Element el;
-         if(e.getClass().equals(Folder.class))
-         {
-        	 el = new Folder(e.getId(), e.getName(), e.getDateCreate(), null, e.getParent());
-        	 if(e.getChildrents().size() > 0)
-        	 {
-        		 for(int i = 0; i < e.getChildrents().size(); i++) {
-        			 el.getChildrents().add(setIdChilds(e.getChildrents().get(i)));
-        			 el.getChildrents().get(i).setParent((Folder)el);
-        		 }
-        	 }
-         }
-         else
-         {
-        	 el = new File(e.getId(), e.getName(), e.getDateCreate(), e.getDateModified(), e.getExType(), e.getSize(), e.getParent());
-         }
-         if(pct.isLogin())
-            maxID++;
-         el.setId(pct.isLogin() == true ? getMaxDB(el.getClass().equals(Folder.class) == true ? true : false) + 1 : maxID);
-         if(pct.isLogin())
-         {
- 			String sql;
- 			if(e.getClass().equals(Folder.class))
- 			{
- 				sql = "INSERT INTO _Folder VALUES (" + el.getId() + ", N'" + el.getName() + "', '"
- 							+ toDateTimeSQL(el.getDateCreate()) + "', " + el.getParent().getId() + ")";
- 			}
- 			else
- 				sql = "INSERT INTO _File VALUES (" + el.getId() + ", N'" + el.getName() + "', '"
- 							+ toDateTimeSQL(el.getDateCreate()) + "', '" + toDateTimeSQL(el.getDateModified()) + "', "
- 							+ el.getSize() + ", '" + el.getExType() + "', " + el.getParent().getId() + ")";
- 			try {
- 				System.out.println(sql);
- 			    Statement sta = pct.getConnection().createStatement();
- 			    int check = sta.executeUpdate(sql);
- 			    if(check >= 1)
- 				{
- 				    System.out.println("Thêm thành công");
- 				}
- 			} catch(Exception x)
- 			{
- 			    System.out.println(x.getMessage());
- 			}
-         }
-         return el;
-	}
-	
-	public void addDb(Element e)
-	{
-			String sql;
-			if(e.getClass().equals(Folder.class))
-			{
-				sql = "INSERT INTO _Folder VALUES (" + e.getId() + ", N'" + e.getName() + "', '"
-							+ toDateTimeSQL(e.getDateCreate()) + "', " + e.getParent().getId() + ")";
-			}
-			else
-				sql = "INSERT INTO _File VALUES (" + e.getId() + ", N'" + e.getName() + "', '"
-							+ toDateTimeSQL(e.getDateCreate()) + "', '" + toDateTimeSQL(e.getDateModified()) + "', "
-							+ e.getSize() + ", '" + e.getExType() + "', " + e.getParent().getId() + ")";
-			try {
-				System.out.println(sql);
-			    Statement sta = pct.getConnection().createStatement();
-			    int check = sta.executeUpdate(sql);
-			    if(check >= 1)
-				{
-				    System.out.println("Thêm thành công");
-				}
-			} catch(Exception x)
-			{
-			    System.out.println(x.getMessage());
-			}
-			if(e.getClass().equals(Folder.class))
-				if(e.getChildrents().size() > 0)
-					for(Element el : e.getChildrents())
-						addDb(el);
-	}
-	
-	public void Paste()
-	{
-		if(table.getSelectedRowCount() >= 2)
+	public void Paste() {
+		if (table.getSelectedRowCount() >= 2)
 			return;
 		Element now;
-		if(table.getSelectedRowCount() > 0)
+		if (table.getSelectedRowCount() > 0)
 			now = nows.getChildrents().get(table.getSelectedRow());
 		else
 			now = nows;
 		LinkedList<Element> paste = new LinkedList<Element>();
-		if(cut == null && copy == null)
+		if (cut == null && copy == null)
 			return;
-	    else if(copy != null)
-		{
-            paste = copy;
-		}
-		else if(cut != null)
-		{
-			Folder parent = (Folder)cut.get(0).getParent();
-			paste = cut;
+		else if (copy != null) {
+			paste = copy;
+		} else if (cut != null) {
 			if(countCut == 0) {
-			    for(Element e : cut)
-			    {
-			    	if(pct.isLogin()) {
-				    	String sql;
-				    	if(e.getClass().equals(Folder.class))
-				    	{
-				    		deleteChilds((Folder)e);
-				            sql = "DELETE _Folder WHERE id = " + e.getId();
-				    	}
-				    	else
-				    		sql = "DELETE _File WHERE id = " + e.getId();
-				    	try {
-							Statement sta = pct.getConnection().createStatement();
-							int check = sta.executeUpdate(sql);
-							if(check > 0)
-								System.out.println("Xóa thành công");
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+				if(!(new Folder(0)).checkIsChild(cut, (Folder)now))
+				    return;
+				Folder parent = (Folder) cut.get(0).getParent();
+				if (parent != null) {
+					for (Element e : cut) {
+						if (pct.isLogin()) {
+							try {
+								Statement sta = pct.getConnection().createStatement();
+								e.deleteToDB(sta);
+								sta.close();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+	
 						}
-				    	
-			    	}
-			    	for(int i = 0; i < parent.getChildrents().size(); i++)
-			    	{
-			    		if(parent.getChildrents().get(i).equals(e))
-			    		{
-			    			parent.getChildrents().remove(i);
-			    			break;
-			    		}
-			    	}
-			    }
-			    countCut++;
+						for (int i = 0; i < parent.getChildrents().size(); i++) {
+							if (parent.getChildrents().get(i).equals(e)) {
+								parent.getChildrents().remove(i);
+								break;
+							}
+						}
+						e.setParent(null);
+					}
+				}
+				countCut++;
 			}
+			paste = cut;
 		}
-		LinkedList <Element> p = new LinkedList<Element>();
-		if(paste.size() > 0)
-		{
-			for(Element e : paste)
-			{
-				 Folder folder = new Folder(e.getId(), e.getName(), e.getDateCreate(), e.getChildrents(), (Folder)now);
-                 if(e.getClass().equals(Folder.class))
-                 {
-                	 p.add((Folder)setIdChilds(folder));
-                 }
-                 else
-                 {
-    				 maxID++;
-                	 p.add(new File(maxID, e.getName(), e.getDateCreate(), e.getDateModified(), e.getExType(), e.getSize(), (Folder)now));
-                 }
+		LinkedList<Element>list = new LinkedList<Element>();
+		for (Element e : paste) {
+			Element el;
+			if (e.getClass().equals(Folder.class)) {
+				el = (new Folder(-1)).TaoBanSao((Folder) e, (Folder) now);
+			} else {
+				el = (new File(-1)).TaoBanSao((File) e, (Folder) nows);
 			}
-		}
-
-		for(Element el : p)
-		{
-			for(int i = 0; i < now.getChildrents().size(); i++)
-			{
-				if(now.getChildrents().get(i).getName().equals(el.getName()))
-				{
-					String str = JOptionPane.showInputDialog(table, 
-							"Tên File/Folder \"" + el.getName() + "\" bạn muốn Paste đã tồn tại trong bản ghi này.\n "
-						    + "Hãy đặt lại tên khác.", 
+			for (int i = 0; i < now.getChildrents().size(); i++) {
+				if (now.getChildrents().get(i).getName().equals(el.getName()) || el.getName().equals("")) {
+					String str = JOptionPane.showInputDialog(
+							table, "Tên File/Folder \"" + el.getName()
+									+ "\" bạn muốn Paste đã tồn tại trong bản ghi này.\n " + "Hãy đặt lại tên khác.",
 							"Thông báo", JOptionPane.OK_OPTION);
-					el.setName(str);	
+					el.setName(str);
 					i = -1;
 				}
 			}
+			if(pct.isLogin())
+			{
+				try {
+					Statement sta = pct.getConnection().createStatement();
+					((Folder)el).addToAllDB(sta);
+					sta.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			list.add(el);
 			now.getChildrents().add(el);
 		}
-		if(cut != null)
-			cut = p;
+		if(copy != null)
+			copy = list;
 		else
-			copy = p;
-		try {
-	           if(!pct.isLogin())
-				 ghiFile();
-			} catch (IOException e) {
-				 // TODO Auto-generated catch block
-				 e.printStackTrace();
+			cut = list;
+		if (!pct.isLogin())
+			try {
+				ghiFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		setData();
-		setTable();
-		Edit();
+		Update();
 	}
-	
-	public void MoveTo()
-	{
-		
+
+	public void MoveTo() {
+
 	}
-	
-	public void CopyTo()
-	{
-		
+
+	public void CopyTo() {
+
 	}
-	
+
 	public void newRow(Boolean folder) throws IOException {
 		if (nows != null) {
 			if (folder) {
-				maxID++;
 				String name = "Thư mục mới";
 				int i = 1;
-				for (int j = 0; j < nows.getChildrents().size(); j++) {
-					if (nows.getChildrents().get(j).getName().equals(name)) {
-						name = "Thư mục mới " + i;
-						i++;
-						j = -1;
-					}
+				while (((Folder) nows).checkNameChild(name)) {
+					name = "Thư mục mới " + i;
+					i++;
 				}
-				int id = getMaxDB(true);
-				if (id == -1)
-					return;
-				id++;
-				nows.getChildrents().add(new Folder(pct.isLogin() == true ? id : maxID, name, (Folder) nows));
-				/*
-				 * Object []obj = {new ImageIcon(url + urlIconFolder +
-				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
-				 * duoi), nows.getChildrents().get(nows.getChildrents().size() - 1).getName(),
-				 * nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getTime(nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getDateCreate()), nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getExName(), ""}; model.addRow(obj);
-				 */
+				((Folder) nows).addToChilds(new Folder((new Folder(0)).getMax() + 1, name, (Folder) nows));
 			} else {
-				maxID++;
 				String name = "Tệp mới";
 				int i = 1;
-				for (int j = 0; j < nows.getChildrents().size(); j++) {
-					if (nows.getChildrents().get(j).getName().equals(name)) {
-						name = "Tệp mới " + i;
-						i++;
-						j = -1;
-					}
+				while (((Folder) nows).checkNameChild(name)) {
+					name = "Tệp mới " + i;
+					i++;
 				}
-				int id = getMaxDB(false);
-				if (id == -1)
-					return;
-				id++;
-				nows.getChildrents().add(new File(pct.isLogin() == true ? id : maxID, name, "", (Folder) nows));
-				/*
-				 * Object []obj = {new ImageIcon(url + urlIconFile +
-				 * nows.getChildrents().get(nows.getChildrents().size() - 1).getIcon() + px +
-				 * duoi), nows.getChildrents().get(nows.getChildrents().size() - 1).getName(),
-				 * nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getTime(nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getDateCreate()), nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getExName(), nows.getChildrents().get(nows.getChildrents().size() -
-				 * 1).getSize()}; model.addRow(obj);
-				 */
+				((Folder) nows).addToChilds(new File((new File(0)).getMax() + 1, name, "", (Folder) nows));
 			}
 			if (!pct.isLogin())
 				ghiFile();
 			else
 				ghiDBAddRow();
-			setData();
-			setTable();
-			Edit();
+			Update();
 			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
-			table.clearSelection();
 			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
+			pct.UpdateLeft();
+			pct.setFunSelectedTablie(true);
+			if (nows == null)
+				pct.getScreen().FunEnablueRoot(true);
+			else
+				pct.getScreen().FunEnablueRoot(false);
+			pct.getScreen().FunEnablueRoot(false);
 		}
 	}
 
@@ -900,15 +642,15 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void selectAll() {
 		table.selectAll();
-		if(table.getSelectedRowCount() > 0) {
+		if (table.getSelectedRowCount() > 0) {
 			pct.setFunSelectedTablie(true);
 			if (nows == null)
 				pct.getScreen().FunEnablueRoot(true);
 			else
 				pct.getScreen().FunEnablueRoot(false);
-	    }
+		}
 	}
-	
+
 	public void Selected() {
 		open.setEnabled(true);
 	}

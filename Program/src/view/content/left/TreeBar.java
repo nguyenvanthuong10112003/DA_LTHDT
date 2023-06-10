@@ -1,18 +1,28 @@
 package view.content.left;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Enumeration;
+import java.util.EventObject;
+
 import libary.MyTreeNode;
+import libary.URL;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CellEditorListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
-import javax.swing.JLabel;
+
 import controller.mouse;
+import libary.ColorList;
 import libary.FONT;
 import model.Element;
 import model.Folder;
@@ -27,88 +37,64 @@ public class TreeBar extends JTree {
 	private String iconFolder = "\\Icon\\content\\left\\folder\\folderIcon16px.png";
 	private String px = "16px";
 	private String duoi = ".png";
-	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
+	private String urlIconFolder = "\\Icon\\content\\left\\folder\\folderIcon16px.png";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private DefaultMutableTreeNode rootTree;
 	private Element root;
-
 	public TreeBar(PanelContent pc, Element root) {
 		super();
 		this.pc = pc;
 		this.root = root;
 		this.setRootTree();
 		this.setModel(new DefaultTreeModel(rootTree));
-		//this.setCellRenderer(new MyNodeTreeCellRender(url, iconFolder));
+		this.close = new JLabel(new ImageIcon(libary.URL.url + iconClose16));
+		this.add(close);
+		this.mouseListen = new mouse(this);
+		this.addMouseListener(mouseListen);
+		this.addMouseMotionListener(mouseListen);
+		this.close.addMouseListener(mouseListen);
+		this.close.addMouseMotionListener(mouseListen);
+		TreeRender render = new TreeRender();
+		this.setCellRenderer(render);
+		this.Edit();
+	}
+	
+	public void Edit()
+	{
+		this.close.setBackground(new Color(102, 153, 204));
+		this.setFont(FONT.font_mac_dinh);
+		this.setRowHeight(18);
 		this.setShowsRootHandles(true);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setBackground(Color.white);
-		close = new JLabel(new ImageIcon(libary.URL.url + iconClose16));
-		this.add(close);
-		mouseListen = new mouse(this);
-		this.addMouseListener(mouseListen);
-		this.addMouseMotionListener(mouseListen);
-		close.addMouseListener(mouseListen);
-		close.addMouseMotionListener(mouseListen);
-		close.setBackground(new Color(102, 153, 204));
-		this.setFont(FONT.font_mac_dinh);
 	}
 
 	public void setRootTree() {
 		rootTree = addNodeTree(rootTree, root);
 	}
 
-	public DefaultMutableTreeNode addNodeTree(DefaultMutableTreeNode rootTree, Element root)
+	public void Update()
 	{
-		rootTree = new DefaultMutableTreeNode(root.getName());
-		for(int i = 0; i < root.getChildrents().size(); i++) {
-			
-			rootTree.add(new DefaultMutableTreeNode());
-			
-		}
-			//if(root.getChildrents().get(i).getClass().equals(File.class))
-			//        rootTree.add(new DefaultMutableTreeNode(new MyTreeNode(
-			//		root.getChildrents().get(i).getId(), 
-			//		root.getChildrents().get(i).getName(),
-			//		url + urlIconFolder + root.getChildrents().get(i).getIcon() 
-			//		+ px + duoi)));
-			//else
-		    //rootTree.add(new DefaultMutableTreeNode(root.getChildrents().get(i).getName()));
-		//for(int i = 0; i < root.getChildrents().size(); i++)
-		//	if(root.getChildrents().get(i).getClass().equals(Folder.class)) {
-//
-		 //   }
-		return rootTree;
+		this.setRootTree();
+		this.setModel(new DefaultTreeModel(rootTree));
 	}
 	
-	/*private class MyNodeTreeCellRender extends DefaultTreeCellRenderer {
-		private String iconFolder;
-		private String url;
-
-		public MyNodeTreeCellRender(String url, String iconFolder) {
-			super();
-			this.url = url;
-			this.iconFolder = iconFolder;
-		}
-
-		@Override
-		public Component getTreeCellRendererComponent(JTree tree, Object object, boolean sel, boolean expanded,
-				boolean leaf, int row, boolean hasFocus) {
-
-			Component component = super.getTreeCellRendererComponent(tree, object, sel, expanded, leaf, row, hasFocus);
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) object;
-			if (node.isLeaf()) {
-				MyTreeNode myTreeNode = (MyTreeNode) node.getUserObject();
-				setText(myTreeNode.getName());
-				setIcon(new ImageIcon(myTreeNode.getIcon()));
-			} else {
-				setLeafIcon(new ImageIcon(this.url + this.iconFolder));
-				setOpenIcon(new ImageIcon(this.url + this.iconFolder));
-				setClosedIcon(new ImageIcon(this.url + this.iconFolder));
+	public DefaultMutableTreeNode addNodeTree(DefaultMutableTreeNode rootTree, Element root)
+	{
+		rootTree = new DefaultMutableTreeNode(new view.content.left.MyTreeNode("", root.getName(), root.getIcon()));
+		for(int i = 0; i < root.getChildrents().size(); i++) {
+			if(root.getChildrents().get(i).getClass().equals(Folder.class))
+			{
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+				if(root.getChildrents().size() > 0)
+					node = addNodeTree(node, root.getChildrents().get(i));
+				else
+					node = new DefaultMutableTreeNode(new view.content.left.MyTreeNode("", root.getChildrents().get(i).getName(), root.getChildrents().get(i).getIcon()));
+				rootTree.add(node);
 			}
-			return component;
 		}
-
-	}*/
+		return rootTree;
+	}
 
 	public void setPanelContent(PanelContent pc) {
 		this.pc = pc;
