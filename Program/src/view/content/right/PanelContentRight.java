@@ -283,8 +283,6 @@ public class PanelContentRight extends JPanel {
 		select = e;
 		if(e.getClass().equals(Folder.class))
 		{
-			location.setText(searchLocation(e.getParent()));
-			size.setText("aa");
 			contain.setText("Folder(" + countFolder(e) + ")  File(" + countFile(e) + ")");
 			create.setText(e.getTime(e.getDateCreate()));
 			type.setText(e.getExName());
@@ -297,8 +295,6 @@ public class PanelContentRight extends JPanel {
 		}
 		else
 		{
-			location.setText(searchLocation(e.getParent()));
-			size.setText(e.getSize() + "kb");
 			create.setText(e.getTime(e.getDateCreate()));
 			modifield.setText(e.getTime(e.getDateModified()));
 			type.setText(e.getExName());
@@ -309,6 +305,8 @@ public class PanelContentRight extends JPanel {
 			containText.setVisible(false);
 			contain.setVisible(false);
 		}
+		location.setText(e.getLocation());
+		size.setText(e.getSize(e) + "kb");
 		Edit();
 		panel.setVisible(true);
 	}
@@ -326,13 +324,6 @@ public class PanelContentRight extends JPanel {
 	public JPanel getPanel()
 	{
 		return panel;
-	}
-	
-	public String searchLocation(Element e)
-	{
-		if(e == null)
-		   return "/";
-		return searchLocation(e.getParent()) + e.getName() + "/";
 	}
 	
 	public int countFolder(Element root)
@@ -442,11 +433,8 @@ public class PanelContentRight extends JPanel {
 		{
 			type.setText(select.getExName());
 			select.setName(s);
-			pc.getCenter().setData();
-			pc.getCenter().setTable();
-			pc.getCenter().Edit();
-			pc.getScreen().FunEnablueRoot(true);
-			this.noselected();
+			pc.getCenter().Update();
+			pc.UpdateLeft();
 			if(!pc.isLogin())
 			    pc.getCenter().ghiFile();
 			else

@@ -1,6 +1,9 @@
 package view.content.left;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import model.Element;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -25,8 +28,8 @@ public class TreeRender extends DefaultTreeCellRenderer{
 	{
 		Component com = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		MyTreeNode treenode = (MyTreeNode) node.getUserObject();
-		setText(treenode.getValue());
+		Element treenode = (Element) node.getUserObject();
+		setText(treenode.getName());
 		ImageIcon icon = new ImageIcon(URL.url + URL.urlContentLeftFolder + treenode.getIcon() + duoi);
 		setIcon(icon);
 		return com;

@@ -162,10 +162,16 @@ abstract public class Element{
 	
 	public Element timCon(Element e, Element cha) {
 		if (e.getParent() == null)
-			return e;
+			return e ;
 		if (e.getParent().equals((Folder) cha))
 			return e;
 		return timCon(e.getParent(), cha);
+	}
+	public String getLocation()
+	{
+		if(parent == null)
+		   return "/";
+		return parent.getLocation() + parent.name + "/";
 	}
 	public abstract int getMax();
 	public abstract String getExType();
@@ -179,4 +185,5 @@ abstract public class Element{
 	public abstract void updateToDB(Statement sta, String name, int id);
 	public abstract void addToDB(Statement sta);
     public abstract void deleteToDB(Statement sta);
+	public abstract double getSize(Element e);
 }

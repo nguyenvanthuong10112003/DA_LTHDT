@@ -53,7 +53,7 @@ public class PanelContent extends JPanel {
 			this.islogin = islogin;
 			this.maxId = max;
 			this.contentLeft = new ScrollPaneTree(this, this.root);
-			this.contentCenter = new PanelContentCenter(this, root, this.maxId);
+			this.contentCenter = new PanelContentCenter(this, root);
 			this.contentRight = new PanelContentRight(this);
 			this.mouseEvent = new mouse(this);
 			this.Show_Content_Left = true;

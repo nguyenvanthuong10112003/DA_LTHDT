@@ -304,4 +304,10 @@ public class File extends Element {
 	{
 		return new File(file.max + 1, file.name, file.dateCreate, file.dateModified, file.exType, file.size, parent);
 	}
+
+	@Override
+	public double getSize(Element e) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

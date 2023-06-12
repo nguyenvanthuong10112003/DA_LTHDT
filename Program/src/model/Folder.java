@@ -9,7 +9,6 @@ import java.util.Set;
 
 public class Folder extends Element {
 	private LinkedList<Element> childrens;
-	private String icon;
 	private String table = "_Folder";
 	private String sql;
     private static int max = 0;
@@ -66,7 +65,7 @@ public class Folder extends Element {
 		if(id > max)
 			max = id;
 	}
-
+	
 	public String getIcon() {
 		return icon;
 	}
@@ -93,9 +92,21 @@ public class Folder extends Element {
 	}
 
 	@Override
-	public double getSize() {
+	public double getSize(Element e) {
 		// TODO Auto-generated method stub
-		return 0;
+		double size = 0;
+		if(e.getClass().equals(File.class))
+			return ((File) e).getSize();
+		else
+		{
+			if(childrens.size() > 0)
+			{
+				for(Element child : e.getChildrents()) {
+					size += getSize(child);
+				}
+			}
+		}
+		return size;
 	}
 
 	@Override
@@ -129,16 +140,15 @@ public class Folder extends Element {
 	}
 
 	public Folder searchFolder(Folder folder, int id) {
-		if (folder.id == id)
-			return folder;
 		Folder f = null;
-		if (childrens.size() > 0)
-			for (Element e : folder.childrens) {
-				if (e.getClass().equals(Folder.class)) {
-					if (searchFolder((Folder) e, id) != null)
-						f = searchFolder((Folder) e, id);
-				}
+		if (folder.id == id)
+			f = folder;
+		for (Element e : folder.childrens) {
+			if (e.getClass().equals(Folder.class)) {
+				if (searchFolder((Folder) e, id) != null)
+					f = searchFolder((Folder) e, id);
 			}
+		}
 		return f;
 	}
 
@@ -286,5 +296,31 @@ public class Folder extends Element {
 			else if(e.equals(list.getLast()))
 				return checkIsChild(list, nows.getParent());
 		return true;
+	}
+	
+	public Element searchFile(Element e, int id)
+	{
+		Element kq = null;
+		if(e.getClass().equals(File.class) && e.id == id)
+			kq = e;
+		else
+		{
+			if(e.getClass().equals(Folder.class)) {
+				for(Element child : e.getChildrents())
+				{
+					if(kq == null)
+						kq = searchFile(child, id);
+					else
+						break;
+				}
+			}
+		}
+		return kq;
+	}
+
+	@Override
+	public double getSize() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

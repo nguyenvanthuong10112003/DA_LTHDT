@@ -9,4 +9,5 @@ public interface URL {
 	public final String urlContentLeft = "\\Icon\\content\\left\\";
 	public final String urlContentLeftFolder = "\\Icon\\content\\left\\folder\\";
 	public final String urlContentLeftIcon = "\\Icon\\content\\left\\icon\\";
+	public final String urlQuickAccess = "\\data\\truycapnhanh.txt";
 }

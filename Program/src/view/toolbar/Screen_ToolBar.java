@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import libary.ColorList;
 import libary.FONT;
+import model.Element;
 import model.User;
 public class Screen_ToolBar extends JPanel {
 	private Panel_Functions function;
@@ -19,7 +20,8 @@ public class Screen_ToolBar extends JPanel {
 	private Screen screen;
     private Connection con;
     private Boolean islogin;
-	public Screen_ToolBar(Screen screen, Connection con, Boolean islogin) {
+    private Element root;
+	public Screen_ToolBar(Screen screen, Connection con, Boolean islogin, Element root) {
 		super();
 		try {
 			if (screen != null)
@@ -29,7 +31,7 @@ public class Screen_ToolBar extends JPanel {
 			this.islogin = islogin;
 			this.con = con;
 			this.function = new Panel_Functions(this.screen, this.con, this.islogin);
-			this.navigation = new Panel_Navigation(this.screen);
+			this.navigation = new Panel_Navigation(this.screen, root);
 			this.setColor();
 			this.setLayout(new BorderLayout());
 			this.add(function, BorderLayout.CENTER);

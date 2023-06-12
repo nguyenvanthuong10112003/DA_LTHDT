@@ -106,7 +106,7 @@ public class Screen extends JFrame {
 				       {
 				    	   if(arr.get(arr.size() - 2) == "")
 				    	   { 
-				    		   Folder folder = root.searchFolder(root, Integer.parseInt(arr.get(arr.size() - 1)));
+				    		   Folder folder = (Folder)root.searchFolder(root, Integer.parseInt(arr.get(arr.size() - 1)));
 				    		   folder.getChildrents().add(
 				    				   new Folder(
 					    				       Integer.parseInt(arr.get(0)),   // id
@@ -119,7 +119,7 @@ public class Screen extends JFrame {
 				    	   }
 				    	   else
 				    	   {
-				    		   Folder folder = root.searchFolder(root, Integer.parseInt(arr.get(arr.size() - 1)));
+				    		   Folder folder = (Folder)root.searchFolder(root, Integer.parseInt(arr.get(arr.size() - 1)));
 				    		   folder.getChildrents().add(
 				    				   new model.File(
 				    				       Integer.parseInt(arr.get(0)),    // id
@@ -323,7 +323,7 @@ public class Screen extends JFrame {
 
 	private void init() {
 		menubar = new Screen_MenuBar(this);
-		toolbar = new Screen_ToolBar(this, connect, islogin);
+		toolbar = new Screen_ToolBar(this, connect, islogin, root);
 		content = new JPanel();
 		content_center = new PanelContent(this, this.root, this.maxId, islogin, connect);
 		actionlistener = new action(this);
@@ -496,5 +496,10 @@ public class Screen extends JFrame {
 	public void Forward()
 	{
 		content_center.getCenter().forward();
+	}
+	
+	public void setNows(model.Element e)
+	{
+		toolbar.getNavi().setNows(e);
 	}
 }

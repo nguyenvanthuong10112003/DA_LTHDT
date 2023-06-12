@@ -249,7 +249,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (tree != null) {
 			if (e.getSource().equals(tree.getIconClose())) {
 				tree.hoverClose();
-				;
 			}
 		} else if (pct != null) {
 		} else if (cr != null) {

@@ -3,51 +3,30 @@ package view.content.center;
 import model.File;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import controller.mouse;
-import libary.ButtonRenderer;
 import libary.ColorList;
-import libary.FONT;
 import model.Element;
 import model.Folder;
-import model.User;
 import view.content.PanelContent;
-import view.content.left.ScrollPaneTree;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.regex.*;
-
-import javax.management.ValueExp;
 import javax.swing.*;
-import javax.swing.table.*;
 import java.util.*;
 import java.sql.*;
 
 public class PanelContentCenter extends JScrollPane {
 	private PanelContent pct;
-	private int width, height, space;
-	private ScrollPaneTree scroll;
 	private mouse mouselisten;
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private JLabel myLabel = new JLabel("waiting");
-	private DefaultTableModel tableModel;
-	private int Height1 = 25;
 	private int Height2 = 40;
-	private int Height3 = 50;
-	private ImageIcon folderIcon;
 	private JPopupMenu jPopupMenu;
 	private JMenuItem open;
-	private LinkedList<ImageIcon> icon = new LinkedList<ImageIcon>();
 	private String[] columnNames;
 	private Object[][] data;
 	private Element root;
@@ -58,31 +37,22 @@ public class PanelContentCenter extends JScrollPane {
 	private LinkedList<Element> cut;
 	private int countCut;
 	private DefaultTableModel model;
-	private Font font16 = new Font("Arial", Font.PLAIN, 16);
-	private int row;
-	private int col;
 	private String px = "24px";
 	private String duoi = ".png";
-	private String folder = "\\Icon\\content\\center\\folder\\folderIcon16px.png";
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
-	private TableEditer edit = new TableEditer(false);
-	private int maxID;
 	private LinkedList<Integer> selectCut;
-
-	public PanelContentCenter(PanelContent pct, Element root, int maxID) {
+	public PanelContentCenter(PanelContent pct, Element root) {
 		super();
 		try {
 			this.pct = pct;
 			this.root = root;
-			this.maxID = maxID;
 			this.dau = null;
 			this.cuoi = null;
 			this.nows = null;
 			this.copy = null;
 			this.cut = null;
 			this.selectCut = null;
-			this.folderIcon = new ImageIcon(libary.URL.url + folder);
 			this.setColumn();
 			this.setData();
 			this.init();
@@ -160,7 +130,6 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void setColumn() {
 		columnNames = new String[] { "", "Name", "Date modified", "Type", "Size" };
-		col = 5;
 	}
 
 	private void addEvent() {
@@ -247,6 +216,7 @@ public class PanelContentCenter extends JScrollPane {
 				else
 					pct.getScreen().setEnPaste(true);
 				pct.getScreen().FunEnablueRoot(true);
+				pct.getScreen().setNows(nows);
 				Update();
 			}
 		});
@@ -277,13 +247,23 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void back() {
-		nows = nows.getParent();
+		if(dau != null)
+		{
+			if(dau.getParent().equals(nows.getParent()))
+			 nows = nows.getParent();
+		}
+		else if(dau == null)
+		{
+			nows = nows.getParent();
+		}
+		pct.getScreen().setNows(nows);
 		Update();
 		check();
 	}
 
 	public void forward() {
-		nows = nows.timCon(cuoi, nows);
+		nows = (new Folder(0)).timCon(cuoi, nows);
+		pct.getScreen().setNows(nows);
 		Update();
 		check();
 	}
@@ -345,23 +325,7 @@ public class PanelContentCenter extends JScrollPane {
 		/// nd.setBackground(back);
 	}
 
-	public void Rename() {
-		if (table.getSelectedRow() == 1) {
-			Component text = edit.getTableCellEditorComponent(table, table.getValueAt(table.getSelectedRow(), 1), true,
-					table.getSelectedRow(), 1);
-			if (text.getClass().equals(JTextField.class)) {
-				((JTextField) text).setEditable(true);
-				((JTextField) text).setBorder(new LineBorder(ColorList.Fore_Ground, 1));
-				((JTextField) text).setBackground(ColorList.Back_Ground);
-				((JTextField) text).setForeground(Color.black);
-				((JTextField) text).setSelectedTextColor(Color.WHITE);
-				((JTextField) text).setSelectionColor(Color.BLUE);
-			}
-		}
-	}
-
 	public void ghiDBAddRow() {
-		String sql;
 		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
 
 		try {
@@ -451,6 +415,7 @@ public class PanelContentCenter extends JScrollPane {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		pct.UpdateLeft();
 		Update();
 	}
 
@@ -586,6 +551,7 @@ public class PanelContentCenter extends JScrollPane {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		pct.UpdateLeft();
 		Update();
 	}
 
@@ -657,5 +623,13 @@ public class PanelContentCenter extends JScrollPane {
 
 	public PanelContent getPanelContent() {
 		return pct;
+	}
+	
+	public void setNows(Element e)
+	{
+		nows = e;
+		cuoi = e;
+		check();
+		Update();
 	}
 }
