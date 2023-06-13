@@ -139,7 +139,25 @@ abstract public class Element{
 			return a;
 		return "0" + a;
 	}
-	
+	public Element searchElement(int i, int j, LinkedList<String> text)
+	{
+		Element e = null;
+        if(name.equals(text.get(i)))
+        {
+        	if(getClass().equals(Folder.class))
+        	{
+        		if(i >= j)
+        			return this;
+        		else
+        		{
+        			for(Element child : getChildrents())
+        				if(e == null)
+        					e = child.searchElement(i + 1, j, text);
+        		}
+        	}
+        }
+	    return e;
+	}
 	public String check(int a)
 	{
 		if(a >= 10)

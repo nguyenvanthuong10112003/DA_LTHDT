@@ -498,8 +498,13 @@ public class Screen extends JFrame {
 		content_center.getCenter().forward();
 	}
 	
-	public void setNows(model.Element e)
+	public void setNowsNavi(model.Element e)
 	{
 		toolbar.getNavi().setNows(e);
+	}
+	
+	public void setNowsCenter(model.Element e)
+	{
+		content_center.getCenter().setNows(e);
 	}
 }

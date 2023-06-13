@@ -216,7 +216,7 @@ public class PanelContentCenter extends JScrollPane {
 				else
 					pct.getScreen().setEnPaste(true);
 				pct.getScreen().FunEnablueRoot(true);
-				pct.getScreen().setNows(nows);
+				pct.getScreen().setNowsNavi(nows);
 				Update();
 			}
 		});
@@ -239,11 +239,14 @@ public class PanelContentCenter extends JScrollPane {
 		} else {
 			pct.getScreen().setBack(false);
 		}
-		if (cuoi.equals(nows)) {
+		if(cuoi != null) {
+			if (cuoi.equals(nows)) {
+				pct.getScreen().setForward(false);
+			} else {
+				pct.getScreen().setForward(true);
+			}  
+		} else if(cuoi == null) 
 			pct.getScreen().setForward(false);
-		} else {
-			pct.getScreen().setForward(true);
-		}
 	}
 
 	public void back() {
@@ -256,14 +259,14 @@ public class PanelContentCenter extends JScrollPane {
 		{
 			nows = nows.getParent();
 		}
-		pct.getScreen().setNows(nows);
+		pct.getScreen().setNowsNavi(nows);
 		Update();
 		check();
 	}
 
 	public void forward() {
 		nows = (new Folder(0)).timCon(cuoi, nows);
-		pct.getScreen().setNows(nows);
+		pct.getScreen().setNowsNavi(cuoi);
 		Update();
 		check();
 	}
@@ -428,7 +431,15 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void Pin() {
-
+		LinkedList <Element>arr = new LinkedList<>();
+		if(nows == null)
+			arr.add(root);
+		else {
+			for(int i = 0; i < table.getSelectedRows().length; i++)
+				if(nows.getChildrents().get(table.getSelectedRows()[i]).getClass().equals(Folder.class))
+					arr.add(nows.getChildrents().get(table.getSelectedRows()[i]));
+		}
+		pct.getPanelContentLeft().getTreeBar().addPin(arr);
 	}
 
 	public void Cut() {
@@ -632,4 +643,5 @@ public class PanelContentCenter extends JScrollPane {
 		check();
 		Update();
 	}
+	
 }

@@ -3,6 +3,8 @@ package view.content.left;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.LinkedList;
@@ -155,6 +157,7 @@ public class TreeBar extends JTree {
 		quickaccess = new DefaultMutableTreeNode(folder);
 		for(Element e : listquick)
 		{
+			folder.getChildrents().add(e);
 			DefaultMutableTreeNode treenode = new DefaultMutableTreeNode(e);
 			quickaccess.add(treenode);
 		}
@@ -189,6 +192,23 @@ public class TreeBar extends JTree {
 		return rootTree;
 	}
 
+	public void addPin(LinkedList<Element> list)
+	{
+		for(Element e : list)
+		{
+			for(int i = 0; i < listquick.size(); i++) {
+				if(e.equals(listquick.get(i)))
+					break;
+				else if(i == listquick.size() - 1) {
+					listquick.add(e);
+					break;
+				}
+			}
+		}
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+		Update();
+	}
+	
 	public void setPanelContent(PanelContent pc) {
 		this.pc = pc;
 	}
