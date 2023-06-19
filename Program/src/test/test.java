@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-import libary.JTextFieldPassWord;
+import define.JTextFieldPassWord;
 public class test {
      public static void main(String []args)
      {

@@ -12,20 +12,20 @@ import java.awt.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import libary.ColorList;
-import libary.URL;
+import define.ColorList;
+import define.URL;
 
-public class TreeRender extends DefaultTreeCellRenderer{
+public class TreeRender extends DefaultTreeCellRenderer {
 	private String down = "down16px.png";
 	private String right = "right16px.png";
 	private String duoi = "16px.png";
-	public TreeRender()
-	{
+
+	public TreeRender() {
 	}
+
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
-			boolean leaf, int row, boolean hasFocus)
-	{
+			boolean leaf, int row, boolean hasFocus) {
 		Component com = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 		Element treenode = (Element) node.getUserObject();
@@ -36,4 +36,3 @@ public class TreeRender extends DefaultTreeCellRenderer{
 	}
 
 }
-

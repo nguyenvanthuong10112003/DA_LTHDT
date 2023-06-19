@@ -1,4 +1,4 @@
-package libary;
+package define;
 
 public class MyTreeNode {
     private int id;

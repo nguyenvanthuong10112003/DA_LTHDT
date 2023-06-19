@@ -10,18 +10,19 @@ import view.screen.Screen;
 import view.toolbar.Panel_Functions;
 import javax.swing.JPanel;
 
-import libary.ColorList;
-import libary.FONT;
+import define.ColorList;
+import define.FONT;
 import model.Element;
 import model.User;
+
 public class Screen_ToolBar extends JPanel {
 	private Panel_Functions function;
 	private Panel_Navigation navigation;
 	private Screen screen;
-    private Connection con;
-    private Boolean islogin;
-    private Element root;
-	public Screen_ToolBar(Screen screen, Connection con, Boolean islogin, Element root) {
+	private Boolean islogin;
+	private Element root;
+
+	public Screen_ToolBar(Screen screen, Boolean islogin, Element root) {
 		super();
 		try {
 			if (screen != null)
@@ -29,8 +30,7 @@ public class Screen_ToolBar extends JPanel {
 			else
 				this.screen = null;
 			this.islogin = islogin;
-			this.con = con;
-			this.function = new Panel_Functions(this.screen, this.con, this.islogin);
+			this.function = new Panel_Functions(this.screen, this.islogin);
 			this.navigation = new Panel_Navigation(this.screen, root);
 			this.setColor();
 			this.setLayout(new BorderLayout());
@@ -58,14 +58,12 @@ public class Screen_ToolBar extends JPanel {
 		} else
 			this.function.setVisible(true);
 	}
-	
-	public Panel_Functions getFunction()
-	{
+
+	public Panel_Functions getFunction() {
 		return function;
 	}
-	
-	public Panel_Navigation getNavi()
-	{
+
+	public Panel_Navigation getNavi() {
 		return navigation;
 	}
 }

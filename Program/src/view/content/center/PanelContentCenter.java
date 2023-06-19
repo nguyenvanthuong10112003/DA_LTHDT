@@ -6,9 +6,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import controller.mouse;
-import libary.ColorList;
+import define.ColorList;
 import model.Element;
 import model.Folder;
+import test.ConnectSQL;
 import view.content.PanelContent;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import javax.swing.*;
 import java.util.*;
 import java.sql.*;
+import controller.*;
 
 public class PanelContentCenter extends JScrollPane {
 	private PanelContent pct;
@@ -42,6 +44,8 @@ public class PanelContentCenter extends JScrollPane {
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private LinkedList<Integer> selectCut;
+	private action ActionListen;
+
 	public PanelContentCenter(PanelContent pct, Element root) {
 		super();
 		try {
@@ -62,7 +66,7 @@ public class PanelContentCenter extends JScrollPane {
 			this.setViewportView(table);
 			this.add(jPopupMenu);
 			this.table.add(jPopupMenu);
-			jPopupMenu.add(open);
+			this.jPopupMenu.add(open);
 			System.out.println("Tải thành công Content ở giữa");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -102,6 +106,7 @@ public class PanelContentCenter extends JScrollPane {
 				return compent;
 			}
 		};
+		ActionListen = new action(this);
 	}
 
 	public void Edit() {
@@ -119,6 +124,7 @@ public class PanelContentCenter extends JScrollPane {
 		this.table.setShowVerticalLines(false);
 		this.table.getColumnModel().getColumn(0).setMaxWidth(50);
 		this.table.setBackground(ColorList.Back_Ground);
+		this.setBackground(ColorList.Back_Ground);
 	}
 
 	public void setTable() {
@@ -135,91 +141,65 @@ public class PanelContentCenter extends JScrollPane {
 	private void addEvent() {
 		this.addMouseMotionListener(mouselisten);
 		this.addMouseListener(mouselisten);
-		table.addMouseListener(new MouseListener() {
+		table.addMouseListener(mouselisten);
+		open.addActionListener(ActionListen);
+	}
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				if (e.isPopupTrigger()) {
-					if (table.getSelectedRow() < 0)
-						open.setEnabled(false);
-					else
-						open.setEnabled(true);
-					jPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+	public void showPopup(Component comp, int x, int y) {
+		if (table.getSelectedRow() < 0)
+			open.setEnabled(false);
+		else
+			open.setEnabled(true);
+		jPopupMenu.show(comp, x, y);
+	}
+
+	public void clickedTable() {
+		if (table.getSelectedRow() >= 0 && table.getSelectedRowCount() == 1) {
+			pct.SELECTtable(nows != null ? nows.getChildrents().get(table.getSelectedRow()) : root);
+			pct.setFunSelectedTablie(true);
+			if (nows == null)
+				pct.getScreen().FunEnablueRoot(true);
+			else {
+				pct.getScreen().FunEnablueRoot(false);
+			}
+		}
+	}
+
+	public void clickedItemPopup(int hash) {
+		if (hash == open.hashCode()) {
+			if (nows != null) {
+				if (nows.getChildrents().size() > 0) {
+					for (Element el : nows.getChildrents())
+						if (el.getClass().equals(Folder.class))
+							if (el.getName().equals(data[table.getSelectedRow()][1])) {
+								nows = el;
+								break;
+							}
 				}
+			} else {
+				nows = root;
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				if (table.getSelectedRow() >= 0 && table.getSelectedRowCount() == 1) {
-					pct.SELECTtable(nows != null ? nows.getChildrents().get(table.getSelectedRow()) : root);
-					pct.setFunSelectedTablie(true);
-					if (nows == null)
-						pct.getScreen().FunEnablueRoot(true);
-					else {
-						pct.getScreen().FunEnablueRoot(false);
-					}
-				}
-			}
-		});
-		open.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (nows != null) {
-					if (nows.getChildrents().size() > 0) {
-						for (Element el : nows.getChildrents())
-							if (el.getClass().equals(Folder.class))
-								if (el.getName().equals(data[table.getSelectedRow()][1])) {
-									nows = el;
-									break;
-								}
-					}
-				} else {
-					nows = root;
-					pct.showNew();
-				}
-				if (cuoi == null) {
+			if (cuoi == null) {
+				if (nows.getParent() == cuoi)
+					cuoi = nows;
+			} else {
+				if (nows != root) {
 					if (nows.getParent() == cuoi)
 						cuoi = nows;
-				} else {
-					if (nows != root) {
-						if (nows.getParent() == cuoi)
-							cuoi = nows;
-						else if (!isChild(cuoi, nows))
-							cuoi = nows;
-
-					}
+					else if (!isChild(cuoi, nows))
+						cuoi = nows;
 				}
-				check();
-				if (cut == null && copy == null)
-					pct.getScreen().setEnPaste(false);
-				else
-					pct.getScreen().setEnPaste(true);
-				pct.getScreen().FunEnablueRoot(true);
-				pct.getScreen().setNowsNavi(nows);
-				Update();
 			}
-		});
+			pct.getScreen().showNew(true);
+			check();
+			if (cut == null && copy == null)
+				pct.getScreen().setEnPaste(false);
+			else
+				pct.getScreen().setEnPaste(true);
+			pct.getScreen().FunEnablueRoot(true);
+			pct.getScreen().setNowsNavi(nows);
+			Update();
+		}
 	}
 
 	public Boolean isChild(Element con, Element cha) {
@@ -239,25 +219,27 @@ public class PanelContentCenter extends JScrollPane {
 		} else {
 			pct.getScreen().setBack(false);
 		}
-		if(cuoi != null) {
+		if (cuoi != null) {
 			if (cuoi.equals(nows)) {
 				pct.getScreen().setForward(false);
 			} else {
 				pct.getScreen().setForward(true);
-			}  
-		} else if(cuoi == null) 
+			}
+		} else if (cuoi == null)
 			pct.getScreen().setForward(false);
 	}
 
 	public void back() {
-		if(dau != null)
-		{
-			if(dau.getParent().equals(nows.getParent()))
-			 nows = nows.getParent();
-		}
-		else if(dau == null)
-		{
+		if (dau != null) {
+			if (dau.getParent().equals(nows.getParent()))
+				nows = nows.getParent();
+		} else if (dau == null) {
 			nows = nows.getParent();
+		}
+		if (nows == null) {
+			pct.getScreen().showNew(false);
+		} else {
+			pct.getScreen().showNew(true);
 		}
 		pct.getScreen().setNowsNavi(nows);
 		Update();
@@ -267,18 +249,21 @@ public class PanelContentCenter extends JScrollPane {
 	public void forward() {
 		nows = (new Folder(0)).timCon(cuoi, nows);
 		pct.getScreen().setNowsNavi(cuoi);
+		if (nows == null) {
+			pct.getScreen().showNew(false);
+		} else {
+			pct.getScreen().showNew(true);
+		}
 		Update();
 		check();
 	}
-
-
 
 	public void Update() {
 		setData();
 		setTable();
 		Edit();
 		table.clearSelection();
-		pct.noSelected();
+		NoSelected();
 	}
 
 	public void setRoot(Folder root) {
@@ -290,17 +275,17 @@ public class PanelContentCenter extends JScrollPane {
 	public void setData() {
 		data = new Object[nows != null ? nows.getChildrents().size() : 1][5];
 		if (nows == null) {
-			ImageIcon icon = new ImageIcon(libary.URL.url + urlIconFolder + root.getIcon() + this.px + this.duoi);
+			ImageIcon icon = new ImageIcon(define.URL.url + urlIconFolder + root.getIcon() + this.px + this.duoi);
 			data[0][0] = icon;
 			data[0][1] = root.getName();
-			data[0][2] = root.getDateCreate();
+			data[0][2] = root.getTime(root.getDateCreate());
 			data[0][3] = root.getExName();
 			data[0][4] = "";
 		} else if (nows.getChildrents().size() > 0) {
 			int i = 0;
 			for (Element el : nows.getChildrents()) {
 				ImageIcon icon = new ImageIcon(
-						libary.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile)
+						define.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile)
 								+ el.getIcon() + this.px + this.duoi);
 				data[i][0] = icon;
 				data[i][1] = el.getName();
@@ -328,13 +313,21 @@ public class PanelContentCenter extends JScrollPane {
 		/// nd.setBackground(back);
 	}
 
-	public void ghiDBAddRow() {
+	public void ghiDBWhenAddRow() throws ClassNotFoundException {
 		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
 
 		try {
-			Statement statement = pct.getConnection().createStatement();
+			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			if (connect != null) {
+				System.out.println("Ket noi database thanh cong");
+			} else {
+				connect.close();
+				System.out.println("Ket noi database that bai");
+			}
+			Statement statement = connect.createStatement();
 			e.addToDB(statement);
 			statement.close();
+			connect.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			Update();
@@ -345,11 +338,19 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	public void updateDB(Element e) {
+	public void updateDB(Element e) throws ClassNotFoundException {
 		try {
-			Statement sta = pct.getConnection().createStatement();
+			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			if (connect != null) {
+				System.out.println("Ket noi database thanh cong");
+			} else {
+				connect.close();
+				System.out.println("Ket noi database that bai");
+			}
+			Statement sta = connect.createStatement();
 			e.updateToDB(sta, e.getName(), e.getId());
 			sta.close();
+			connect.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -361,9 +362,9 @@ public class PanelContentCenter extends JScrollPane {
 		FileWriter out = null;
 
 		try {
-			out = new FileWriter(libary.URL.url + libary.URL.urlLuuTru);
+			out = new FileWriter(define.URL.url + define.URL.urlLuuTru);
 			System.out.println("Mo file du lieu thanh cong");
-			All(root, out);
+			ghiAlls(root, out);
 			System.out.println("Ghi file thanh cong");
 		} finally {
 			if (out != null) {
@@ -372,7 +373,7 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	public void All(Element e, FileWriter out) throws IOException {
+	public void ghiAlls(Element e, FileWriter out) throws IOException {
 		if (e == null)
 			return;
 		out.write(e.getId() + "|" + e.getName() + "|" + e.getTime(e.getDateCreate()) + "|"
@@ -381,12 +382,12 @@ public class PanelContentCenter extends JScrollPane {
 				+ (e.getParent() != null ? e.getParent().getId() : "") + '\n');
 		if (e.getClass().equals(Folder.class)) {
 			for (Element el : e.getChildrents()) {
-				All(el, out);
+				ghiAlls(el, out);
 			}
 		}
 	}
 
-	public void deletedRow() {
+	public void deletedRow() throws ClassNotFoundException {
 		int[] sl = table.getSelectedRows();
 		int n = table.getSelectedRowCount();
 		for (int i = 0; i < n - 1; i++)
@@ -398,7 +399,14 @@ public class PanelContentCenter extends JScrollPane {
 				}
 
 		try {
-			Statement sta = pct.getConnection().createStatement();
+			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			if (connect != null) {
+				System.out.println("Ket noi database thanh cong");
+			} else {
+				connect.close();
+				System.out.println("Ket noi database that bai");
+			}
+			Statement sta = connect.createStatement();
 			for (int i = 0; i < n; i++) {
 				Element e = nows.getChildrents().get(sl[i]);
 				if (pct.isLogin()) {
@@ -407,6 +415,7 @@ public class PanelContentCenter extends JScrollPane {
 				nows.getChildrents().remove(sl[i]);
 			}
 			sta.close();
+			connect.close();
 			if (!pct.isLogin())
 				try {
 					ghiFile();
@@ -431,15 +440,20 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void Pin() {
-		LinkedList <Element>arr = new LinkedList<>();
-		if(nows == null)
+		LinkedList<Element> arr = new LinkedList<>();
+		if (nows == null)
 			arr.add(root);
 		else {
-			for(int i = 0; i < table.getSelectedRows().length; i++)
-				if(nows.getChildrents().get(table.getSelectedRows()[i]).getClass().equals(Folder.class))
+			for (int i = 0; i < table.getSelectedRows().length; i++)
+				if (nows.getChildrents().get(table.getSelectedRows()[i]).getClass().equals(Folder.class))
 					arr.add(nows.getChildrents().get(table.getSelectedRows()[i]));
 		}
-		pct.getPanelContentLeft().getTreeBar().addPin(arr);
+		try {
+			pct.getPanelContentLeft().getTreeBar().addPin(arr);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void Cut() {
@@ -474,8 +488,7 @@ public class PanelContentCenter extends JScrollPane {
 		cut = null;
 	}
 
-	
-	public void Paste() {
+	public void Paste() throws ClassNotFoundException {
 		if (table.getSelectedRowCount() >= 2)
 			return;
 		Element now;
@@ -489,22 +502,31 @@ public class PanelContentCenter extends JScrollPane {
 		else if (copy != null) {
 			paste = copy;
 		} else if (cut != null) {
-			if(countCut == 0) {
-				if(!(new Folder(0)).checkIsChild(cut, (Folder)now))
-				    return;
+			if (countCut == 0) {
+				if (!(new Folder(0)).checkIsChild(cut, (Folder) now))
+					return;
 				Folder parent = (Folder) cut.get(0).getParent();
 				if (parent != null) {
 					for (Element e : cut) {
 						if (pct.isLogin()) {
 							try {
-								Statement sta = pct.getConnection().createStatement();
+								Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+								if (connect != null) {
+									System.out.println("Ket noi database thanh cong");
+								} else {
+									connect.close();
+									System.out.println("Ket noi database that bai");
+									return;
+								}
+								Statement sta = connect.createStatement();
 								e.deleteToDB(sta);
 								sta.close();
+								connect.close();
 							} catch (SQLException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
-	
+
 						}
 						for (int i = 0; i < parent.getChildrents().size(); i++) {
 							if (parent.getChildrents().get(i).equals(e)) {
@@ -519,13 +541,13 @@ public class PanelContentCenter extends JScrollPane {
 			}
 			paste = cut;
 		}
-		LinkedList<Element>list = new LinkedList<Element>();
+		LinkedList<Element> list = new LinkedList<Element>();
 		for (Element e : paste) {
 			Element el;
 			if (e.getClass().equals(Folder.class)) {
-				el = (new Folder(-1)).TaoBanSao((Folder) e, (Folder) now);
+				el = (Folder.TaoBanSao((Folder) e, (Folder) now));
 			} else {
-				el = (new File(-1)).TaoBanSao((File) e, (Folder) nows);
+				el = (File.TaoBanSao((File) e, (Folder) now));
 			}
 			for (int i = 0; i < now.getChildrents().size(); i++) {
 				if (now.getChildrents().get(i).getName().equals(el.getName()) || el.getName().equals("")) {
@@ -537,12 +559,23 @@ public class PanelContentCenter extends JScrollPane {
 					i = -1;
 				}
 			}
-			if(pct.isLogin())
-			{
+			if (pct.isLogin()) {
 				try {
-					Statement sta = pct.getConnection().createStatement();
-					((Folder)el).addToAllDB(sta);
+					Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+					if (connect != null) {
+						System.out.println("Ket noi database thanh cong");
+					} else {
+						connect.close();
+						System.out.println("Ket noi database that bai");
+						return;
+					}
+					Statement sta = connect.createStatement();
+					if (el.getClass().equals(Folder.class))
+						((Folder) el).addToDBs(sta);
+					else
+						((File) el).addToDB(sta);
 					sta.close();
+					connect.close();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -551,7 +584,7 @@ public class PanelContentCenter extends JScrollPane {
 			list.add(el);
 			now.getChildrents().add(el);
 		}
-		if(copy != null)
+		if (copy != null)
 			copy = list;
 		else
 			cut = list;
@@ -574,7 +607,7 @@ public class PanelContentCenter extends JScrollPane {
 
 	}
 
-	public void newRow(Boolean folder) throws IOException {
+	public void newRow(Boolean folder) throws IOException, ClassNotFoundException {
 		if (nows != null) {
 			if (folder) {
 				String name = "Thư mục mới";
@@ -596,7 +629,7 @@ public class PanelContentCenter extends JScrollPane {
 			if (!pct.isLogin())
 				ghiFile();
 			else
-				ghiDBAddRow();
+				ghiDBWhenAddRow();
 			Update();
 			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
 			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
@@ -635,13 +668,12 @@ public class PanelContentCenter extends JScrollPane {
 	public PanelContent getPanelContent() {
 		return pct;
 	}
-	
-	public void setNows(Element e)
-	{
+
+	public void setNows(Element e) {
 		nows = e;
 		cuoi = e;
 		check();
 		Update();
 	}
-	
+
 }

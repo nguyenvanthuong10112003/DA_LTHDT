@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
@@ -11,6 +12,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+
+import define.table.FILE;
+import define.table.FOLDER;
+
 import java.time.LocalDate;
 
 public class File extends Element {
@@ -19,9 +24,10 @@ public class File extends Element {
 	private double size;
 	private static Map<String, String> type_link;
 	private static Map<String, String> type_name;
-	private String table = "_File";
-	private String sql;
-    private static int max = 0;
+	private static String table = FILE.nametable;
+	private static String sql;
+	private static int max = 0;
+
 	public File(String file) {
 		if (type_link == null || type_name == null) {
 			try {
@@ -47,6 +53,21 @@ public class File extends Element {
 		}
 	}
 
+	private String[] tach(String text) {
+		String[] kq = { "", "", "" };
+		int j = 0;
+		int z = 0;
+		for (int i = 0; i < text.length(); i++) {
+			if (text.charAt(i) == '|') {
+				kq[j] = text.substring(z, i);
+				j++;
+				z = i + 1;
+			}
+		}
+		kq[2] = text.substring(z, text.length());
+		return kq;
+	}
+
 	public File(int id) {
 		super(id, "File new 1");
 		this.exName = "";
@@ -55,7 +76,7 @@ public class File extends Element {
 		this.dateModified = java.util.Calendar.getInstance().getTime();
 		this.icon = "null";
 		this.dateModified.setYear(java.time.LocalDate.now().getYear());
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
 
@@ -75,7 +96,7 @@ public class File extends Element {
 			this.icon = "null";
 		}
 		this.dateModified.setYear(java.time.LocalDate.now().getYear());
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
 
@@ -95,7 +116,7 @@ public class File extends Element {
 			this.icon = "null";
 		}
 		this.dateModified.setYear(java.time.LocalDate.now().getYear());
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
 
@@ -115,7 +136,7 @@ public class File extends Element {
 			this.icon = "null";
 		}
 		this.dateModified.setYear(java.time.LocalDate.now().getYear());
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
 
@@ -134,7 +155,7 @@ public class File extends Element {
 		} else {
 			this.icon = "null";
 		}
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
 
@@ -153,42 +174,20 @@ public class File extends Element {
 		} else {
 			this.icon = "null";
 		}
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
 
-	private String[] tach(String text) {
-		String[] kq = { "", "", "" };
-		int j = 0;
-		int z = 0;
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == '|') {
-				kq[j] = text.substring(z, i);
-				j++;
-				z = i + 1;
-			}
-		}
-		kq[2] = text.substring(z, text.length());
-		return kq;
-	}
-
 	@Override
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
-		if(id > max)
+		if (id > max)
 			max = id;
 	}
-	
+
 	@Override
-	public int getMax()
-	{
+	public int getMax() {
 		return max;
-	}
-	
-	@Override
-	public double getSize() {
-		return size;
 	}
 
 	@Override
@@ -199,9 +198,14 @@ public class File extends Element {
 	}
 
 	@Override
-	public LinkedList<Element> getChildrents() {
+	public double getSize() {
+		return size;
+	}
+
+	@Override
+	public double getSize(Element e) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
@@ -211,9 +215,9 @@ public class File extends Element {
 	}
 
 	@Override
-	public String getExType() {
+	public LinkedList<Element> getChildrents() {
 		// TODO Auto-generated method stub
-		return exType;
+		return null;
 	}
 
 	@Override
@@ -235,9 +239,9 @@ public class File extends Element {
 	}
 
 	@Override
-	public Date getDateModified() {
+	public String getExType() {
 		// TODO Auto-generated method stub
-		return dateModified;
+		return exType;
 	}
 
 	@Override
@@ -246,6 +250,12 @@ public class File extends Element {
 		this.dateModified = dateModified;
 		this.dateModified = java.util.Calendar.getInstance().getTime();
 		this.dateModified.setYear(java.time.LocalDate.now().getYear());
+	}
+
+	@Override
+	public Date getDateModified() {
+		// TODO Auto-generated method stub
+		return dateModified;
 	}
 
 	@Override
@@ -266,29 +276,27 @@ public class File extends Element {
 			System.out.println("ERROR ADD to " + table);
 		}
 	}
-	
+
 	@Override
-	public void deleteToDB(Statement sta)
-	{
+	public void deleteToDB(Statement sta) {
 		if (sta == null)
 			return;
-		sql = "DELETE " + table + " WHERE id = " + id;
+		sql = "DELETE " + table + " WHERE " + FILE.id + " = " + id;
 		try {
 			int check;
 			check = sta.executeUpdate(sql);
-			if(check >= 1)
+			if (check >= 1)
 				System.out.println("Xoa du lieu tu " + table + " thanh cong");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	public void updateToDB(Statement sta, String name, int id)
-	{
-		sql = "UPDATE " + table + " SET id = " + id + 
-			  ", Fullname = N'" + name + "', exType = '" + exType + "' WHERE id = " + this.id;
+	public void updateToDB(Statement sta, String name, int id) {
+		sql = "UPDATE " + table + " SET " + FILE.id + " = " + id + ", " + FILE.namefile + " = N'" + name + "', "
+				+ FILE.type + " = '" + exType + "' WHERE " + FILE.id + " = " + this.id;
 		try {
 			int check = sta.executeUpdate(sql);
 			if (check > 0)
@@ -299,15 +307,33 @@ public class File extends Element {
 			e1.printStackTrace();
 		}
 	}
-	
-	public File TaoBanSao(File file, Folder parent)
-	{
+
+	public static File TaoBanSao(File file, Folder parent) {
 		return new File(file.max + 1, file.name, file.dateCreate, file.dateModified, file.exType, file.size, parent);
 	}
 
 	@Override
-	public double getSize(Element e) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getTable() {
+		if (table == null)
+			return "";
+		return table;
+	}
+
+	public static void resertMax() {
+		max = -1;
+	}
+
+	public static void setIdMax(Statement sta) {
+		sql = "SELECT MAX(" + FILE.id + ") AS ID FROM " + table;
+		try {
+			ResultSet rs = sta.executeQuery(sql);
+			if (rs.next()) {
+				max = rs.getInt("ID");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

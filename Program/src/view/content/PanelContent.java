@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import controller.mouse;
-import libary.ColorList;
+import define.ColorList;
 import model.Folder;
 import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
@@ -37,10 +37,10 @@ public class PanelContent extends JPanel {
 	private Font font;
 	private Folder root;
 	private mouse mouslisten = new mouse(this);
-    private int maxId;
-    private Boolean islogin;
-    private Connection conn;
-	public PanelContent(Screen screen, Folder root, int max, Boolean islogin, Connection conn) {
+	private int maxId;
+	private Boolean islogin;
+
+	public PanelContent(Screen screen, Folder root, int max, Boolean islogin) {
 		super();
 		try {
 			if (root != null) {
@@ -49,7 +49,6 @@ public class PanelContent extends JPanel {
 				this.root = null;
 			}
 			this.screen = screen;
-			this.conn = conn;
 			this.islogin = islogin;
 			this.maxId = max;
 			this.contentLeft = new ScrollPaneTree(this, this.root);
@@ -76,7 +75,6 @@ public class PanelContent extends JPanel {
 		this.addMouseListener(mouslisten);
 		this.contentCenter.getTable().addMouseListener(mouslisten);
 		this.contentLeft.getTreeBar().addMouseListener(mouslisten);
-
 	}
 
 	public void update(int width, int height) {
@@ -142,17 +140,14 @@ public class PanelContent extends JPanel {
 		else
 			this.contentLeft.setBounds(space, space, 0, 0);
 		if (Show_Content_Right) {
-            this.contentRight.setBounds(width - rightbar - space, space, rightbar, height - space * 2);
-		    this.contentRight.Edit();
-		}
-        else
+			this.contentRight.setBounds(width - rightbar - space, space, rightbar, height - space * 2);
+			this.contentRight.Edit();
+		} else
 			this.contentRight.setSize(0, 0);
 		this.contentCenter.setBounds(contentLeft.getSize().width + (Show_Content_Left ? space * 2 : space), space,
 				width - contentLeft.getSize().width - contentRight.getSize().width
 						- (Show_Content_Right ? space * 2 : space) - (Show_Content_Left ? space * 2 : space),
 				height - space * 2);
-		/// System.out.println(this.contentLeft.isVisible());
-		// System.out.println(this.contentLeft.getTreeBar().isVisible());
 		this.contentCenter.addObj();
 		this.setVisible(true);
 	}
@@ -180,8 +175,7 @@ public class PanelContent extends JPanel {
 		if (Show_Content_Left) {
 			System.out.println("ok");
 			return;
-		}
-		else {
+		} else {
 			Show_Content_Left = true;
 			update(this.getSize().width, this.getSize().height);
 		}
@@ -207,49 +201,32 @@ public class PanelContent extends JPanel {
 	public PanelContentCenter getCenter() {
 		return contentCenter;
 	}
-	
-	public void SELECTtable(Element e)
-	{
+
+	public void SELECTtable(Element e) {
 		contentRight.selected(e);
 	}
-	
-	public void noSelected()
-	{
+
+	public void noSelected() {
 		contentRight.noselected();
 	}
-	
-	public void setRootCenter(Folder folder)
-	{
+
+	public void setRootCenter(Folder folder) {
 		contentCenter.setRoot(folder);
 	}
-	
-	public Boolean isLogin()
-	{
+
+	public Boolean isLogin() {
 		return islogin;
 	}
-	
-	public Connection getConnection()
-	{
-		return conn;
-	}
-	
-	public void showNew()
-	{
-		this.screen.showNew();
-	}
-	
-	public void setFunSelectedTablie(Boolean select)
-	{
+
+	public void setFunSelectedTablie(Boolean select) {
 		this.screen.setSelectTable(select);
 	}
-	
-	public Screen getScreen()
-	{
+
+	public Screen getScreen() {
 		return screen;
 	}
-	
-	public void UpdateLeft()
-	{
+
+	public void UpdateLeft() {
 		contentLeft.getTreeBar().Update();
 	}
 }

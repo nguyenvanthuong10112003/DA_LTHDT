@@ -1,4 +1,4 @@
-package libary;
+package define;
 
 import java.awt.Font;
 

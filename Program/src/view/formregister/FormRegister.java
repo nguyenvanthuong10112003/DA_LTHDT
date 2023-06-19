@@ -1,6 +1,5 @@
 package view.formregister;
 
-import libary.DATE;
 import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.Color;
@@ -38,8 +37,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.InsetsUIResource;
 
-import libary.JTextFieldPassWord;
+import define.DATE;
+import define.JTextFieldPassWord;
+import define.table.FOLDER;
+import define.table.USER;
 import model.User;
+import test.ConnectSQL;
 import view.toolbar.Panel_Functions;
 
 import java.util.Date;
@@ -74,7 +77,6 @@ public class FormRegister extends JFrame {
 	private JPanel containerbt;
 	private JButton cancel;
 	private JButton login;
-	private JPanel t;
 	private JLabel hoi;
 	private JButton register;
 	private Panel_Functions fun;
@@ -119,24 +121,32 @@ public class FormRegister extends JFrame {
 			System.out.println("Error form đăng ký");
 		}
 	}
-    private void setData()
-    {
-    	checkUser = new HashMap<String, Boolean>();
-    	try {
-    	    String sql = "SELECT TDN FROM _User";
-    	    Connection con = fun.getConnection();
-			Statement sta = con.createStatement();
+
+	private void setData() throws ClassNotFoundException {
+		checkUser = new HashMap<String, Boolean>();
+		try {
+			String sql = "SELECT " + USER.username + " FROM " + USER.nametable;
+			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			if (connect != null) {
+				System.out.println("Ket noi database thanh cong");
+			} else {
+				connect.close();
+				System.out.println("Ket noi database that bai");
+				return;
+			}
+			Statement sta = connect.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next())
-				checkUser.put(rs.getString("TDN"), true);
+			while (rs.next())
+				checkUser.put(rs.getString(USER.username), true);
 			sta.close();
 			rs.close();
 			System.out.println("Tải dữ liệu user thành công");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
-    }
+		}
+	}
+
 	private void setColor(Color back, Color font) {
 		cancel.setOpaque(true);
 		register.setOpaque(true);
@@ -151,7 +161,7 @@ public class FormRegister extends JFrame {
 
 	private void setIcon() {
 		try {
-			this.setIconImage((new ImageIcon(libary.URL.url + icon)).getImage());
+			this.setIconImage((new ImageIcon(define.URL.url + icon)).getImage());
 		} catch (Exception e) {
 			System.out.print("error");
 		}
@@ -178,7 +188,6 @@ public class FormRegister extends JFrame {
 		cancel = new JButton();
 		login = new JButton();
 		containerbt = new JPanel();
-		t = new JPanel();
 		hoi = new JLabel();
 		register = new JButton();
 		pass_check = new JLabel();
@@ -339,18 +348,32 @@ public class FormRegister extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (CheckInput()) {
-			        if (!pass_check_input.getPass().equals(pass_input.getPass())) {
-			        	JOptionPane.showMessageDialog(day, passno, thongbao, JOptionPane.WARNING_MESSAGE);
-			        }
-			        else
-					if (checkUser != null) {
+					if (!pass_check_input.getPass().equals(pass_input.getPass())) {
+						JOptionPane.showMessageDialog(day, passno, thongbao, JOptionPane.WARNING_MESSAGE);
+					} else if (checkUser != null) {
 						if (checkUser.size() == 0) {
 							JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
-							Accept();
+							try {
+								Accept();
+							} catch (ClassNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 						} else {
 							if (checkUser.get(tdn_input.getText()) == null) {
 								JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
-								Accept();
+								try {
+									Accept();
+								} catch (ClassNotFoundException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 							} else {
 								JOptionPane.showMessageDialog(day, da_ton_tai, thongbao, JOptionPane.OK_OPTION);
 							}
@@ -367,26 +390,33 @@ public class FormRegister extends JFrame {
 		});
 	}
 
-	private void Accept() {
-		Connection con = fun.getConnection();
-		if (con != null) {
+	private void Accept() throws ClassNotFoundException, SQLException {
+		Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+		if (connect != null) {
+			System.out.println("Ket noi database thanh cong");
+		} else {
+			connect.close();
+			System.out.println("Ket noi database that bai");
+			return;
+		}
+		if (connect != null) {
 			try {
 				java.time.LocalDate.now();
-				String sql1 = "SELECT MAX(ID) AS ID FROM _Folder";
-				Statement sta = con.createStatement();
+				String sql1 = "SELECT MAX(" + FOLDER.id + ") AS ID FROM " + FOLDER.nametable;
+				Statement sta = connect.createStatement();
 				ResultSet result = sta.executeQuery(sql1);
 				result.next();
 				int idMax = result.getInt("ID");
-				String sql2 = "INSERT INTO _USER(Fullname, tdn, pass, phone, "
-						+ "email, birth, created, rootFolder, sex)" + "VALUES (N'" + full_name_input.getText() + "', '"
-						+ tdn_input.getText() + "', '" + pass_input.getPass() + "', '" + phone_number_input.getText()
-						+ "', '" + email_input.getText() + "', '" + year.getSelectedItem() + "-"
-						+ month.getSelectedItem() + "-" + day.getSelectedItem() + "', '"
-						+ java.time.LocalDate.now().getYear() + "-" + java.time.LocalDate.now().getMonth() + "-"
-						+ java.time.LocalDate.now().getDayOfMonth() + "', " + (idMax + 1) + ", "
-						+ (nam.isSelected() == true ? 1 : 0) + ")";
-				String sql3 = "INSERT INTO _FOLDER(id, Fullname, date_create)" + "VALUES (" + (idMax + 1)
-						+ ", 'This pc', '" + +java.time.LocalDateTime.now().getYear() + "-"
+				String sql2 = "INSERT INTO _USER(" + USER.name + "," + USER.username + "," + USER.password + ","
+						+ USER.phone + "," + USER.email + "," + USER.birth + "," + USER.create + "," + USER.folder + ","
+						+ USER.sex + ")" + "VALUES (N'" + full_name_input.getText() + "', '" + tdn_input.getText()
+						+ "', '" + pass_input.getPass() + "', '" + phone_number_input.getText() + "', '"
+						+ email_input.getText() + "', '" + year.getSelectedItem() + "-" + month.getSelectedItem() + "-"
+						+ day.getSelectedItem() + "', '" + java.time.LocalDate.now().getYear() + "-"
+						+ java.time.LocalDate.now().getMonth() + "-" + java.time.LocalDate.now().getDayOfMonth() + "', "
+						+ (idMax + 1) + ", " + (nam.isSelected() == true ? 1 : 0) + ")";
+				String sql3 = "INSERT INTO _FOLDER(" + FOLDER.id + "," + FOLDER.nameFolder + "," + FOLDER.create + ")"
+						+ "VALUES (" + (idMax + 1) + ", 'This pc', '" + +java.time.LocalDateTime.now().getYear() + "-"
 						+ two(((Integer) java.time.LocalDateTime.now().getMonthValue()).toString()) + "-"
 						+ two(((Integer) java.time.LocalDateTime.now().getDayOfMonth()).toString()) + " "
 						+ two(((Integer) java.time.LocalDateTime.now().getHour()).toString()) + ":"
@@ -398,6 +428,7 @@ public class FormRegister extends JFrame {
 				}
 				sta.close();
 				result.close();
+				connect.close();
 			} catch (Exception e) {
 				System.out.println("Error" + e.getMessage());
 			}
