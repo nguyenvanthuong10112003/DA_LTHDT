@@ -67,10 +67,10 @@ public class PanelContentCenter extends JScrollPane {
 			this.add(jPopupMenu);
 			this.table.add(jPopupMenu);
 			this.jPopupMenu.add(open);
-			System.out.println("Tải thành công Content ở giữa");
+			System.out.println("Upload success content center");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error Content ở giữa");
+			System.out.println("Error Content center");
 		}
 	}
 

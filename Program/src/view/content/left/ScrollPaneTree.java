@@ -46,10 +46,10 @@ public class ScrollPaneTree extends JScrollPane {
 			this.addMouseListener(mouselisten);
 			this.setCursor(defaultCursor);
 			this.tree.getIconClose().addMouseMotionListener(mouselisten);
-			System.out.println("Tải thành công Content bên trái");
+			System.out.println("Upload success content left");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error Content bên trái");
+			System.out.println("Error Content left");
 		}
 	}
 

@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.InsetsUIResource;
 
+import controller.mouse;
+import define.ColorList;
 import define.DATE;
 import define.JTextFieldPassWord;
 import define.table.FOLDER;
@@ -75,10 +77,10 @@ public class FormRegister extends JFrame {
 	private JLabel email;
 	private JTextField email_input;
 	private JPanel containerbt;
-	private JButton cancel;
-	private JButton login;
+	private JLabel cancel;
+	private JLabel login;
 	private JLabel hoi;
-	private JButton register;
+	private JLabel register;
 	private Panel_Functions fun;
 	private String icon = "\\Icon\\formregister\\icon-register.png";
 	private Map<String, Boolean> checkUser;
@@ -92,10 +94,8 @@ public class FormRegister extends JFrame {
 	private Font font32 = new Font("Arial", Font.BOLD, 24);
 	private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	private Font fontb = new Font("Arial", Font.BOLD, 14);
-	private Color black = Color.BLACK;
-	private Color white = Color.WHITE;
-	private Color blue = Color.BLUE;
-
+	private mouse mouseListen;
+	
 	public FormRegister(Panel_Functions fun) {
 		try {
 			if (fun != null)
@@ -108,17 +108,18 @@ public class FormRegister extends JFrame {
 			this.setData();
 			this.init();
 			this.setIcon();
-			this.setColor(blue, black);
+			this.setColor();
 			this.setText();
 			this.Edit();
 			this.setTime();
+			this.addEvent();
 			this.addObj();
 			this.setCusor();
 			this.setVisible(true);
-			System.out.println("Tải thành công form đăng ký");
+			System.out.println("Upload success form register");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error form đăng ký");
+			System.out.println("Error form register");
 		}
 	}
 
@@ -140,23 +141,23 @@ public class FormRegister extends JFrame {
 				checkUser.put(rs.getString(USER.username), true);
 			sta.close();
 			rs.close();
-			System.out.println("Tải dữ liệu user thành công");
+			System.out.println("Upload data success!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void setColor(Color back, Color font) {
+	private void setColor() {
 		cancel.setOpaque(true);
 		register.setOpaque(true);
 		login.setOpaque(true);
-		cancel.setBackground(back);
-		register.setBackground(back);
-		login.setBackground(back);
-		login.setForeground(font);
-		cancel.setForeground(font);
-		register.setForeground(font);
+		cancel.setForeground(ColorList.Back_Ground);
+		login.setForeground(ColorList.Back_Ground);
+		register.setForeground(ColorList.Back_Ground);
+		exit(cancel.hashCode());
+		exit(login.hashCode());
+		exit(register.hashCode());
 	}
 
 	private void setIcon() {
@@ -174,7 +175,13 @@ public class FormRegister extends JFrame {
 	}
 
 	private void Edit() {
-
+		EmptyBorder border = new EmptyBorder(9,10,9,10);
+		cancel.setBorder(border);
+		register.setBorder(border);
+		login.setBorder(border);
+		content.setBackground(ColorList.Back_Ground);
+		nam.setBackground(ColorList.Back_Ground);
+		nu.setBackground(ColorList.Back_Ground);
 	}
 
 	private void init() {
@@ -185,11 +192,11 @@ public class FormRegister extends JFrame {
 		pass_text = new JLabel();
 		tdn_input = new JTextField();
 		pass_input = new JTextFieldPassWord();
-		cancel = new JButton();
-		login = new JButton();
+		cancel = new JLabel();
+		login = new JLabel();
 		containerbt = new JPanel();
 		hoi = new JLabel();
-		register = new JButton();
+		register = new JLabel();
 		pass_check = new JLabel();
 		pass_check_input = new JTextFieldPassWord();
 		full_name = new JLabel();
@@ -207,6 +214,7 @@ public class FormRegister extends JFrame {
 		year = new JComboBox();
 		month = new JComboBox();
 		day = new JComboBox();
+		mouseListen = new mouse(this);
 	}
 
 	private void setText() {
@@ -252,6 +260,7 @@ public class FormRegister extends JFrame {
 		register_text.setBorder(new EmptyBorder(0, 0, 10, 0));
 		content.add(register_text, BorderLayout.NORTH);
 		JPanel p = new JPanel();
+		p.setBackground(ColorList.Back_Ground);
 		p.setLayout(new GridLayout(8, 2, 0, 15));
 		p.add(tdn_text);
 		p.add(tdn_input, BorderLayout.CENTER);
@@ -266,22 +275,23 @@ public class FormRegister extends JFrame {
 		p.add(full_name_input);
 
 		p.add(sex);
+		
 		JPanel l = new JPanel();
+		l.setBackground(ColorList.Back_Ground);
 		l.setLayout(new FlowLayout(FlowLayout.CENTER));
 		gb.add(nam);
 		gb.add(nu);
 		l.add(nam);
 		l.add(nu);
 		p.add(l);
-
 		p.add(date_of_birth);
 		l = new JPanel();
+		l.setBackground(ColorList.Back_Ground);
 		l.setLayout(new GridLayout(1, 3));
 		l.add(day);
 		l.add(month);
 		l.add(year);
 		p.add(l);
-
 		p.add(phoneNumber);
 		p.add(phone_number_input);
 
@@ -290,106 +300,106 @@ public class FormRegister extends JFrame {
 
 		content.add(p, BorderLayout.CENTER);
 		l = new JPanel();
+		l.setBackground(ColorList.Back_Ground);
 		l.setLayout(new BoxLayout(l, BoxLayout.Y_AXIS));
 		p = new JPanel();
+		p.setBackground(ColorList.Back_Ground);
 		p.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		p.add(cancel);
 		p.add(register);
 		l.add(p);
 		p = new JPanel();
+		p.setBackground(ColorList.Back_Ground);
 		p.add(hoi);
 		p.add(login);
 		l.add(p);
 		content.add(l, BorderLayout.SOUTH);
 		this.add(content, BorderLayout.CENTER);
-		login.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				fun.onclick_InForm(true, e.getX(), e.getY());
-			}
-		});
-		cancel.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				setVisible(false);
-			}
-		});
-		register.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (CheckInput()) {
-					if (!pass_check_input.getPass().equals(pass_input.getPass())) {
-						JOptionPane.showMessageDialog(day, passno, thongbao, JOptionPane.WARNING_MESSAGE);
-					} else if (checkUser != null) {
-						if (checkUser.size() == 0) {
-							JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
-							try {
-								Accept();
-							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						} else {
-							if (checkUser.get(tdn_input.getText()) == null) {
-								JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
-								try {
-									Accept();
-								} catch (ClassNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								} catch (SQLException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-							} else {
-								JOptionPane.showMessageDialog(day, da_ton_tai, thongbao, JOptionPane.OK_OPTION);
-							}
-						}
-					} else {
-						JOptionPane.showMessageDialog(day, errorList, thongbao, JOptionPane.WARNING_MESSAGE);
-					}
-				} else {
-					JOptionPane.showMessageDialog(day, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
-					// JOptionPane.showMessageDialog(day, text_accept, thongbao,
-					// JOptionPane.OK_OPTION);
-				}
-			}
-		});
 	}
 
+	public void clickRegister()
+	{
+		if (CheckInput()) {
+			if (!pass_check_input.getPass().equals(pass_input.getPass())) {
+				JOptionPane.showMessageDialog(day, passno, thongbao, JOptionPane.WARNING_MESSAGE);
+			} else if (checkUser != null) {
+				if (checkUser.size() == 0) {
+					JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
+					try {
+						Accept();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					if (checkUser.get(tdn_input.getText()) == null) {
+						JOptionPane.showMessageDialog(day, text_accept, thongbao, JOptionPane.NO_OPTION);
+						try {
+							Accept();
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						JOptionPane.showMessageDialog(day, da_ton_tai, thongbao, JOptionPane.OK_OPTION);
+					}
+				}
+			} else {
+				JOptionPane.showMessageDialog(day, errorList, thongbao, JOptionPane.WARNING_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(day, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	
+	public void clicked(int code, int x, int y)
+	{
+		if(code == login.hashCode())
+		{
+			fun.onclick_InForm(true, x, y);
+		} else if(code == register.hashCode())
+		{
+			clickRegister();
+		} else if(code == cancel.hashCode())
+		{
+			setVisible(false);
+		}
+	}
+	
+	public void hover(int code)
+	{
+		if(code == login.hashCode())
+		{
+			login.setBackground(ColorList.Blue);
+		} else if(code == register.hashCode())
+		{
+			register.setBackground(ColorList.Blue);
+		} else if(code == cancel.hashCode())
+		{
+			cancel.setBackground(ColorList.Blue);
+		}
+	}
+	
+	public void exit(int code)
+	{
+		if(code == login.hashCode())
+		{
+			login.setBackground(ColorList.Fore_Ground);
+		} else if(code == register.hashCode())
+		{
+			register.setBackground(ColorList.Fore_Ground);
+		} else if(code == cancel.hashCode())
+		{
+			cancel.setBackground(ColorList.Fore_Ground);
+		}
+	}
+	
 	private void Accept() throws ClassNotFoundException, SQLException {
 		Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
 		if (connect != null) {
@@ -456,6 +466,16 @@ public class FormRegister extends JFrame {
 		return true;
 	}
 
+	private void addEvent()
+	{
+		login.addMouseListener(mouseListen);
+		login.addMouseMotionListener(mouseListen);
+		register.addMouseListener(mouseListen);
+		register.addMouseMotionListener(mouseListen);
+		cancel.addMouseListener(mouseListen);
+		cancel.addMouseMotionListener(mouseListen);
+	}
+	
 	private void setTime() {
 		year.setEditable(true);
 		month.setEditable(true);

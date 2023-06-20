@@ -37,7 +37,7 @@ public class Screen_ToolBar extends JPanel {
 			this.add(function, BorderLayout.CENTER);
 			this.add(navigation, BorderLayout.SOUTH);
 			// function.setVisible(false);
-			System.out.println("Tải thành công ToolBar");
+			System.out.println("Upload success ToolBar");
 		} catch (Exception e) {
 			System.out.println("Error ToolBar");
 		}

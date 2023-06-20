@@ -63,7 +63,7 @@ public class PanelContent extends JPanel {
 			this.addObj();
 			this.setColorObj();
 			this.addEvent();
-			System.out.println("Tải thành công Content");
+			System.out.println("Upload success Content");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error Content");

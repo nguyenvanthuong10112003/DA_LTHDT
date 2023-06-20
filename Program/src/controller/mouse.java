@@ -21,6 +21,8 @@ import view.content.center.PanelContentCenter;
 import view.content.left.ScrollPaneTree;
 import view.content.left.TreeBar;
 import view.content.right.PanelContentRight;
+import view.formlogin.FormLogin;
+import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
 import view.screen.Screen;
 import view.toolbar.Panel_Navigation;
@@ -38,7 +40,17 @@ public class mouse extends MouseAdapter implements MouseListener {
 	private Boolean mousep = false;
 	private Screen_MenuBar menu;
 	private PanelContentCenter pct;
-	
+	private FormLogin formlogin;
+	private FormRegister formregister;
+
+	public mouse(FormLogin formlogin) {
+		this.formlogin = formlogin;
+	}
+
+	public mouse(FormRegister formregister) {
+		this.formregister = formregister;
+	}
+
 	public mouse(Panel_Navigation pf) {
 		this.pf = pf;
 	}
@@ -84,11 +96,8 @@ public class mouse extends MouseAdapter implements MouseListener {
 		// System.out.println(e.getSource());
 		if (tb != null) {
 			try {
-				if (e.getSource().getClass().equals(JButton.class)) {
-					tb.onclick_Button((JButton) e.getSource(), e.getXOnScreen(), e.getYOnScreen());
-				} else {
-					tb.setClicked(e.getSource().hashCode());
-				}
+				tb.setClicked(e.getSource().hashCode());
+				tb.onclick_Button(e.getSource().hashCode(), e.getXOnScreen(), e.getYOnScreen());
 			} catch (Exception ex) {
 				System.out.print("error");
 			}
@@ -120,13 +129,17 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (pct != null) {
 			if (e.getSource().equals(pct.getTable())) {
 				pct.clickedTable();
-			}
-			else
-			{
+			} else {
 				pct.getTable().clearSelection();
 				pct.getPanelContent().noSelected();
 				pct.getPanelContent().getScreen().FunEnablueRoot(true);
 			}
+		} else if (formlogin != null)
+		{
+			formlogin.clicked(e.getSource().hashCode(), e.getX(), e.getY());
+		} else if (formregister != null)
+		{
+			formregister.clicked(e.getSource().hashCode(), e.getX(), e.getY());
 		}
 
 	}
@@ -179,7 +192,7 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (pf != null) {
 			if (e.getSource().getClass().equals(JLabel.class)) {
 				pf.setColorIcon(e.getSource().hashCode(), ColorList.Back_Ground);
-			} 
+			}
 		} else if (tree != null) {
 			if (e.getSource().equals(tree.getIconClose())) {
 				tree.exitClose();
@@ -192,6 +205,13 @@ public class mouse extends MouseAdapter implements MouseListener {
 			}
 		} else if (tb != null) {
 			tb.setHover(e.getSource().hashCode(), ColorList.Back_Ground);
+			tb.exit(e.getSource().hashCode());
+		} else if (formlogin != null)
+		{
+			formlogin.exit(e.getSource().hashCode());
+		} else if (formregister != null)
+		{
+			formregister.exit(e.getSource().hashCode());
 		}
 	}
 
@@ -257,7 +277,13 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (tb != null) {
 			// System.out.println(e.getSource());
 			tb.setHover(e.getSource().hashCode(), ColorList.Hover);
-			;
+			tb.hover(e.getSource().hashCode());
+		} else if (formlogin != null)
+		{
+			formlogin.hover(e.getSource().hashCode());
+		} else if (formregister != null)
+		{
+			formregister.hover(e.getSource().hashCode());
 		}
 	}
 

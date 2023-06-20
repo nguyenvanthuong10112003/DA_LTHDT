@@ -37,6 +37,8 @@ import java.util.TreeSet;
 import model.Element;
 import model.Folder;
 import view.screen.Screen;
+
+import javax.swing.ComboBoxEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -53,6 +55,8 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+
+import org.w3c.dom.html.HTMLLabelElement;
 
 import controller.Key;
 import controller.mouse;
@@ -86,6 +90,7 @@ public class Panel_Navigation extends JPanel {
 	private int location_down_up[] = { 0, 0 };
 	private int search_down_up[] = { 0, 0 };
 	private String iconsr = "search";
+	private Element ele;
 
 	public Panel_Navigation(Screen screen, Element root) {
 		super();
@@ -111,15 +116,12 @@ public class Panel_Navigation extends JPanel {
 			search = new JPanel();
 			input_location = new JComboBox();
 			input_search = new JComboBox();
-			input_search.addItem("Tìm kiếm");
 			icon = new JLabel();
 			iconsearch = new JLabel();
 			keyListen = new Key(this);
-			input_location.addItem("/");
-			input_location.addItem("/This pc");
-			System.out.println("Tải thành công thanh tìm kiếm của ToolBar");
+			System.out.println("Upload success search");
 		} catch (Exception e) {
-			System.out.println("Error tìm kiếm của ToolBar");
+			System.out.println("Error search");
 		}
 	}
 
@@ -153,10 +155,13 @@ public class Panel_Navigation extends JPanel {
 		input_location.setEditable(true);
 		input_location.setBorder(new LineBorder(ColorList.Back_Ground));
 		input_location.getComponents()[0].setVisible(false);
+		input_location.addItem("/");
+		input_location.addItem("/This pc");
 
 		input_search.getComponents()[0].setVisible(false);
 		input_search.setBorder(new LineBorder(ColorList.Back_Ground));
 		input_search.setEditable(true);
+		input_search.addItem("Tìm kiếm");
 
 		search.setBorder(new LineBorder(ColorList.Fore_Ground));
 
@@ -328,17 +333,27 @@ public class Panel_Navigation extends JPanel {
 						search_down_up[0]++;
 				}
 			}
-			for(int i = 0; i < text.length() - 3; i++)
+			return;
+		}
+		if (code == 10) {
+			if(input_search.getSelectedIndex() >= 0)
 			{
-				
+				Element nows = new Folder(-1);
+				nows.getChildrents().add(ele.getChildrents().get(input_search.getSelectedIndex()));
+				screen.setNowsCenter(nows);
 			}
+			else
+				screen.setNowsCenter(ele);
+			input_search.setPopupVisible(false);
 			return;
 		}
 		input_search.removeAllItems();
-		Set<String> set = new TreeSet();
+		LinkedList<Element> set = new LinkedList();
+		ele = new Folder(-1);
 		setList(set, root, text);
-		for (String pl : set) {
-			input_search.addItem(pl);
+		for (Element pl : set) {
+			input_search.addItem(pl.getName() + " - " + pl.getLocation() + pl.getName());
+			ele.getChildrents().add(pl);
 		}
 		input_search.setPopupVisible(false);
 		if (set.size() > 0)
@@ -347,9 +362,9 @@ public class Panel_Navigation extends JPanel {
 		((JTextField) input_search.getComponents()[2]).setText(text);
 	}
 
-	public void setList(Set<String> list, Element e, String text) {
+	public void setList(LinkedList<Element> list, Element e, String text) {
 		if (e.getName().contains(text))
-			list.add(e.getName() + " - " + e.getLocation() + e.getName());
+			list.add(e);
 		if (e.getClass().equals(Folder.class)) {
 			if (e.getChildrents().size() > 0) {
 				for (Element child : e.getChildrents())
@@ -446,8 +461,10 @@ public class Panel_Navigation extends JPanel {
 			forward();
 		}
 		if (hash == input_search.getComponents()[2].hashCode()) {
-			if (((JTextField) input_search.getComponents()[2]).getText().equals("Tìm kiếm"))
+			if (((JTextField) input_search.getComponents()[2]).getText().equals("Tìm kiếm")) {
 				((JTextField) input_search.getComponents()[2]).setText("");
+				input_search.removeAllItems();
+			}
 		}
 	}
 

@@ -42,13 +42,13 @@ public class File extends Element {
 					type_link.put(arr[0], arr[2]);
 					type_name.put(arr[0], arr[1]);
 				}
-				System.out.println("Đọc file Icon thành công");
+				System.out.println("Read file icon success");
 				fr.close();
 				br.close();
 
 			} catch (Exception ex) {
 				// TODO: handle exception
-				System.out.println("Loi doc file: " + ex);
+				System.out.println("error read file icon: " + ex);
 			}
 		}
 	}

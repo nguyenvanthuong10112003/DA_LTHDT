@@ -31,7 +31,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
+import controller.mouse;
+import define.ColorList;
 import define.JTextFieldPassWord;
 import define.table.FOLDER;
 import define.table.USER;
@@ -48,11 +51,11 @@ public class FormLogin extends JFrame {
 	private JTextField tdn_input;
 	private JTextFieldPassWord pass_input;
 	private JPanel containerbt;
-	private JButton cancel;
-	private JButton login;
+	private JLabel cancel;
+	private JLabel login;
 	private JPanel t;
 	private JLabel hoi;
-	private JButton register;
+	private JLabel register;
 	private String icon = "\\Icon\\formlogin\\icon-login.png";
 	private Font font32 = new Font("Arial", Font.BOLD, 28);
 	private Font fontp = new Font("Arial", Font.PLAIN, 14);
@@ -68,7 +71,8 @@ public class FormLogin extends JFrame {
 	private String text_no = "Thông tin đăng nhập không tồn tại!\nHãy tạo tài khoản mới.";
 	private String text_error = "Thông tin đăng nhập không chính xác!";
 	private String text_thieu = "Yêu cầu nhập đầy đủ thông tin đăng nhập!";
-
+	private mouse mouselisten;
+	
 	public FormLogin(Panel_Functions fun) {
 		try {
 			if (fun != null)
@@ -83,13 +87,15 @@ public class FormLogin extends JFrame {
 			this.setIcon();
 			this.setColor(blue, black);
 			this.setText();
+			this.Edit();
 			this.addObj();
 			this.setCusor();
+			this.setEvent();
 			this.setVisible(true);
-			System.out.println("Tải thành công form đăng nhập");
+			System.out.println("Upload success form login");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error Form đăng nhập");
+			System.out.println("Error Form login");
 		}
 	}
 
@@ -117,7 +123,7 @@ public class FormLogin extends JFrame {
 			sta.close();
 			rs.close();
 			connect.close();
-			System.out.println("Tải dữ liệu user thành công");
+			System.out.println("Upload data success!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,12 +145,25 @@ public class FormLogin extends JFrame {
 		cancel.setOpaque(true);
 		register.setOpaque(true);
 		login.setOpaque(true);
-		cancel.setBackground(back);
-		register.setBackground(back);
-		login.setBackground(back);
-		login.setForeground(font);
-		cancel.setForeground(font);
-		register.setForeground(font);
+		login.setForeground(ColorList.Back_Ground);
+		cancel.setForeground(ColorList.Back_Ground);
+		register.setForeground(ColorList.Back_Ground);
+		exit(cancel.hashCode());
+		exit(login.hashCode());
+		exit(register.hashCode());
+	}
+	
+	private void Edit()
+	{
+		containerbt.setBorder(new EmptyBorder(8, 0, 0, 0));
+		EmptyBorder border = new EmptyBorder(10, 10, 10, 10);
+		login.setBorder(border);
+		register.setBorder(border);
+		cancel.setBorder(border);
+		content.setBackground(ColorList.Back_Ground);
+		form.setBackground(ColorList.Back_Ground);
+		containerbt.setBackground(ColorList.Back_Ground);
+		t.setBackground(ColorList.Back_Ground);
 	}
 
 	private void setIcon() {
@@ -169,12 +188,13 @@ public class FormLogin extends JFrame {
 		pass_text = new JLabel();
 		tdn_input = new JTextField();
 		pass_input = new JTextFieldPassWord();
-		cancel = new JButton();
-		login = new JButton();
+		cancel = new JLabel();
+		login = new JLabel();
 		containerbt = new JPanel();
 		t = new JPanel();
 		hoi = new JLabel();
-		register = new JButton();
+		register = new JLabel();
+		mouselisten = new mouse(this);
 	}
 
 	private void setText() {
@@ -209,7 +229,7 @@ public class FormLogin extends JFrame {
 		form.add(new JLabel());
 		form.add(pass_text);
 		form.add(pass_input);
-		form.add(new JPanel());
+		form.add(new JLabel());
 		content.add(form);
 		containerbt.setLayout(new FlowLayout(FlowLayout.CENTER));
 		containerbt.add(cancel);
@@ -221,77 +241,91 @@ public class FormLogin extends JFrame {
 		content.add(t);
 		this.setLayout(new BorderLayout());
 		this.add(content, BorderLayout.CENTER);
-		register.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				fun.onclick_InForm(false, e.getX(), e.getY());
-			}
-		});
-		cancel.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				setVisible(false);
-			}
-		});
-		login.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (!(tdn_input.getText().equals("") || pass_input.getText().equals(""))) {
-					if (checkUser != null) {
-						if (checkUser.get(tdn_input.getText()) != null) {
-							if (checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getPass())) {
-								JOptionPane.showMessageDialog(login, text_accept, thongbao,
-										JOptionPane.INFORMATION_MESSAGE);
-								success(checkUser.get(tdn_input.getText()));
-								setVisible(false);
-								if (fun.getScreen() != null)
-									fun.resert(checkUser.get(tdn_input.getText()));
-							} else {
-								JOptionPane.showMessageDialog(login, text_error, thongbao, JOptionPane.WARNING_MESSAGE);
-							}
-						} else {
-							JOptionPane.showMessageDialog(login, text_no, thongbao, JOptionPane.YES_OPTION);
-						}
-					} else {
-						JOptionPane.showMessageDialog(login, text_no, thongbao, JOptionPane.YES_OPTION);
-					}
-				} else {
-					JOptionPane.showMessageDialog(login, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
 	}
 
+	private void setEvent()
+	{
+		register.addMouseListener(mouselisten);
+		register.addMouseMotionListener(mouselisten);
+		cancel.addMouseListener(mouselisten);
+		cancel.addMouseMotionListener(mouselisten);
+		login.addMouseListener(mouselisten);
+		login.addMouseMotionListener(mouselisten);
+	}
+	
+	public void clickLogin()
+	{
+		if (!(tdn_input.getText().equals("") || pass_input.getText().equals(""))) {
+			if (checkUser != null) {
+				if (checkUser.get(tdn_input.getText()) != null) {
+					if (checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getPass())) {
+						JOptionPane.showMessageDialog(login, text_accept, thongbao,
+								JOptionPane.INFORMATION_MESSAGE);
+						success(checkUser.get(tdn_input.getText()));
+						setVisible(false);
+						if (fun.getScreen() != null)
+							fun.resert(checkUser.get(tdn_input.getText()));
+					} else {
+						JOptionPane.showMessageDialog(login, text_error, thongbao, JOptionPane.WARNING_MESSAGE);
+					}
+				} else {
+					JOptionPane.showMessageDialog(login, text_no, thongbao, JOptionPane.YES_OPTION);
+				}
+			} else {
+				JOptionPane.showMessageDialog(login, text_no, thongbao, JOptionPane.YES_OPTION);
+			}
+		} else {
+			JOptionPane.showMessageDialog(login, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	
+	public void clickRegister(int x, int y)
+	{
+		fun.onclick_InForm(false, x, y);
+	}
+	
+	public void clicked(int code, int x, int y)
+	{
+		if(code == login.hashCode())
+		{
+			clickLogin();
+		} else if(code == register.hashCode())
+		{
+			clickRegister(x, y);
+		} else if(code == cancel.hashCode())
+		{
+			setVisible(false);
+		}
+	}
+	
+	public void hover(int code)
+	{
+		if(code == login.hashCode())
+		{
+			login.setBackground(ColorList.Blue);
+		} else if(code == register.hashCode())
+		{
+			register.setBackground(ColorList.Blue);
+		} else if(code == cancel.hashCode())
+		{
+			cancel.setBackground(ColorList.Blue);
+		}
+	}
+	
+	public void exit(int code)
+	{
+		if(code == login.hashCode())
+		{
+			login.setBackground(ColorList.Fore_Ground);
+		} else if(code == register.hashCode())
+		{
+			register.setBackground(ColorList.Fore_Ground);
+		} else if(code == cancel.hashCode())
+		{
+			cancel.setBackground(ColorList.Fore_Ground);
+		}
+	}
+	
 	private void success(User user) {
 		try {
 			String sql = "SELECT * FROM " + FOLDER.nametable + " WHERE " + FOLDER.id + " = " + user.getRoot().getId();

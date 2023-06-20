@@ -80,10 +80,10 @@ public class Screen extends JFrame {
 			this.menubar.setPanelContent(content_center);
 			// this.content_center.getPanelContentLeft().getTreeBar().setPanelContent(content_center);
 			this.update();
-			System.out.println("Tải thành công màn hình");
+			System.out.println("Upload success screen");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error màn hình");
+			System.out.println("Error screen");
 		}
 	}
 
@@ -125,7 +125,7 @@ public class Screen extends JFrame {
 					}
 
 				}
-				System.out.println("Đọc file lưu trữ thành công");
+				System.out.println("Read file data success!");
 				fr.close();
 				br.close();
 				// System.out.println(root.getChildrents().get(1).getChildrents().get(0));
@@ -210,7 +210,6 @@ public class Screen extends JFrame {
 	}
 
 	private void addListen() {
-		// this.addMouseListener(mouseListen);
 		this.addWindowStateListener(new WindowStateListener() {
 
 			@Override

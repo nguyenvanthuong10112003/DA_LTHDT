@@ -21,7 +21,9 @@ import controller.mouse;
 import define.FONT;
 import define.SQLconnect;
 import define.URL;
+import define.table.FOLDER;
 import define.table.QUICKACCESS;
+import define.table.USER;
 import model.Element;
 import model.Folder;
 import test.ConnectSQL;
@@ -135,7 +137,7 @@ public class TreeBar extends JTree {
 					if (Folder.searchFolder((Folder) root, Integer.parseInt(line)) != null)
 						listquick.add(Folder.searchFolder((Folder) root, Integer.parseInt(line)));
 				}
-				System.out.println("Đọc file QuickAccess thành công");
+				System.out.println("Read file QuickAccess success");
 				fr.close();
 				br.close();
 			} catch (Exception ex) {
@@ -287,6 +289,28 @@ public class TreeBar extends JTree {
 				}
 				System.out.println("Ghi file thanh cong");
 				out.close();
+			} else
+			{
+				try {
+					String sql = "DELETE " + QUICKACCESS.nametable + " WHERE " + USER.username + " = '" + Screen.getUser().getTenDangNhap() + 
+							"' and " + FOLDER.id + " = " + e.getId();
+					Connection connect = ConnectSQL.getJDBCConnection(SQLconnect.database);
+					Statement sta = connect.createStatement();
+					int check1 = sta.executeUpdate(sql);
+					if(check1 > 0)
+					{
+						System.out.println("Delete to quickaccess success!");
+					}
+					sta.close();
+					connect.close();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 			Update();
 		}

@@ -40,8 +40,8 @@ import view.screen.Screen;
 public class Panel_Functions extends JToolBar {
 	private Screen screen;
 	private JPanel content;
-	private JButton login;
-	private JButton register;
+	private JLabel login;
+	private JLabel register;
 	private Color black = Color.BLACK;
 	private Color white = Color.WHITE;
 	private Color blue = Color.BLUE;
@@ -89,7 +89,7 @@ public class Panel_Functions extends JToolBar {
 	private JPanel Select;
 	private mouse mouseListen;
 	private JLabel tdn;
-	private JButton dang_xuat;
+	private JLabel dang_xuat;
 	private Boolean islogin;
 	private JLabel hello;
 
@@ -108,9 +108,9 @@ public class Panel_Functions extends JToolBar {
 			EditObj();
 			addObj();
 			addEvent();
-			System.out.println("Tải thanh chức năng thành công");
+			System.out.println("Upload success functions");
 		} catch (Exception e) {
-			System.out.println("Error thanh chức năng!");
+			System.out.println("Error functions!");
 		}
 	}
 
@@ -129,7 +129,7 @@ public class Panel_Functions extends JToolBar {
 		pinTo_text.setFont(FONT.font_11);
 		tdn.setFont(FONT.font_IN_DAM);
 		dang_xuat.setFont(FONT.font_IN_DAM);
-		hello.setFont(FONT.font_mac_dinh);
+		hello.setFont(FONT.font_IN_DAM);
 		select_no.setFont(FONT.font_mac_dinh);
 		select_all.setFont(FONT.font_mac_dinh);
 	}
@@ -223,8 +223,8 @@ public class Panel_Functions extends JToolBar {
 		mouseListen = new mouse(this);
 		container_icon_function = new JPanel();
 		content = new JPanel();
-		login = new JButton();
-		register = new JButton();
+		login = new JLabel();
+		register = new JLabel();
 		copy_to_text = new JTextArea();
 		move_to_text = new JTextArea();
 		rename_text = new JLabel();
@@ -250,7 +250,7 @@ public class Panel_Functions extends JToolBar {
 		new_folder_icon = new JLabel(new ImageIcon(define.URL.url + new_folder));
 		new_file_icon = new JLabel(new ImageIcon(define.URL.url + new_file));
 		tdn = new JLabel();
-		dang_xuat = new JButton();
+		dang_xuat = new JLabel();
 		hello = new JLabel();
 		select_no = new JLabel(new ImageIcon(define.URL.url + select_no_icon));
 		select_all = new JLabel(new ImageIcon(define.URL.url + select_all_icon));
@@ -258,8 +258,8 @@ public class Panel_Functions extends JToolBar {
 	}
 
 	private void setText() {
-		login.setText("Đăng nhập");
-		register.setText("Đăng ký");
+		login.setText("     Đăng nhập     ");
+		register.setText("      Đăng ký      ");
 		pinTo_text.setText("    Ghim vào \ntruy cập nhanh");
 		pin_to_access_icon.setToolTipText("Thêm vào truy cập nhanh");
 		cut_icon.setText("Cut");
@@ -271,7 +271,7 @@ public class Panel_Functions extends JToolBar {
 		delete_text.setText("Xóa");
 		new_file_text.setText("Tệp mới");
 		new_folder_text.setText("Thư mục mới");
-		dang_xuat.setText("Đăng xuất");
+		dang_xuat.setText("     Đăng xuất     ");
 		hello.setText("Xin chào,");
 		select_all.setText("Chọn tất cả");
 		select_no.setText("Bỏ chọn");
@@ -286,13 +286,16 @@ public class Panel_Functions extends JToolBar {
 			content.setLayout(new GridLayout(2, 1, 5, 5));
 			content.add(login);
 			content.add(register);
-			content.setBorder(new EmptyBorder(10, 0, 10, 0));
+			content.setBorder(new EmptyBorder(5, 5, 5, 5));
 		} else {
-			content.setLayout(new GridLayout(3, 1, 0, 0));
-			content.add(hello);
-			content.add(tdn);
+			content.setLayout(new GridLayout(2, 1, 2, 2));
+			JPanel panel = new JPanel();
+			panel.setLayout(new GridLayout(2,1,0,0));
+			panel.add(hello);
+			panel.add(tdn);
+			content.add(panel);
 			content.add(dang_xuat);
-			content.setBorder(new EmptyBorder(0, 0, 0, 0));
+			content.setBorder(new EmptyBorder(3, 3, 3, 3));
 		}
 
 		container_icon_function.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -395,6 +398,20 @@ public class Panel_Functions extends JToolBar {
 
 		paste_icon.setEnabled(false);
 		EnableRoot(true);
+		
+		LineBorder border = new LineBorder(ColorList.Fore_Ground);
+		register.setOpaque(true);
+		dang_xuat.setOpaque(true);
+		login.setOpaque(isOpaque());
+		register.setBorder(border);
+		login.setBorder(border);
+		dang_xuat.setBorder(border);
+		exit(register.hashCode());
+		exit(login.hashCode());
+		exit(dang_xuat.hashCode());
+		register.setHorizontalAlignment(JLabel.CENTER);
+		login.setHorizontalAlignment(JLabel.CENTER);
+		dang_xuat.setHorizontalAlignment(JLabel.CENTER);
 	}
 
 	public void EnableRoot(Boolean root) {
@@ -415,9 +432,12 @@ public class Panel_Functions extends JToolBar {
 	public void addEvent() {
 		this.addMouseMotionListener(mouseListen);
 		login.addMouseListener(mouseListen);
+		login.addMouseMotionListener(mouseListen);
 		register.addMouseListener(mouseListen);
+		register.addMouseMotionListener(mouseListen);
 		dang_xuat.addMouseListener(mouseListen);
-
+		dang_xuat.addMouseMotionListener(mouseListen);
+		
 		pin_to_access_icon.addMouseMotionListener(mouseListen);
 		pinTo_text.addMouseMotionListener(mouseListen);
 		pin_to_access_icon.addMouseListener(mouseListen);
@@ -478,16 +498,16 @@ public class Panel_Functions extends JToolBar {
 		Select.addMouseMotionListener(mouseListen);
 	}
 
-	public JButton btlogin() {
+	public JLabel btlogin() {
 		return login;
 	}
 
-	public JButton btregister() {
+	public JLabel btregister() {
 		return register;
 	}
 
-	public void onclick_Button(JButton bt, int x, int y) {
-		if (bt.equals(login)) {
+	public void onclick_Button(int code, int x, int y) {
+		if (code == login.hashCode()) {
 			if (Fregister != null) {
 				Fregister.setVisible(false);
 			}
@@ -496,7 +516,7 @@ public class Panel_Functions extends JToolBar {
 					Flogin.setVisible(false);
 			Flogin = new FormLogin(this);
 			Flogin.setLocation(x - (x > Flogin.getSize().width ? Flogin.getSize().width : 0), y);
-		} else if (bt.equals(register)) {
+		} else if (code == register.hashCode()) {
 			if (Flogin != null) {
 				Flogin.setVisible(false);
 			}
@@ -505,7 +525,7 @@ public class Panel_Functions extends JToolBar {
 					Fregister.setVisible(false);
 			Fregister = new FormRegister(this);
 			Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
-		} else if (bt.equals(dang_xuat)) {
+		} else if (code == dang_xuat.hashCode()) {
 			screen.setVisible(false);
 			screen = new Screen(screen.getTitle(), null, false);
 		}
@@ -655,6 +675,44 @@ public class Panel_Functions extends JToolBar {
 		new_folder_text.setEnabled(show);
 	}
 
+	public void exit(int code)
+	{
+		if(code == login.hashCode())
+		{
+			login.setBackground(ColorList.Fore_Ground);
+			login.setForeground(ColorList.Back_Ground);
+		}
+		else if(code == register.hashCode())
+		{
+			register.setBackground(ColorList.Fore_Ground);
+			register.setForeground(ColorList.Back_Ground);
+		}
+		if(code == dang_xuat.hashCode())
+		{
+			dang_xuat.setBackground(ColorList.Fore_Ground);
+			dang_xuat.setForeground(ColorList.Back_Ground);
+		}
+	}
+	
+	public void hover(int code)
+	{
+		if(code == login.hashCode())
+		{
+			login.setBackground(ColorList.Back_Ground);
+			login.setForeground(ColorList.Fore_Ground);
+		}
+		else if(code == register.hashCode())
+		{
+			register.setBackground(ColorList.Back_Ground);
+			register.setForeground(ColorList.Fore_Ground);
+		} 
+		else if(code == dang_xuat.hashCode())
+		{
+			dang_xuat.setBackground(ColorList.Back_Ground);
+			dang_xuat.setForeground(ColorList.Fore_Ground);
+		}
+	}
+	
 	public void SETselected(Boolean selected) {
 		PinTo.setEnabled(selected);
 		pin_to_access_icon.setEnabled(selected);

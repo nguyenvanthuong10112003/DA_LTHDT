@@ -22,16 +22,6 @@ public class Key implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(navi != null)
-		{
-			if(e.getSource().equals(navi.getInput_Location().getComponents()[2]))
-			{
-				navi.eventKeySearchLocation(e.getKeyCode(), e.getKeyChar());
-			} else if(e.getSource().equals(navi.getInput_Search().getComponents()[2]))
-			{
-				navi.eventKeySearch(e.getKeyCode(), e.getKeyChar());
-			}
-		}
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class Screen_MenuBar extends JMenuBar {
 			addEvent();
 			addObj();
 			setBack();
-			System.out.println("Tải tành công thanh menu");
+			System.out.println("Upload success menu");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error thanh menu");

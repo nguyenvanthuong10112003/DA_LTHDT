@@ -81,10 +81,10 @@ public class PanelContentRight extends JPanel {
 			this.Edit();
 			this.addObj();
 			this.setFont();
-			System.out.println("Tải thành công content bên phải");
+			System.out.println("Upload succrss content right");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error Content bên phải");
+			System.out.println("Error Content right");
 		}
 	}
 
