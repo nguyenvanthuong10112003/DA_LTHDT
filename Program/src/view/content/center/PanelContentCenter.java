@@ -11,6 +11,8 @@ import model.Element;
 import model.Folder;
 import test.ConnectSQL;
 import view.content.PanelContent;
+import view.menubar.Screen_MenuBar;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileWriter;
@@ -45,7 +47,7 @@ public class PanelContentCenter extends JScrollPane {
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private LinkedList<Integer> selectCut;
 	private action ActionListen;
-
+	
 	public PanelContentCenter(PanelContent pct, Element root) {
 		super();
 		try {
@@ -155,7 +157,19 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void clickedTable() {
 		if (table.getSelectedRow() >= 0 && table.getSelectedRowCount() == 1) {
-			pct.SELECTtable(nows != null ? nows.getChildrents().get(table.getSelectedRow()) : root);
+			if(nows == null)
+				pct.SELECTtable(root);
+			else
+			{
+				for(Element child : nows.getChildrents())
+				{
+					if(child.getName().equals(data[table.getSelectedRow()][1]))
+					{
+						pct.SELECTtable(child);
+						break;
+					}
+				}
+			}
 			pct.setFunSelectedTablie(true);
 			if (nows == null)
 				pct.getScreen().FunEnablueRoot(true);
@@ -297,6 +311,7 @@ public class PanelContentCenter extends JScrollPane {
 				i++;
 			}
 		}
+		sort();
 	}
 
 	public boolean isCellEditable(int row, int column) {
@@ -389,33 +404,35 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void deletedRow() throws ClassNotFoundException {
 		int[] sl = table.getSelectedRows();
-		int n = table.getSelectedRowCount();
-		for (int i = 0; i < n - 1; i++)
-			for (int j = i + 1; j < n; j++)
-				if (sl[i] < sl[j]) {
-					int sq = sl[i];
-					sl[i] = sl[j];
-					sl[j] = sq;
+			for (int i = table.getSelectedRowCount() - 1; i >= 0; i--) {
+				for(Element e : nows.getChildrents())
+				{
+					if(e.getName().equals(data[table.getSelectedRows()[i]][1]))
+					{
+						nows.getChildrents().remove(e);
+						if(pct.isLogin())
+						{
+							try {
+								Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+								if (connect != null) {
+									System.out.println("Ket noi database thanh cong");
+								} else {
+									connect.close();
+									System.out.println("Ket noi database that bai");
+								}
+								Statement sta = connect.createStatement();
+								e.deleteToDB(sta);
+								sta.close();
+								connect.close();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+						break;
+					}
 				}
-
-		try {
-			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
-			if (connect != null) {
-				System.out.println("Ket noi database thanh cong");
-			} else {
-				connect.close();
-				System.out.println("Ket noi database that bai");
 			}
-			Statement sta = connect.createStatement();
-			for (int i = 0; i < n; i++) {
-				Element e = nows.getChildrents().get(sl[i]);
-				if (pct.isLogin()) {
-					e.deleteToDB(sta);
-				}
-				nows.getChildrents().remove(sl[i]);
-			}
-			sta.close();
-			connect.close();
 			if (!pct.isLogin())
 				try {
 					ghiFile();
@@ -423,10 +440,6 @@ public class PanelContentCenter extends JScrollPane {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		pct.UpdateLeft();
 		Update();
 	}
@@ -444,9 +457,17 @@ public class PanelContentCenter extends JScrollPane {
 		if (nows == null)
 			arr.add(root);
 		else {
-			for (int i = 0; i < table.getSelectedRows().length; i++)
-				if (nows.getChildrents().get(table.getSelectedRows()[i]).getClass().equals(Folder.class))
-					arr.add(nows.getChildrents().get(table.getSelectedRows()[i]));
+			for (int i = 0; i < table.getSelectedRowCount(); i++)
+			{
+				for(Element child : nows.getChildrents())
+				{
+					if(child.getName().equals(data[table.getSelectedRows()[i]][1]) && child.getClass().equals(Folder.class))
+					{
+						arr.add(child);
+						break;
+					}
+				}
+			}
 		}
 		try {
 			pct.getPanelContentLeft().getTreeBar().addPin(arr);
@@ -459,9 +480,20 @@ public class PanelContentCenter extends JScrollPane {
 	public void Cut() {
 		cut = new LinkedList<Element>();
 		selectCut = new LinkedList<Integer>();
-		for (int i = 0; i < table.getSelectedRowCount(); i++) {
-			cut.add(nows.getChildrents().get(table.getSelectedRows()[i]));
-			selectCut.add(table.getSelectedRows()[i]);
+		int arr[] = table.getSelectedRows();
+		if (nows != null) {
+			for (int i = 0; i < table.getSelectedRowCount(); i++)
+			{
+				for(Element child : nows.getChildrents())
+				{
+					if(child.getName().equals(data[arr[i]][1]))
+					{
+						cut.add(child);
+						break;
+					}
+				}
+				selectCut.add(table.getSelectedRows()[i]);
+			}
 		}
 		table.setVisible(false);
 		table.setVisible(true);
@@ -477,7 +509,16 @@ public class PanelContentCenter extends JScrollPane {
 		int arr[] = table.getSelectedRows();
 		if (nows != null) {
 			for (int i = 0; i < table.getSelectedRowCount(); i++)
-				copy.add(nows.getChildrents().get(arr[i]));
+			{
+				for(Element child : nows.getChildrents())
+				{
+					if(child.getName().equals(data[arr[i]][1]))
+					{
+						copy.add(child);
+						break;
+					}
+				}
+			}
 		} else {
 			copy.add(root);
 		}
@@ -609,8 +650,9 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void newRow(Boolean folder) throws IOException, ClassNotFoundException {
 		if (nows != null) {
+			String name;
 			if (folder) {
-				String name = "Thư mục mới";
+				name = "Thư mục mới";
 				int i = 1;
 				while (((Folder) nows).checkNameChild(name)) {
 					name = "Thư mục mới " + i;
@@ -618,7 +660,7 @@ public class PanelContentCenter extends JScrollPane {
 				}
 				((Folder) nows).addToChilds(new Folder((new Folder(0)).getMax() + 1, name, (Folder) nows));
 			} else {
-				String name = "Tệp mới";
+				name = "Tệp mới";
 				int i = 1;
 				while (((Folder) nows).checkNameChild(name)) {
 					name = "Tệp mới " + i;
@@ -631,8 +673,17 @@ public class PanelContentCenter extends JScrollPane {
 			else
 				ghiDBWhenAddRow();
 			Update();
-			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
-			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
+			for(int i = 0; i < nows.getChildrents().size(); i++)
+				if(data[i][1].equals(name))
+				{
+					table.setRowSelectionInterval(i, i);
+					break;
+				}
+			for(Element e : nows.getChildrents())
+				if(e.getName().equals(name)) {
+					pct.SELECTtable(e);
+					break;
+				}
 			pct.UpdateLeft();
 			pct.setFunSelectedTablie(true);
 			if (nows == null)
@@ -675,5 +726,131 @@ public class PanelContentCenter extends JScrollPane {
 		check();
 		Update();
 	}
-
+	
+	public void sort()
+	{
+		if(nows == null)
+			return;
+		int x = Screen_MenuBar.getSort();
+		if(x == 0)
+		{
+			while(true) {
+				int dem = 0;
+				for(int i = 0; i < nows.getChildrents().size() - 1; i++)
+				{
+					if(!sosanh((String)data[i][1], (String)data[i + 1][1]))
+					{
+						Object temp[] = { data[i][0], data[i][1], data[i][2], data[i][3], data[i][4] };
+						data[i][0] = data[i + 1][0];
+						data[i][1] = data[i + 1][1];
+						data[i][2] = data[i + 1][2];
+						data[i][3] = data[i + 1][3];
+						data[i][4] = data[i + 1][4];
+						data[i + 1][0] = temp[0];
+						data[i + 1][1] = temp[1];
+						data[i + 1][2] = temp[2];
+						data[i + 1][3] = temp[3];
+						data[i + 1][4] = temp[4];
+						dem++;
+					}
+				}
+				if(dem == 0)
+					return;
+			}
+		} else if(x == 2)
+		{
+			while(true) {
+				int dem = 0;
+				for(int i = 0; i < nows.getChildrents().size() - 1; i++)
+				{
+					if(!sosanhTime((String)data[i][2], (String)data[i + 1][2]))
+					{
+						Object temp[] = { data[i][0], data[i][1], data[i][2], data[i][3], data[i][4] };
+						data[i][0] = data[i + 1][0];
+						data[i][1] = data[i + 1][1];
+						data[i][2] = data[i + 1][2];
+						data[i][3] = data[i + 1][3];
+						data[i][4] = data[i + 1][4];
+						data[i + 1][0] = temp[0];
+						data[i + 1][1] = temp[1];
+						data[i + 1][2] = temp[2];
+						data[i + 1][3] = temp[3];
+						data[i + 1][4] = temp[4];
+						dem++;
+					}
+				}
+				if(dem == 0)
+					return;
+			}
+		}
+	}
+	
+	private Boolean sosanh(String a, String b)
+	{
+		// trả về true nếu a > b
+		if(a.length() == b.length())
+		{
+			for(int i = 0; i < a.length(); i++) {
+				if(a.charAt(i) < b.charAt(i)) {
+					return true;
+				}
+				else if(a.charAt(i) > b.charAt(i)) {
+					return false;
+				}
+			}
+		} else if(a.length() > b.length())
+		{
+			for(int i = 0; i < b.length(); i++)
+				if(a.charAt(i) < b.charAt(i)) {
+					return true;
+				}
+				else if(a.charAt(i) > b.charAt(i)) {
+					return false;
+				}
+			return false;
+		} else if(a.length() < b.length())
+		{
+			for(int z = 0; z < a.length(); z++)
+				if(a.charAt(z) < b.charAt(z))
+				{
+					return true;
+				}
+				else if(a.charAt(z) > b.charAt(z))
+					return false;
+		} 
+		return true;
+	}
+	
+	private Boolean sosanhTime(String a, String b)
+	{
+		int da = Integer.parseInt(a.substring(0, 2)), db = Integer.parseInt(b.substring(0, 2)),
+				ma = Integer.parseInt(a.substring(3, 5)), mb = Integer.parseInt(b.substring(3, 5)),
+				ya = Integer.parseInt(a.substring(6, 10)), yb = Integer.parseInt(b.substring(6, 10)),
+				ha = Integer.parseInt(a.substring(11, 13)), hb = Integer.parseInt(b.substring(11, 13)),
+				pa = Integer.parseInt(a.substring(14, 16)), pb = Integer.parseInt(b.substring(14, 16));
+		if(ya == yb)
+		{
+			if(ma == mb)
+			{
+				if(da == db)
+				{
+					if(ha == hb)
+					{
+						if(pa == pb)
+						{
+							return true;
+						}
+						else if(pa < pb)
+							return false;
+					} else if(ha < hb)
+						return false;
+				} else if(da < db)
+					return false;
+			} else if(ma < mb)
+				return false;
+		} else if(ya < yb)
+			return false;
+		
+		return true;
+	}
 }

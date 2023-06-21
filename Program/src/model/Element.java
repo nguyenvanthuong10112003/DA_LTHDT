@@ -5,12 +5,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
-
 import define.table.QUICKACCESS;
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 abstract public class Element {
 	protected int id;
@@ -29,33 +28,33 @@ abstract public class Element {
 		this.id = id;
 		this.name = "New Folder";
 		this.parent = null;
-		this.dateCreate = java.util.Calendar.getInstance().getTime();
+		this.dateCreate = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
+				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
 		this.icon = "";
 		this.exName = "";
 		this.authority = new LinkedList<Authority>();
-		this.dateCreate.setYear(java.time.LocalDate.now().getYear());
 	}
 
 	public Element(int id, String name) {
 		this.id = id;
-		this.dateCreate = java.util.Calendar.getInstance().getTime();
+		this.dateCreate = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
+				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
 		this.name = name;
 		this.parent = null;
 		this.icon = "";
 		this.exName = "";
 		this.authority = new LinkedList<Authority>();
-		this.dateCreate.setYear(java.time.LocalDate.now().getYear());
 	}
 
 	public Element(int id, String name, Folder parent) {
 		this.id = id;
 		this.name = name;
-		this.dateCreate = java.util.Calendar.getInstance().getTime();
+		this.dateCreate = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
+				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
 		this.parent = parent;
 		this.icon = "";
 		this.exName = "";
 		this.authority = new LinkedList<Authority>();
-		this.dateCreate.setYear(java.time.LocalDate.now().getYear());
 	}
 
 	public Element(int id, String name, String icon, Folder parent) {
@@ -63,10 +62,10 @@ abstract public class Element {
 		this.name = name;
 		this.icon = icon;
 		this.parent = parent;
-		this.dateCreate = java.util.Calendar.getInstance().getTime();
+		this.dateCreate = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
+				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
 		this.exName = "";
 		this.authority = new LinkedList<Authority>();
-		this.dateCreate.setYear(java.time.LocalDate.now().getYear());
 	}
 
 	public Element(int id, String name, Date dateCreate, Folder parent) {

@@ -422,4 +422,9 @@ public class Screen extends JFrame {
 	public static User getUser() {
 		return user;
 	}
+	
+	public void UpdateTable()
+	{
+		content_center.getCenter().Update();
+	}
 }
