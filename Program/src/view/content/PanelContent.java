@@ -1,20 +1,10 @@
 package view.content;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.util.LinkedList;
-
 import model.Element;
-
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-
 import controller.mouse;
 import define.ColorList;
 import model.Folder;

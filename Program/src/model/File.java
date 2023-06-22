@@ -74,8 +74,9 @@ public class File extends Element {
 		this.exName = "";
 		this.size = 0;
 		this.exType = "";
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 		this.icon = "null";
 		if (id > max)
 			max = id;
@@ -85,8 +86,9 @@ public class File extends Element {
 		super(id, name);
 		this.exType = ex;
 		this.size = 0;
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 		if (type_name.get(ex) != null) {
 			this.exName = type_name.get(ex);
 		} else {
@@ -105,8 +107,9 @@ public class File extends Element {
 		super(id, name, parent);
 		this.exType = ex;
 		this.size = 0;
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 		if (type_name.get(ex) != null) {
 			this.exName = type_name.get(ex);
 		} else {
@@ -125,8 +128,9 @@ public class File extends Element {
 		super(id, name);
 		this.exType = ex;
 		this.size = size;
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 		if (type_name.get(ex) != null) {
 			this.exName = type_name.get(ex);
 		} else {
@@ -145,8 +149,9 @@ public class File extends Element {
 		super(id, name, parent);
 		this.exType = ex;
 		this.size = size;
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 		if (type_name.get(ex) != null) {
 			this.exName = type_name.get(ex);
 		} else {
@@ -195,8 +200,9 @@ public class File extends Element {
 	@Override
 	public void setSize(double size) {
 		this.size = size;
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 	}
 
 	@Override
@@ -236,8 +242,9 @@ public class File extends Element {
 		} else {
 			this.icon = "null";
 		}
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 	}
 
 	@Override
@@ -250,8 +257,9 @@ public class File extends Element {
 	public void setDateModified(Date dateModified) {
 		// TODO Auto-generated method stub
 		this.dateModified = dateModified;
-		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth()
-				, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), LocalDateTime.now().getSecond());
+		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
+				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
+				LocalDateTime.now().getSecond());
 	}
 
 	@Override

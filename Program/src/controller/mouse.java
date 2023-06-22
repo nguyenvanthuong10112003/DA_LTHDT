@@ -1,20 +1,10 @@
 package controller;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.IOException;
-
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import define.ColorList;
-
 import javax.swing.JLabel;
 import view.content.PanelContent;
 import view.content.center.PanelContentCenter;
@@ -32,7 +22,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 	private PanelContent pc;
 	private Panel_Navigation pf;
 	private PanelContentRight cr;
-	private JPanel content;
 	private Panel_Functions tb;
 	private Screen sc;
 	private ScrollPaneTree scroll;
@@ -134,11 +123,9 @@ public class mouse extends MouseAdapter implements MouseListener {
 				pct.getPanelContent().noSelected();
 				pct.getPanelContent().getScreen().FunEnablueRoot(true);
 			}
-		} else if (formlogin != null)
-		{
+		} else if (formlogin != null) {
 			formlogin.clicked(e.getSource().hashCode(), e.getX(), e.getY());
-		} else if (formregister != null)
-		{
+		} else if (formregister != null) {
 			formregister.clicked(e.getSource().hashCode(), e.getX(), e.getY());
 		}
 
@@ -206,11 +193,9 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (tb != null) {
 			tb.setHover(e.getSource().hashCode(), ColorList.Back_Ground);
 			tb.exit(e.getSource().hashCode());
-		} else if (formlogin != null)
-		{
+		} else if (formlogin != null) {
 			formlogin.exit(e.getSource().hashCode());
-		} else if (formregister != null)
-		{
+		} else if (formregister != null) {
 			formregister.exit(e.getSource().hashCode());
 		}
 	}
@@ -278,11 +263,9 @@ public class mouse extends MouseAdapter implements MouseListener {
 			// System.out.println(e.getSource());
 			tb.setHover(e.getSource().hashCode(), ColorList.Hover);
 			tb.hover(e.getSource().hashCode());
-		} else if (formlogin != null)
-		{
+		} else if (formlogin != null) {
 			formlogin.hover(e.getSource().hashCode());
-		} else if (formregister != null)
-		{
+		} else if (formregister != null) {
 			formregister.hover(e.getSource().hashCode());
 		}
 	}

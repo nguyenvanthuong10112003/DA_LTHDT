@@ -1,23 +1,13 @@
 package view.content.left;
 
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import controller.mouse;
 import model.Element;
-import model.Folder;
 import view.content.PanelContent;
-import view.screen.Screen;
 
 public class ScrollPaneTree extends JScrollPane {
 	private PanelContent pc;
-	private int width;
-	private int height;
 	private int space;
 	private TreeBar tree;
 	private mouse mouselisten;

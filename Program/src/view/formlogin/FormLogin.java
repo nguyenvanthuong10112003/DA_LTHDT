@@ -1,45 +1,33 @@
 package view.formlogin;
 
-import view.formregister.FormRegister;
 import view.toolbar.Panel_Functions;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import controller.mouse;
 import define.ColorList;
-import define.JTextFieldPassWord;
+import libary.JTextFieldPassWord;
 import define.table.FOLDER;
 import define.table.USER;
 import model.User;
-import test.ConnectSQL;
+import libary.ConnectSQL;
 import model.Folder;
 
 public class FormLogin extends JFrame {
@@ -61,7 +49,6 @@ public class FormLogin extends JFrame {
 	private Font fontp = new Font("Arial", Font.PLAIN, 14);
 	private Font fontb = new Font("Arial", Font.BOLD, 14);
 	private Color black = Color.BLACK;
-	private Color white = Color.WHITE;
 	private Color blue = Color.BLUE;
 	private Map<String, User> checkUser;
 	private Panel_Functions fun;
@@ -72,7 +59,7 @@ public class FormLogin extends JFrame {
 	private String text_error = "Thông tin đăng nhập không chính xác!";
 	private String text_thieu = "Yêu cầu nhập đầy đủ thông tin đăng nhập!";
 	private mouse mouselisten;
-	
+
 	public FormLogin(Panel_Functions fun) {
 		try {
 			if (fun != null)
@@ -103,7 +90,7 @@ public class FormLogin extends JFrame {
 		checkUser = new HashMap<String, User>();
 		try {
 			String sql = "SELECT * FROM " + USER.nametable;
-			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
@@ -152,9 +139,8 @@ public class FormLogin extends JFrame {
 		exit(login.hashCode());
 		exit(register.hashCode());
 	}
-	
-	private void Edit()
-	{
+
+	private void Edit() {
 		containerbt.setBorder(new EmptyBorder(8, 0, 0, 0));
 		EmptyBorder border = new EmptyBorder(10, 10, 10, 10);
 		login.setBorder(border);
@@ -243,8 +229,7 @@ public class FormLogin extends JFrame {
 		this.add(content, BorderLayout.CENTER);
 	}
 
-	private void setEvent()
-	{
+	private void setEvent() {
 		register.addMouseListener(mouselisten);
 		register.addMouseMotionListener(mouselisten);
 		cancel.addMouseListener(mouselisten);
@@ -252,15 +237,13 @@ public class FormLogin extends JFrame {
 		login.addMouseListener(mouselisten);
 		login.addMouseMotionListener(mouselisten);
 	}
-	
-	public void clickLogin()
-	{
+
+	public void clickLogin() {
 		if (!(tdn_input.getText().equals("") || pass_input.getText().equals(""))) {
 			if (checkUser != null) {
 				if (checkUser.get(tdn_input.getText()) != null) {
 					if (checkUser.get(tdn_input.getText()).getPassWord().equals(pass_input.getPass())) {
-						JOptionPane.showMessageDialog(login, text_accept, thongbao,
-								JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(login, text_accept, thongbao, JOptionPane.INFORMATION_MESSAGE);
 						success(checkUser.get(tdn_input.getText()));
 						setVisible(false);
 						if (fun.getScreen() != null)
@@ -278,58 +261,45 @@ public class FormLogin extends JFrame {
 			JOptionPane.showMessageDialog(login, text_thieu, thongbao, JOptionPane.WARNING_MESSAGE);
 		}
 	}
-	
-	public void clickRegister(int x, int y)
-	{
+
+	public void clickRegister(int x, int y) {
 		fun.onclick_InForm(false, x, y);
 	}
-	
-	public void clicked(int code, int x, int y)
-	{
-		if(code == login.hashCode())
-		{
+
+	public void clicked(int code, int x, int y) {
+		if (code == login.hashCode()) {
 			clickLogin();
-		} else if(code == register.hashCode())
-		{
+		} else if (code == register.hashCode()) {
 			clickRegister(x, y);
-		} else if(code == cancel.hashCode())
-		{
+		} else if (code == cancel.hashCode()) {
 			setVisible(false);
 		}
 	}
-	
-	public void hover(int code)
-	{
-		if(code == login.hashCode())
-		{
+
+	public void hover(int code) {
+		if (code == login.hashCode()) {
 			login.setBackground(ColorList.Blue);
-		} else if(code == register.hashCode())
-		{
+		} else if (code == register.hashCode()) {
 			register.setBackground(ColorList.Blue);
-		} else if(code == cancel.hashCode())
-		{
+		} else if (code == cancel.hashCode()) {
 			cancel.setBackground(ColorList.Blue);
 		}
 	}
-	
-	public void exit(int code)
-	{
-		if(code == login.hashCode())
-		{
+
+	public void exit(int code) {
+		if (code == login.hashCode()) {
 			login.setBackground(ColorList.Fore_Ground);
-		} else if(code == register.hashCode())
-		{
+		} else if (code == register.hashCode()) {
 			register.setBackground(ColorList.Fore_Ground);
-		} else if(code == cancel.hashCode())
-		{
+		} else if (code == cancel.hashCode()) {
 			cancel.setBackground(ColorList.Fore_Ground);
 		}
 	}
-	
+
 	private void success(User user) {
 		try {
 			String sql = "SELECT * FROM " + FOLDER.nametable + " WHERE " + FOLDER.id + " = " + user.getRoot().getId();
-			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {

@@ -2,58 +2,37 @@ package view.screen;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
-import java.awt.*;
 import controller.action;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import javax.imageio.ImageIO;
-import javax.lang.model.element.Element;
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import controller.mouse;
-import define.SQLconnect;
+import define.DefineSQL;
 import define.table.FILE;
 import define.table.FOLDER;
 import model.Folder;
 import model.User;
-import test.ConnectSQL;
+import libary.ConnectSQL;
 import view.content.PanelContent;
-import view.content.left.ScrollPaneTree;
-import view.formlogin.FormLogin;
-import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
 import view.toolbar.Screen_ToolBar;
-import view.toolbar.Panel_Functions;
 
 public class Screen extends JFrame {
 	private int dd;
 	private int chenhlech;
 	private Screen_MenuBar menubar;
 	private String iconApp1 = "\\Icon\\screen\\folder-icon1.png";
-	private String iconApp2 = "\\image\\screen\\folder-icon2.png";
-	private Font font = new Font("Arial", Font.PLAIN, 14);
 	private Screen_ToolBar toolbar;
 	private JPanel content;
 	private PanelContent content_center;
-	private mouse mouseListen = new mouse(this);
-	private action actionlistener;
 	private static User user;
 	private Folder root;
 	private int maxId;
@@ -136,7 +115,7 @@ public class Screen extends JFrame {
 			}
 		} else {
 			try {
-				Connection connect = ConnectSQL.getJDBCConnection(SQLconnect.database);
+				Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
 				Statement sta = connect.createStatement();
 				Folder.setIdMax(sta);
 				model.File.setIdMax(sta);
@@ -235,7 +214,6 @@ public class Screen extends JFrame {
 		toolbar = new Screen_ToolBar(this, islogin, root);
 		content = new JPanel();
 		content_center = new PanelContent(this, this.root, this.maxId, islogin);
-		actionlistener = new action(this);
 	}
 
 	private void addObj() {
@@ -270,7 +248,7 @@ public class Screen extends JFrame {
 	private java.util.Date toDateTime(String d) {
 		return new Date(Integer.parseInt(d.substring(0, 4)), Integer.parseInt(d.substring(5, 7)),
 				Integer.parseInt(d.substring(8, 10)), Integer.parseInt(d.substring(11, 13)),
-				Integer.parseInt(d.substring(14, 16)));
+				Integer.parseInt(d.substring(14, 16)), Integer.parseInt(d.substring(17, 19)));
 	}
 
 	public void Pin() {
@@ -422,9 +400,8 @@ public class Screen extends JFrame {
 	public static User getUser() {
 		return user;
 	}
-	
-	public void UpdateTable()
-	{
+
+	public void UpdateTable() {
 		content_center.getCenter().Update();
 	}
 }

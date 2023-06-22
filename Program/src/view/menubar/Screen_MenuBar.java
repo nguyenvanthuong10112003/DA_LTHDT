@@ -1,23 +1,11 @@
 package view.menubar;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.MenuBar;
-import java.awt.Toolkit;
-
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
-
 import controller.mouse;
 import define.ColorList;
 import define.FONT;
@@ -49,7 +37,7 @@ public class Screen_MenuBar extends JMenuBar {
 	private mouse mouselisten;
 	private action actionlisten;
 	private static int sort;
-	
+
 	public Screen_MenuBar(Screen sc) {
 		super();
 		try {
@@ -78,11 +66,10 @@ public class Screen_MenuBar extends JMenuBar {
 		this.setBackground(ColorList.Back_Ground);
 	}
 
-	private void Edit()
-	{
+	private void Edit() {
 		item3_2_3.setIcon(new ImageIcon(define.URL.url + "\\Icon\\menubar\\check.png"));
 	}
-	
+
 	private void init() {
 		File = new JMenu();
 		Edit = new JMenu();
@@ -161,7 +148,7 @@ public class Screen_MenuBar extends JMenuBar {
 		item3_1.add(item3_1_3);
 
 		item3_2.add(item3_2_1);
-		//item3_2.add(item3_2_2);
+		// item3_2.add(item3_2_2);
 		item3_2.add(item3_2_3);
 
 		item3_3.add(item3_3_1);
@@ -230,7 +217,7 @@ public class Screen_MenuBar extends JMenuBar {
 			item3_2_3.setIcon(new ImageIcon(define.URL.url + "\\Icon\\menubar\\check.png"));
 			sort = 2;
 			sc.UpdateTable();
-		} 
+		}
 	}
 
 	public void onClick(int hash) {
@@ -238,9 +225,8 @@ public class Screen_MenuBar extends JMenuBar {
 			sc.setToolVisiable();
 		}
 	}
-	
-	public static int getSort()
-	{
+
+	public static int getSort() {
 		return sort;
 	}
 }

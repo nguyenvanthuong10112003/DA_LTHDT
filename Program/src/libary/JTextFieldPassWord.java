@@ -1,4 +1,4 @@
-package define;
+package libary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -95,7 +95,7 @@ public class JTextFieldPassWord	extends JPanel
 		input = new Input();
 		label = new JLabel();
 		label.setBorder(new EmptyBorder(0,2,0,2));
-		label.setIcon(new ImageIcon(URL.url + "\\Icon\\inputpassword\\" + "view16px.png"));
+		label.setIcon(new ImageIcon(define.URL.url + "\\Icon\\inputpassword\\" + "view16px.png"));
 		this.setBackground(input.getBackground());
 		this.setBorder(input.getBorder());
 		this.add(input, BorderLayout.CENTER);
@@ -132,14 +132,14 @@ public class JTextFieldPassWord	extends JPanel
 				// TODO Auto-generated method stub
 				if(!isView)
 				{
-					label.setIcon(new ImageIcon(URL.url + "\\Icon\\inputpassword\\" + "hidden16px.png"));
+					label.setIcon(new ImageIcon(define.URL.url + "\\Icon\\inputpassword\\" + "hidden16px.png"));
 					isView = true;
 					input.setText(input.getPass());
 					input.setView();
 				}
 				else
 				{
-					label.setIcon(new ImageIcon(URL.url + "\\Icon\\inputpassword\\" + "view16px.png"));
+					label.setIcon(new ImageIcon(define.URL.url + "\\Icon\\inputpassword\\" + "view16px.png"));
 					isView = false;
 					String str = "";
 					input.setPass(input.getText());

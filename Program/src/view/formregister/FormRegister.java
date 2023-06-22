@@ -1,32 +1,21 @@
 package view.formregister;
 
 import java.awt.BorderLayout;
-import java.awt.Choice;
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.Map;
-
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,21 +24,15 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.InsetsUIResource;
-
 import controller.mouse;
 import define.ColorList;
-import define.DATE;
-import define.JTextFieldPassWord;
+import libary.DATE;
+import libary.JTextFieldPassWord;
 import define.table.FOLDER;
 import define.table.USER;
-import model.User;
-import test.ConnectSQL;
+import libary.ConnectSQL;
 import view.toolbar.Panel_Functions;
-
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FormRegister extends JFrame {
 	private JPanel content;
@@ -127,7 +110,7 @@ public class FormRegister extends JFrame {
 		checkUser = new HashMap<String, Boolean>();
 		try {
 			String sql = "SELECT " + USER.username + " FROM " + USER.nametable;
-			Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
@@ -401,7 +384,7 @@ public class FormRegister extends JFrame {
 	}
 	
 	private void Accept() throws ClassNotFoundException, SQLException {
-		Connection connect = ConnectSQL.getJDBCConnection(define.SQLconnect.database);
+		Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
 		if (connect != null) {
 			System.out.println("Ket noi database thanh cong");
 		} else {

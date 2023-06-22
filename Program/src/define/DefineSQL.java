@@ -1,5 +1,5 @@
 package define;
 
-public interface SQLconnect {
+public interface DefineSQL {
 	String database = "ADMIN";
 }

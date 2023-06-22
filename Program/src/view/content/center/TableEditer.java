@@ -1,28 +1,13 @@
 package view.content.center;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ColorModel;
 import java.util.EventObject;
-
 import javax.swing.AbstractCellEditor;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.TableCellEditor;
-import javax.swing.text.TabableView;
-
 import define.ColorList;
-
-import javax.swing.ImageIcon;
-
 import java.awt.*;
-import javax.swing.*;
 
 public class TableEditer extends AbstractCellEditor implements TableCellEditor {
 	private JTextField input;

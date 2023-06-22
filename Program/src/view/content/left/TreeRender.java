@@ -1,18 +1,10 @@
 package view.content.left;
 
 import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import model.Element;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.*;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-
-import define.ColorList;
 import define.URL;
 
 public class TreeRender extends DefaultTreeCellRenderer {

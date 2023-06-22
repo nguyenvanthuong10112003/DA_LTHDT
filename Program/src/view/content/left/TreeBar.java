@@ -19,14 +19,14 @@ import javax.swing.tree.TreePath;
 import javax.swing.*;
 import controller.mouse;
 import define.FONT;
-import define.SQLconnect;
+import define.DefineSQL;
 import define.URL;
 import define.table.FOLDER;
 import define.table.QUICKACCESS;
 import define.table.USER;
 import model.Element;
 import model.Folder;
-import test.ConnectSQL;
+import libary.ConnectSQL;
 import view.content.PanelContent;
 import view.screen.Screen;
 import controller.*;
@@ -147,7 +147,7 @@ public class TreeBar extends JTree {
 		} else {
 			String sql = "SELECT * FROM " + QUICKACCESS.nametable + " WHERE " + QUICKACCESS.user + " = '"
 					+ Screen.getUser().getTenDangNhap() + "'";
-			Connection connect = ConnectSQL.getJDBCConnection(SQLconnect.database);
+			Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
 			if (connect == null) {
 				System.out.println("Connect database error");
 				try {
@@ -215,7 +215,7 @@ public class TreeBar extends JTree {
 
 	public Boolean addQADB(Element e) throws ClassNotFoundException {
 		Boolean check = false;
-		Connection connect = ConnectSQL.getJDBCConnection(SQLconnect.database);
+		Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
 		try {
 			Statement sta;
 			sta = connect.createStatement();
@@ -289,16 +289,14 @@ public class TreeBar extends JTree {
 				}
 				System.out.println("Ghi file thanh cong");
 				out.close();
-			} else
-			{
+			} else {
 				try {
-					String sql = "DELETE " + QUICKACCESS.nametable + " WHERE " + USER.username + " = '" + Screen.getUser().getTenDangNhap() + 
-							"' and " + FOLDER.id + " = " + e.getId();
-					Connection connect = ConnectSQL.getJDBCConnection(SQLconnect.database);
+					String sql = "DELETE " + QUICKACCESS.nametable + " WHERE " + USER.username + " = '"
+							+ Screen.getUser().getTenDangNhap() + "' and " + FOLDER.id + " = " + e.getId();
+					Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
 					Statement sta = connect.createStatement();
 					int check1 = sta.executeUpdate(sql);
-					if(check1 > 0)
-					{
+					if (check1 > 0) {
 						System.out.println("Delete to quickaccess success!");
 					}
 					sta.close();
@@ -310,7 +308,7 @@ public class TreeBar extends JTree {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 			Update();
 		}
@@ -360,5 +358,10 @@ public class TreeBar extends JTree {
 
 	public void closeClick() {
 		pc.ClosePanelLeft();
+	}
+	
+	public LinkedList<Element> getListquick()
+	{
+		return listquick;
 	}
 }
