@@ -64,20 +64,16 @@ public class PanelContentCenter extends JScrollPane {
 			this.addEvent();
 			this.setTable();
 			this.Edit();
-			this.setViewportView(table);
-			this.add(jPopupMenu);
-			this.table.add(jPopupMenu);
-			this.jPopupMenu.add(open);
+			this.addObj();
 			System.out.println("Upload success content center");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error Content center");
 		}
 	}
-
+	
 	public void init() {
 		mouselisten = new mouse(this);
-		this.addObj();
 		this.jPopupMenu = new JPopupMenu();
 		this.open = new JMenuItem("Mở");
 		this.model = new DefaultTableModel();
@@ -110,8 +106,14 @@ public class PanelContentCenter extends JScrollPane {
 		ActionListen = new action(this);
 	}
 
+	public void addObj() {
+		this.setViewportView(table);
+		this.add(jPopupMenu);
+		this.table.add(jPopupMenu);
+		this.jPopupMenu.add(open);
+	}
+	
 	public void Edit() {
-		this.setColor();
 		this.setBackground(ColorList.Back_Ground);
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -127,33 +129,172 @@ public class PanelContentCenter extends JScrollPane {
 		this.table.setBackground(ColorList.Back_Ground);
 		this.setBackground(ColorList.Back_Ground);
 	}
-
+	
 	public void setTable() {
 		model.setDataVector(data, columnNames);
 		table.setModel(model);
 		table.setDefaultEditor(Object.class, null);
 		selectCut = null;
 	}
-
+	
 	public void setColumn() {
 		columnNames = new String[] { "", "Name", "Date modified", "Type", "Size" };
 	}
+	
+	public void setData() {
+		data = new Object[nows != null ? nows.getChildrents().size() : 1][5];
+		if (nows == null) {
+			ImageIcon icon = new ImageIcon(define.URL.url + urlIconFolder + root.getIcon() + this.px + this.duoi);
+			data[0][0] = icon;
+			data[0][1] = root.getName();
+			data[0][2] = root.getTime(root.getDateCreate());
+			data[0][3] = root.getExName();
+			data[0][4] = "";
+		} else if (nows.getChildrents().size() > 0) {
+			int i = 0;
+			for (Element el : nows.getChildrents()) {
+				ImageIcon icon = new ImageIcon(
+						define.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile)
+								+ el.getIcon() + this.px + this.duoi);
+				data[i][0] = icon;
+				data[i][1] = el.getName();
+				data[i][2] = el.getTime(
+						el.getClass().equals(Folder.class) == true ? el.getDateCreate() : el.getDateModified());
+				data[i][3] = el.getExName();
+				data[i][4] = el.getClass().equals(Folder.class) == true ? ""
+						: ((Double) el.getSize()).intValue() + "kb";
+				i++;
+			}
+		}
+		sort();
+	}
 
+	public void sort() {
+		if (nows == null)
+			return;
+		int x = Screen_MenuBar.getSort();
+		if (x == 0) {
+			while (true) {
+				int dem = 0;
+				for (int i = 0; i < nows.getChildrents().size() - 1; i++) {
+					if (!sosanh((String) data[i][1], (String) data[i + 1][1])) {
+						Object temp[] = { data[i][0], data[i][1], data[i][2], data[i][3], data[i][4] };
+						data[i][0] = data[i + 1][0];
+						data[i][1] = data[i + 1][1];
+						data[i][2] = data[i + 1][2];
+						data[i][3] = data[i + 1][3];
+						data[i][4] = data[i + 1][4];
+						data[i + 1][0] = temp[0];
+						data[i + 1][1] = temp[1];
+						data[i + 1][2] = temp[2];
+						data[i + 1][3] = temp[3];
+						data[i + 1][4] = temp[4];
+						dem++;
+					}
+				}
+				if (dem == 0)
+					return;
+			}
+		} else if (x == 2) {
+			while (true) {
+				int dem = 0;
+				for (int i = 0; i < nows.getChildrents().size() - 1; i++) {
+					if (!sosanhTime((String) data[i][2], (String) data[i + 1][2])) {
+						Object temp[] = { data[i][0], data[i][1], data[i][2], data[i][3], data[i][4] };
+						data[i][0] = data[i + 1][0];
+						data[i][1] = data[i + 1][1];
+						data[i][2] = data[i + 1][2];
+						data[i][3] = data[i + 1][3];
+						data[i][4] = data[i + 1][4];
+						data[i + 1][0] = temp[0];
+						data[i + 1][1] = temp[1];
+						data[i + 1][2] = temp[2];
+						data[i + 1][3] = temp[3];
+						data[i + 1][4] = temp[4];
+						dem++;
+					}
+				}
+				if (dem == 0)
+					return;
+			}
+		}
+	}
+	
+	private Boolean sosanh(String a, String b) {
+		if (a.length() == b.length()) {
+			for (int i = 0; i < a.length(); i++) {
+				if (a.charAt(i) < b.charAt(i)) {
+					return true;
+				} else if (a.charAt(i) > b.charAt(i)) {
+					return false;
+				}
+			}
+		} else if (a.length() > b.length()) {
+			for (int i = 0; i < b.length(); i++)
+				if (a.charAt(i) < b.charAt(i)) {
+					return true;
+				} else if (a.charAt(i) > b.charAt(i)) {
+					return false;
+				}
+			return false;
+		} else if (a.length() < b.length()) {
+			for (int z = 0; z < a.length(); z++)
+				if (a.charAt(z) < b.charAt(z)) {
+					return true;
+				} else if (a.charAt(z) > b.charAt(z))
+					return false;
+		}
+		return true;
+	}
+
+	private Boolean sosanhTime(String a, String b) {
+		int da = Integer.parseInt(a.substring(0, 2)), db = Integer.parseInt(b.substring(0, 2)),
+				ma = Integer.parseInt(a.substring(3, 5)), mb = Integer.parseInt(b.substring(3, 5)),
+				ya = Integer.parseInt(a.substring(6, 10)), yb = Integer.parseInt(b.substring(6, 10)),
+				ha = Integer.parseInt(a.substring(11, 13)), hb = Integer.parseInt(b.substring(11, 13)),
+				pa = Integer.parseInt(a.substring(14, 16)), pb = Integer.parseInt(b.substring(14, 16)),
+				sa = Integer.parseInt(a.substring(17, 19)), sb = Integer.parseInt(b.substring(17, 19));
+		if (ya == yb) {
+			if (ma == mb) {
+				if (da == db) {
+					if (ha == hb) {
+						if (pa == pb) {
+							if(sa == sb)
+							{
+								return true;
+							} else if (sa < sb)
+								return false;
+						} else if (pa < pb)
+							return false;
+					} else if (ha < hb)
+						return false;
+				} else if (da < db)
+					return false;
+			} else if (ma < mb)
+				return false;
+		} else if (ya < yb)
+			return false;
+		return true;
+	}
+
+	public void setNows(Element e) {
+		nows = e;
+		cuoi = e;
+		check();
+		Update();
+	}
+	
+/**************************************************************************************************
+ 01*******************************************Event************************************************
+ *************************************************************************************************/
+	
 	private void addEvent() {
 		this.addMouseMotionListener(mouselisten);
 		this.addMouseListener(mouselisten);
 		table.addMouseListener(mouselisten);
 		open.addActionListener(ActionListen);
 	}
-
-	public void showPopup(Component comp, int x, int y) {
-		if (table.getSelectedRow() < 0)
-			open.setEnabled(false);
-		else
-			open.setEnabled(true);
-		jPopupMenu.show(comp, x, y);
-	}
-
+	
 	public void clickedTable() {
 		if (table.getSelectedRow() >= 0 && table.getSelectedRowCount() == 1) {
 			if (nows == null)
@@ -196,7 +337,7 @@ public class PanelContentCenter extends JScrollPane {
 				if (nows != root) {
 					if (nows.getParent() == cuoi)
 						cuoi = nows;
-					else if (!isChild(cuoi, nows))
+					else if (!Folder.isChild(cuoi, nows))
 						cuoi = nows;
 				}
 			}
@@ -211,18 +352,23 @@ public class PanelContentCenter extends JScrollPane {
 			Update();
 		}
 	}
-
-	public Boolean isChild(Element con, Element cha) {
-		if (cha == null)
-			return true;
-		if (con == null)
-			return false;
-		if (con.equals(cha))
-			return true;
+	
+	public void showPopup(Component comp, int x, int y) {
+		if (table.getSelectedRow() < 0)
+			open.setEnabled(false);
 		else
-			return isChild(con.getParent(), cha);
+			open.setEnabled(true);
+		jPopupMenu.show(comp, x, y);
 	}
-
+	
+/***************************************************************************************************
+02*************************************************************************************************
+**************************************************************************************************/
+	
+/***************************************************************************************************
+03*****************************************chuc nang************************************************
+**************************************************************************************************/
+	
 	public void check() {
 		if (nows != null) {
 			pct.getScreen().setBack(true);
@@ -266,191 +412,6 @@ public class PanelContentCenter extends JScrollPane {
 		}
 		Update();
 		check();
-	}
-
-	public void Update() {
-		setData();
-		setTable();
-		Edit();
-		table.clearSelection();
-		NoSelected();
-	}
-
-	public void setRoot(Folder root) {
-		this.root = root;
-		this.nows = null;
-		this.Update();
-	}
-
-	public void setData() {
-		data = new Object[nows != null ? nows.getChildrents().size() : 1][5];
-		if (nows == null) {
-			ImageIcon icon = new ImageIcon(define.URL.url + urlIconFolder + root.getIcon() + this.px + this.duoi);
-			data[0][0] = icon;
-			data[0][1] = root.getName();
-			data[0][2] = root.getTime(root.getDateCreate());
-			data[0][3] = root.getExName();
-			data[0][4] = "";
-		} else if (nows.getChildrents().size() > 0) {
-			int i = 0;
-			for (Element el : nows.getChildrents()) {
-				ImageIcon icon = new ImageIcon(
-						define.URL.url + (el.getClass().equals(Folder.class) == true ? urlIconFolder : urlIconFile)
-								+ el.getIcon() + this.px + this.duoi);
-				data[i][0] = icon;
-				data[i][1] = el.getName();
-				data[i][2] = el.getTime(
-						el.getClass().equals(Folder.class) == true ? el.getDateCreate() : el.getDateModified());
-				data[i][3] = el.getExName();
-				data[i][4] = el.getClass().equals(Folder.class) == true ? ""
-						: ((Double) el.getSize()).intValue() + "kb";
-				i++;
-			}
-		}
-		sort();
-	}
-
-	public boolean isCellEditable(int row, int column) {
-		return false;
-	};
-
-	public void addObj() {
-	}
-
-	public void setColor() {
-		this.setOpaque(true);
-		// this.setBackground(back);
-
-		/// nd.setBackground(back);
-	}
-
-	public void ghiDBWhenAddRow() throws ClassNotFoundException {
-		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
-
-		try {
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
-			if (connect != null) {
-				System.out.println("Ket noi database thanh cong");
-			} else {
-				connect.close();
-				System.out.println("Ket noi database that bai");
-			}
-			Statement statement = connect.createStatement();
-			e.addToDB(statement);
-			statement.close();
-			connect.close();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			Update();
-			nows.getChildrents().remove(nows.getChildrents().size() - 1);
-			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
-			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
-			e1.printStackTrace();
-		}
-	}
-
-	public void updateDB(Element e) throws ClassNotFoundException {
-		try {
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
-			if (connect != null) {
-				System.out.println("Ket noi database thanh cong");
-			} else {
-				connect.close();
-				System.out.println("Ket noi database that bai");
-			}
-			Statement sta = connect.createStatement();
-			e.updateToDB(sta, e.getName(), e.getId());
-			sta.close();
-			connect.close();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-	}
-
-	public void ghiFile() throws IOException {
-		FileWriter out = null;
-
-		try {
-			out = new FileWriter(define.URL.url + define.URL.urlLuuTru);
-			System.out.println("Mo file du lieu thanh cong");
-			ghiAlls(root, out);
-			System.out.println("Ghi file thanh cong");
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-		}
-	}
-
-	public void ghiAlls(Element e, FileWriter out) throws IOException {
-		if (e == null)
-			return;
-		out.write(e.getId() + "|" + e.getName() + "|" + e.getTime(e.getDateCreate()) + "|"
-				+ e.getTime(e.getDateModified()) + "|" + e.getExType() + "|"
-				+ (e.getClass().equals(Folder.class) == true ? "" : e.getSize()) + "|"
-				+ (e.getParent() != null ? e.getParent().getId() : "") + '\n');
-		if (e.getClass().equals(Folder.class)) {
-			for (Element el : e.getChildrents()) {
-				ghiAlls(el, out);
-			}
-		}
-	}
-
-	public void deletedRow() throws ClassNotFoundException {
-		int[] sl = table.getSelectedRows();
-		for (int i = table.getSelectedRowCount() - 1; i >= 0; i--) {
-			for (Element e : nows.getChildrents()) {
-				if (e.getName().equals(data[table.getSelectedRows()[i]][1])) {
-					if(pct.getPanelContentLeft().getTreeBar().getListquick().contains(e))
-						try {
-							pct.getPanelContentLeft().getTreeBar().removePin(e);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					if (pct.isLogin()) {
-						try {
-							Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
-							if (connect != null) {
-								System.out.println("Ket noi database thanh cong");
-							} else {
-								System.out.println("Ket noi database that bai");
-								connect.close();
-								return;
-							}
-							Statement sta = connect.createStatement();
-							e.deleteToDB(sta);
-							sta.close();
-							connect.close();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-					nows.getChildrents().remove(e);
-					break;
-				}
-			}
-		}
-		if (!pct.isLogin())
-			try {
-				ghiFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		pct.UpdateLeft();
-		Update();
-	}
-
-	public JTable getTable() {
-		return table;
-	}
-
-	public JPopupMenu getPopupMenu() {
-		return jPopupMenu;
 	}
 
 	public void Pin() {
@@ -523,20 +484,46 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void Paste() throws ClassNotFoundException {
-		if (table.getSelectedRowCount() >= 2)
+		if (table.getSelectedRowCount() > 1)
 			return;
-		Element now;
-		if (table.getSelectedRowCount() > 0)
-			now = nows.getChildrents().get(table.getSelectedRow());
+		Element now = null;
+		LinkedList<Element> paste = new LinkedList<Element>();
+		Connection connect = null;
+		Statement sta = null;
+		if (pct.isLogin()) {
+			try {
+				connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+				if (connect != null) {
+					System.out.println("Ket noi database thanh cong");
+				} else {
+					connect.close();
+					System.out.println("Ket noi database that bai");
+					return;
+				}
+				sta = connect.createStatement();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+		if (table.getSelectedRowCount() > 0) {
+			for(int i = 0; i < nows.getChildrents().size(); i++)
+				if(data[table.getSelectedRow()][1].equals(nows.getChildrents().get(i).getName()))
+				{
+					now = nows.getChildrents().get(i);
+					break;
+				}
+		}
 		else
 			now = nows;
-		LinkedList<Element> paste = new LinkedList<Element>();
-		if (cut == null && copy == null)
+		if (now == null || (cut == null && copy == null))
 			return;
-		else if (copy != null) {
+		if (copy != null) {
 			paste = copy;
 		} else if (cut != null) {
 			if (countCut == 0) {
+				// delete 
 				if (!(new Folder(0)).checkIsChild(cut, (Folder) now))
 					return;
 				Folder parent = (Folder) cut.get(0).getParent();
@@ -549,25 +536,13 @@ public class PanelContentCenter extends JScrollPane {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
-						if (pct.isLogin()) {
+						if (sta != null) {
 							try {
-								Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
-								if (connect != null) {
-									System.out.println("Ket noi database thanh cong");
-								} else {
-									connect.close();
-									System.out.println("Ket noi database that bai");
-									return;
-								}
-								Statement sta = connect.createStatement();
 								e.deleteToDB(sta);
-								sta.close();
-								connect.close();
-							} catch (SQLException e1) {
+							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
-
 						}
 						for (int i = 0; i < parent.getChildrents().size(); i++) {
 							if (parent.getChildrents().get(i).equals(e)) {
@@ -600,24 +575,13 @@ public class PanelContentCenter extends JScrollPane {
 					i = -1;
 				}
 			}
-			if (pct.isLogin()) {
+			if (sta != null) {
 				try {
-					Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
-					if (connect != null) {
-						System.out.println("Ket noi database thanh cong");
-					} else {
-						connect.close();
-						System.out.println("Ket noi database that bai");
-						return;
-					}
-					Statement sta = connect.createStatement();
 					if (el.getClass().equals(Folder.class))
 						((Folder) el).addToDBs(sta);
 					else
 						((File) el).addToDB(sta);
-					sta.close();
-					connect.close();
-				} catch (SQLException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -632,10 +596,21 @@ public class PanelContentCenter extends JScrollPane {
 		if (!pct.isLogin())
 			try {
 				ghiFile();
-			} catch (IOException e1) {
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		if(connect != null)
+		{
+			try {
+				sta.close();
+				connect.close();
+			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		pct.getPanelContentLeft().getTreeBar().setListQuick();
 		pct.UpdateLeft();
 		Update();
 	}
@@ -648,6 +623,60 @@ public class PanelContentCenter extends JScrollPane {
 
 	}
 
+	public void deletedRow() throws ClassNotFoundException {
+		int[] sl = table.getSelectedRows();
+		for (int i = table.getSelectedRowCount() - 1; i >= 0; i--) {
+			for (Element e : nows.getChildrents()) {
+				if (e.getName().equals(data[table.getSelectedRows()[i]][1])) {
+					if(pct.getPanelContentLeft().getTreeBar().getListquick().contains(e))
+						try {
+							pct.getPanelContentLeft().getTreeBar().removePin(e);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					if (pct.isLogin()) {
+						try {
+							Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+							if (connect != null) {
+								System.out.println("Ket noi database thanh cong");
+							} else {
+								System.out.println("Ket noi database that bai");
+								connect.close();
+								return;
+							}
+							Statement sta = connect.createStatement();
+							e.deleteToDB(sta);
+							sta.close();
+							connect.close();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					nows.getChildrents().remove(e);
+					break;
+				}
+			}
+		}
+		if (!pct.isLogin())
+			try {
+				ghiFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		pct.getPanelContentLeft().getTreeBar().setListQuick();
+		try {
+			pct.getPanelContentLeft().getTreeBar().ghiFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pct.UpdateLeft();
+		Update();
+	}
+	
 	public void newRow(Boolean folder) throws IOException, ClassNotFoundException {
 		if (nows != null) {
 			String name;
@@ -693,13 +722,6 @@ public class PanelContentCenter extends JScrollPane {
 		}
 	}
 
-	public void NoSelected() {
-		open.setEnabled(false);
-		table.clearSelection();
-		pct.noSelected();
-		pct.getScreen().FunEnablueRoot(true);
-	}
-
 	public void selectAll() {
 		table.selectAll();
 		if (table.getSelectedRowCount() > 0) {
@@ -710,124 +732,125 @@ public class PanelContentCenter extends JScrollPane {
 				pct.getScreen().FunEnablueRoot(false);
 		}
 	}
-
-	public void Selected() {
-		open.setEnabled(true);
+	
+	public void NoSelected() {
+		open.setEnabled(false);
+		table.clearSelection();
+		pct.noSelected();
+		pct.getScreen().FunEnablueRoot(true);
 	}
 
+/**********************************************************
+ 04********************Chuc nang end***********************
+ *********************************************************/
+	
+/**********************************************************
+05*************Thao tac voi kho luu tru********************
+**********************************************************/
+	
+	public void ghiDBWhenAddRow() throws ClassNotFoundException {
+		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
+
+		try {
+			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			if (connect != null) {
+				System.out.println("Ket noi database thanh cong");
+			} else {
+				connect.close();
+				System.out.println("Ket noi database that bai");
+			}
+			Statement statement = connect.createStatement();
+			e.addToDB(statement);
+			statement.close();
+			connect.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			Update();
+			nows.getChildrents().remove(nows.getChildrents().size() - 1);
+			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
+			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
+			e1.printStackTrace();
+		}
+	}
+
+	public void updateDB(Element e) throws ClassNotFoundException {
+		try {
+			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			if (connect != null) {
+				System.out.println("Ket noi database thanh cong");
+			} else {
+				connect.close();
+				System.out.println("Ket noi database that bai");
+			}
+			Statement sta = connect.createStatement();
+			e.updateToDB(sta, e.getName(), e.getId());
+			sta.close();
+			connect.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+
+	public void ghiFile() throws IOException
+	{
+		FileWriter out = null;
+		try {
+			out = new FileWriter(define.URL.url + define.URL.urlLuuTru);
+			System.out.println("Mo file du lieu thanh cong");
+			root.ghiFile(out);
+			System.out.println("Ghi file thanh cong");
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
+	}
+
+	public void ghiAlls(Element e, FileWriter out) throws IOException {
+		if (e == null)
+			return;
+		if(pct.getPanelContentLeft().getTreeBar().getListquick().contains(e))
+			pct.getPanelContentLeft().getTreeBar().removePin(e);
+		out.write(e.getId() + "|" + e.getName() + "|" + e.getTime(e.getDateCreate()) + "|"
+				+ e.getTime(e.getDateModified()) + "|" + e.getExType() + "|"
+				+ (e.getClass().equals(Folder.class) == true ? "" : e.getSize()) + "|"
+				+ (e.getParent() != null ? e.getParent().getId() : "") + '\n');
+		if (e.getClass().equals(Folder.class)) {
+			for (Element el : e.getChildrents()) {
+				ghiAlls(el, out);
+			}
+		}
+	}
+	
+/**********************************************************
+06*********************************************************
+**********************************************************/
+	
+	public void setRoot(Folder root) {
+		this.root = root;
+		this.nows = null;
+		this.Update();
+	}
+	
 	public PanelContent getPanelContent() {
 		return pct;
 	}
 
-	public void setNows(Element e) {
-		nows = e;
-		cuoi = e;
-		check();
-		Update();
+	public JTable getTable() {
+		return table;
 	}
 
-	public void sort() {
-		if (nows == null)
-			return;
-		int x = Screen_MenuBar.getSort();
-		if (x == 0) {
-			while (true) {
-				int dem = 0;
-				for (int i = 0; i < nows.getChildrents().size() - 1; i++) {
-					if (!sosanh((String) data[i][1], (String) data[i + 1][1])) {
-						Object temp[] = { data[i][0], data[i][1], data[i][2], data[i][3], data[i][4] };
-						data[i][0] = data[i + 1][0];
-						data[i][1] = data[i + 1][1];
-						data[i][2] = data[i + 1][2];
-						data[i][3] = data[i + 1][3];
-						data[i][4] = data[i + 1][4];
-						data[i + 1][0] = temp[0];
-						data[i + 1][1] = temp[1];
-						data[i + 1][2] = temp[2];
-						data[i + 1][3] = temp[3];
-						data[i + 1][4] = temp[4];
-						dem++;
-					}
-				}
-				if (dem == 0)
-					return;
-			}
-		} else if (x == 2) {
-			while (true) {
-				int dem = 0;
-				for (int i = 0; i < nows.getChildrents().size() - 1; i++) {
-					if (!sosanhTime((String) data[i][2], (String) data[i + 1][2])) {
-						Object temp[] = { data[i][0], data[i][1], data[i][2], data[i][3], data[i][4] };
-						data[i][0] = data[i + 1][0];
-						data[i][1] = data[i + 1][1];
-						data[i][2] = data[i + 1][2];
-						data[i][3] = data[i + 1][3];
-						data[i][4] = data[i + 1][4];
-						data[i + 1][0] = temp[0];
-						data[i + 1][1] = temp[1];
-						data[i + 1][2] = temp[2];
-						data[i + 1][3] = temp[3];
-						data[i + 1][4] = temp[4];
-						dem++;
-					}
-				}
-				if (dem == 0)
-					return;
-			}
-		}
+	public JPopupMenu getPopupMenu() {
+		return jPopupMenu;
 	}
-
-	private Boolean sosanh(String a, String b) {
-		// trả về true nếu a > b
-		if (a.length() == b.length()) {
-			for (int i = 0; i < a.length(); i++) {
-				if (a.charAt(i) < b.charAt(i)) {
-					return true;
-				} else if (a.charAt(i) > b.charAt(i)) {
-					return false;
-				}
-			}
-		} else if (a.length() > b.length()) {
-			for (int i = 0; i < b.length(); i++)
-				if (a.charAt(i) < b.charAt(i)) {
-					return true;
-				} else if (a.charAt(i) > b.charAt(i)) {
-					return false;
-				}
-			return false;
-		} else if (a.length() < b.length()) {
-			for (int z = 0; z < a.length(); z++)
-				if (a.charAt(z) < b.charAt(z)) {
-					return true;
-				} else if (a.charAt(z) > b.charAt(z))
-					return false;
-		}
-		return true;
-	}
-
-	private Boolean sosanhTime(String a, String b) {
-		int da = Integer.parseInt(a.substring(0, 2)), db = Integer.parseInt(b.substring(0, 2)),
-				ma = Integer.parseInt(a.substring(3, 5)), mb = Integer.parseInt(b.substring(3, 5)),
-				ya = Integer.parseInt(a.substring(6, 10)), yb = Integer.parseInt(b.substring(6, 10)),
-				ha = Integer.parseInt(a.substring(11, 13)), hb = Integer.parseInt(b.substring(11, 13)),
-				pa = Integer.parseInt(a.substring(14, 16)), pb = Integer.parseInt(b.substring(14, 16));
-		if (ya == yb) {
-			if (ma == mb) {
-				if (da == db) {
-					if (ha == hb) {
-						if (pa == pb) {
-							return true;
-						} else if (pa < pb)
-							return false;
-					} else if (ha < hb)
-						return false;
-				} else if (da < db)
-					return false;
-			} else if (ma < mb)
-				return false;
-		} else if (ya < yb)
-			return false;
-
-		return true;
+	
+	public void Update() {
+		setData();
+		setTable();
+		Edit();
+		table.clearSelection();
+		NoSelected();
 	}
 }

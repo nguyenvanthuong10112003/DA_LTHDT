@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
 import define.table.QUICKACCESS;
+
+import java.io.FileWriter;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -19,7 +21,6 @@ abstract public class Element {
 	protected Folder parent;
 	protected String exName;
 	protected String table;
-	private LinkedList<Authority> authority;
 
 	public Element() {
 	}
@@ -33,7 +34,6 @@ abstract public class Element {
 				LocalDateTime.now().getSecond());
 		this.icon = "";
 		this.exName = "";
-		this.authority = new LinkedList<Authority>();
 	}
 
 	public Element(int id, String name) {
@@ -45,7 +45,6 @@ abstract public class Element {
 		this.parent = null;
 		this.icon = "";
 		this.exName = "";
-		this.authority = new LinkedList<Authority>();
 	}
 
 	public Element(int id, String name, Folder parent) {
@@ -57,7 +56,6 @@ abstract public class Element {
 		this.parent = parent;
 		this.icon = "";
 		this.exName = "";
-		this.authority = new LinkedList<Authority>();
 	}
 
 	public Element(int id, String name, String icon, Folder parent) {
@@ -69,7 +67,6 @@ abstract public class Element {
 				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
 				LocalDateTime.now().getSecond());
 		this.exName = "";
-		this.authority = new LinkedList<Authority>();
 	}
 
 	public Element(int id, String name, Date dateCreate, Folder parent) {
@@ -79,17 +76,14 @@ abstract public class Element {
 		this.icon = "";
 		this.parent = parent;
 		this.exName = "";
-		this.authority = new LinkedList<Authority>();
 	}
 
-	public Element(int id, String name, Date dateCreate, String icon, Folder parent, String exName,
-			LinkedList<Authority> authority) {
+	public Element(int id, String name, Date dateCreate, String icon, Folder parent, String exName) {
 		this.name = name;
 		this.dateCreate = dateCreate;
 		this.icon = icon;
 		this.parent = parent;
 		this.exName = exName;
-		this.authority = authority;
 	}
 
 	public void setId(int id) {
@@ -106,14 +100,6 @@ abstract public class Element {
 
 	public Folder getParent() {
 		return parent;
-	}
-
-	public void setAuthority(LinkedList<Authority> authority) {
-		this.authority = authority;
-	}
-
-	public LinkedList<Authority> getAuthority() {
-		return authority;
 	}
 
 	public String getExName() {
@@ -210,6 +196,8 @@ abstract public class Element {
 		return parent.getLocation() + parent.name + "/";
 	}
 
+	public abstract void ghiFile(FileWriter out);
+	
 	public abstract String getTable();
 
 	public abstract int getMax();

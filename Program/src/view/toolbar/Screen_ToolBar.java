@@ -36,7 +36,6 @@ public class Screen_ToolBar extends JPanel {
 			this.setLayout(new BorderLayout());
 			this.add(function, BorderLayout.CENTER);
 			this.add(navigation, BorderLayout.SOUTH);
-			// function.setVisible(false);
 			System.out.println("Upload success ToolBar");
 		} catch (Exception e) {
 			System.out.println("Error ToolBar");

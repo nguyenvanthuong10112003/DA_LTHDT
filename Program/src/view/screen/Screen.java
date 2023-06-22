@@ -35,7 +35,6 @@ public class Screen extends JFrame {
 	private PanelContent content_center;
 	private static User user;
 	private Folder root;
-	private int maxId;
 	private Boolean islogin;
 
 	public Screen(String title, User user, Boolean islogin) {
@@ -46,10 +45,8 @@ public class Screen extends JFrame {
 			this.setRoot();
 			this.setTitle(title); // tieu de
 			this.setDefaultCloseOperation(EXIT_ON_CLOSE); // tat han khi onclick close
-			// this.setUndecorated(true); //full màn hình
 			this.setMinimumSize(new Dimension(1000, 600)); // kich thuoc be nhat
 			this.setIconImage(); // set icon app
-			// this.setLocationRelativeTo(null); // Giua man hinh
 			this.init(); //
 			this.addObj(); //
 			this.addListen();
@@ -77,8 +74,6 @@ public class Screen extends JFrame {
 				String line;
 				while ((line = br.readLine()) != null) {
 					Vector<String> arr = tach(line);
-					if (Integer.parseInt(arr.get(0)) > maxId)
-						maxId = Integer.parseInt(arr.get(0));
 					if (arr.get(arr.size() - 1).equals("")) {
 						root = new Folder(Integer.parseInt(arr.get(0)), arr.get(1), toDate(arr.get(2)), null, null);
 					} else {
@@ -190,13 +185,11 @@ public class Screen extends JFrame {
 
 	private void addListen() {
 		this.addWindowStateListener(new WindowStateListener() {
-
 			@Override
 			public void windowStateChanged(WindowEvent e) {
 				// TODO Auto-generated method stub
 				update();
 			}
-
 		});
 	}
 
@@ -213,7 +206,7 @@ public class Screen extends JFrame {
 		menubar = new Screen_MenuBar(this);
 		toolbar = new Screen_ToolBar(this, islogin, root);
 		content = new JPanel();
-		content_center = new PanelContent(this, this.root, this.maxId, islogin);
+		content_center = new PanelContent(this, this.root, islogin);
 	}
 
 	private void addObj() {

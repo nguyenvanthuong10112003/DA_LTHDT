@@ -24,25 +24,40 @@ public class ScrollPaneTree extends JScrollPane {
 			else
 				this.root = null;
 			this.pc = pc;
-			this.tree = new TreeBar(pc, root);
+			this.init();
+			this.setEvent();
+			this.Edit();
 			this.setViewportView(tree);
-			this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-			this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-			this.mouselisten = new mouse(this, tree, pc);
-			this.addMouseMotionListener(mouselisten);
-			this.tree.addMouseMotionListener(mouselisten);
-			this.pc.addMouseMotionListener(mouselisten);
-			this.pc.addMouseListener(mouselisten);
-			this.addMouseListener(mouselisten);
-			this.setCursor(defaultCursor);
-			this.tree.getIconClose().addMouseMotionListener(mouselisten);
 			System.out.println("Upload success content left");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error Content left");
 		}
 	}
-
+	
+	public void init()
+	{
+		this.mouselisten = new mouse(this, tree, pc);
+		this.tree = new TreeBar(pc, root);
+		this.tree.getIconClose().addMouseMotionListener(mouselisten);
+	}
+	
+	public void Edit()
+	{
+		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+		this.setCursor(defaultCursor);
+	}
+	
+	public void setEvent()
+	{
+		this.addMouseMotionListener(mouselisten);
+		this.tree.addMouseMotionListener(mouselisten);
+		this.pc.addMouseMotionListener(mouselisten);
+		this.pc.addMouseListener(mouselisten);
+		this.addMouseListener(mouselisten);
+	}
+	
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		super.setBounds(x, y, width, height);

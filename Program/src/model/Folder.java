@@ -1,5 +1,7 @@
 package model;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -228,6 +230,20 @@ public class Folder extends Element {
 				child.deleteToDB(sta);
 		}
 		sql = "DELETE " + table + " WHERE " + FOLDER.id + " = " + id;
+		String sql1 = "SELECT * FROM " + QUICKACCESS.nametable + " WHERE " + QUICKACCESS.folder + " = " + id;
+		String sql2 = "DELETE " + QUICKACCESS.nametable + " WHERE " + QUICKACCESS.folder + " = " + id;
+		try {
+			ResultSet rs = sta.executeQuery(sql1);
+			if(rs.next()) {
+				int check1 = sta.executeUpdate(sql2);
+				if(check1 > 0)
+					System.out.println("Delete " + id + " from " + QUICKACCESS.nametable + "success!");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			int check = sta.executeUpdate(sql);
 			if (check > 0)
@@ -348,4 +364,31 @@ public class Folder extends Element {
 		return max;
 	}
 
+	@Override
+	public void ghiFile(FileWriter out) {
+		// TODO Auto-generated method stub
+		try {
+			out.write(id + "|" + name + "|" + getTime(dateCreate) + "||||"
+					+ (parent != null ? parent.id : "") + '\n');
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (childrens.size() > 0) {
+			for (Element el : childrens) {
+				el.ghiFile(out);
+			}
+		}
+	}
+
+	public static Boolean isChild(Element con, Element cha) {
+		if (cha == null)
+			return true;
+		if (con == null)
+			return false;
+		if (con.equals(cha))
+			return true;
+		else
+			return isChild(con.getParent(), cha);
+	}
 }

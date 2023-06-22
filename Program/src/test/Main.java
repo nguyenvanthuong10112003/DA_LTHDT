@@ -27,10 +27,10 @@ public class Main {
 				}
 			}
 			Screen form = new Screen("Chương trình quản lý file và folder", null, false);
-			System.out.println("Tải chương trình thành công");
+			System.out.println("Upload success!");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Tải chương trình thất bại");
+			System.out.println("Error!");
 		}
 	}
 }

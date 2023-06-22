@@ -54,26 +54,31 @@ public class TreeBar extends JTree {
 		try {
 			this.pc = pc;
 			this.root = root;
+			this.init();
 			this.setListQuick();
 			this.setRootTree();
 			this.setQuickAccess();
 			this.setPopup();
 			this.setTree();
-			this.setModel(new DefaultTreeModel(tree));
-			this.close = new JLabel(new ImageIcon(define.URL.url + URL.urlContentLeft + iconClose16));
-			this.add(close);
-			this.mouseListen = new mouse(this);
-			this.addMouseListener(mouseListen);
-			this.addMouseMotionListener(mouseListen);
-			this.close.addMouseListener(mouseListen);
-			this.close.addMouseMotionListener(mouseListen);
-			TreeRender render = new TreeRender();
-			this.setCellRenderer(render);
 			this.setEvent();
 			this.Edit();
+			this.addObj();
 		} catch (Exception E) {
 			E.printStackTrace();
 		}
+	}
+	
+	public void addObj()
+	{
+		this.add(close);
+	}
+	
+	public void init()
+	{
+		this.mouseListen = new mouse(this);
+		TreeRender render = new TreeRender();
+		this.setCellRenderer(render);
+		this.close = new JLabel(new ImageIcon(define.URL.url + URL.urlContentLeft + iconClose16));
 	}
 
 	public void setPopup() {
@@ -86,6 +91,10 @@ public class TreeBar extends JTree {
 	}
 
 	public void setEvent() {
+		this.addMouseListener(mouseListen);
+		this.addMouseMotionListener(mouseListen);
+		this.close.addMouseListener(mouseListen);
+		this.close.addMouseMotionListener(mouseListen);
 		ActionListen = new action(this);
 		SelectListen = new treeselection(this);
 		this.addTreeSelectionListener(SelectListen);
@@ -118,6 +127,7 @@ public class TreeBar extends JTree {
 		this.setRootVisible(false);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setBackground(Color.white);
+		this.setModel(new DefaultTreeModel(tree));
 	}
 
 	public void setTree() {
@@ -134,6 +144,8 @@ public class TreeBar extends JTree {
 				BufferedReader br = new BufferedReader(fr);
 				String line;
 				while ((line = br.readLine()) != null) {
+					if(line.equals(""))
+						return;
 					if (Folder.searchFolder((Folder) root, Integer.parseInt(line)) != null)
 						listquick.add(Folder.searchFolder((Folder) root, Integer.parseInt(line)));
 				}
@@ -180,11 +192,12 @@ public class TreeBar extends JTree {
 		Folder folder = new Folder(-1, "Truy cập nhanh");
 		folder.setIcon(flash16);
 		quickaccess = new DefaultMutableTreeNode(folder);
-		for (Element e : listquick) {
-			folder.getChildrents().add(e);
-			DefaultMutableTreeNode treenode = new DefaultMutableTreeNode(e);
-			quickaccess.add(treenode);
-		}
+		if(listquick.size() > 0)
+			for (Element e : listquick) {
+				folder.getChildrents().add(e);
+				DefaultMutableTreeNode treenode = new DefaultMutableTreeNode(e);
+				quickaccess.add(treenode);
+			}
 	}
 
 	public void setRootTree() {
@@ -251,12 +264,13 @@ public class TreeBar extends JTree {
 			}
 		} else {
 			for (Element e : list) {
-				try {
-					addQADB(e);
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				if(pc.isLogin())
+					try {
+						addQADB(e);
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				listquick.add(e);
 			}
 		}
@@ -278,22 +292,34 @@ public class TreeBar extends JTree {
 		Update();
 	}
 
+	public void ghiFile() throws IOException
+	{
+		FileWriter out = new FileWriter(define.URL.url + define.URL.urlQuickAccess);
+		System.out.println("Mo file du lieu thanh cong");
+		for (Element i : listquick) {
+			out.write(i.getId() + "\n");
+		}
+		System.out.println("Ghi file thanh cong");
+		out.close();
+	}
+	
 	public void removePin(Element e) throws IOException {
 		Boolean check = listquick.remove(e);
 		if (check) {
 			if (!pc.isLogin()) {
-				FileWriter out = new FileWriter(define.URL.url + define.URL.urlQuickAccess);
-				System.out.println("Mo file du lieu thanh cong");
-				for (Element i : listquick) {
-					out.write(i.getId() + "\n");
-				}
-				System.out.println("Ghi file thanh cong");
-				out.close();
+				ghiFile();
 			} else {
 				try {
 					String sql = "DELETE " + QUICKACCESS.nametable + " WHERE " + USER.username + " = '"
 							+ Screen.getUser().getTenDangNhap() + "' and " + FOLDER.id + " = " + e.getId();
 					Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
+					if (connect != null) {
+						System.out.println("Ket noi database thanh cong");
+					} else {
+						System.out.println("Ket noi database that bai");
+						connect.close();
+						return;
+					}
 					Statement sta = connect.createStatement();
 					int check1 = sta.executeUpdate(sql);
 					if (check1 > 0) {

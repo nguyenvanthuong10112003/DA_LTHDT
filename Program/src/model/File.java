@@ -2,8 +2,6 @@ package model;
 
 import java.util.*;
 import java.io.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -342,6 +340,19 @@ public class File extends Element {
 			}
 			rs.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void ghiFile(FileWriter out) {
+		// TODO Auto-generated method stub
+		try {
+			out.write(id + "|" + name + "|" + getTime(dateCreate) + "|"
+					+ getTime(dateModified) + "|" + exType + "|"
+					+ size + "|" + (parent != null ? parent.id : "") + '\n');
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

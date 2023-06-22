@@ -19,18 +19,14 @@ public class PanelContent extends JPanel {
 	private PanelContentCenter contentCenter;
 	private PanelContentRight contentRight;
 	private int space;
-	private mouse mouseEvent;
 	private Boolean Show_Content_Left;
 	private Boolean Show_Content_Right;
-	private Boolean Show_Content_Center;
 	private Cursor cursorDefault = new Cursor(Cursor.DEFAULT_CURSOR);
-	private Font font;
 	private Folder root;
 	private mouse mouslisten = new mouse(this);
-	private int maxId;
 	private Boolean islogin;
 
-	public PanelContent(Screen screen, Folder root, int max, Boolean islogin) {
+	public PanelContent(Screen screen, Folder root, Boolean islogin) {
 		super();
 		try {
 			if (root != null) {
@@ -40,15 +36,11 @@ public class PanelContent extends JPanel {
 			}
 			this.screen = screen;
 			this.islogin = islogin;
-			this.maxId = max;
 			this.contentLeft = new ScrollPaneTree(this, this.root);
 			this.contentCenter = new PanelContentCenter(this, root);
 			this.contentRight = new PanelContentRight(this);
-			this.mouseEvent = new mouse(this);
 			this.Show_Content_Left = true;
 			this.Show_Content_Right = true;
-			this.Show_Content_Center = true;
-			this.font = new Font("Arial", Font.PLAIN, 14);
 			this.getSize();
 			this.addObj();
 			this.setColorObj();

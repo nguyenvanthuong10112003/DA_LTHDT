@@ -42,8 +42,6 @@ public class Panel_Functions extends JToolBar {
 	private JPanel content;
 	private JLabel login;
 	private JLabel register;
-	private Color black = Color.BLACK;
-	private Color white = Color.WHITE;
 	private Color blue = Color.BLUE;
 	private FormLogin Flogin;
 	private FormRegister Fregister;
@@ -135,88 +133,110 @@ public class Panel_Functions extends JToolBar {
 	}
 
 	private void setColor() {
-		login.setBackground(blue);
-		// login.setForeground(white);
-		register.setBackground(blue);
-		// register.setForeground(white);
 		this.setOpaque(true);
 		this.setBackground(ColorList.Back_Ground);
+		
 		content.setOpaque(true);
 		content.setBackground(ColorList.Back_Ground);
+		
 		container_icon_function.setOpaque(true);
 		container_icon_function.setBackground(ColorList.Back_Ground);
+		
 		pinTo_text.setOpaque(true);
 		pinTo_text.setBackground(ColorList.Back_Ground);
 		pinTo_text.setForeground(ColorList.Fore_Ground);
+		
 		pin_to_access_icon.setOpaque(true);
 		pin_to_access_icon.setBackground(ColorList.Back_Ground);
 		pin_to_access_icon.setForeground(ColorList.Fore_Ground);
+		
 		cut_icon.setOpaque(true);
 		cut_icon.setBackground(ColorList.Back_Ground);
 		cut_icon.setForeground(ColorList.Fore_Ground);
+		
 		copy_icon.setOpaque(true);
 		copy_icon.setBackground(ColorList.Back_Ground);
 		copy_icon.setForeground(ColorList.Fore_Ground);
+		
 		paste_icon.setOpaque(true);
 		paste_icon.setBackground(ColorList.Back_Ground);
 		paste_icon.setForeground(ColorList.Fore_Ground);
+		
 		copy_to_text.setOpaque(true);
 		copy_to_text.setBackground(ColorList.Back_Ground);
 		copy_to_text.setForeground(ColorList.Fore_Ground);
+		
 		copy_to_icon.setOpaque(true);
 		copy_to_icon.setBackground(ColorList.Back_Ground);
 		copy_to_icon.setForeground(ColorList.Fore_Ground);
+		
 		move_to_text.setOpaque(true);
 		move_to_text.setBackground(ColorList.Back_Ground);
 		move_to_text.setForeground(ColorList.Fore_Ground);
+		
 		move_to_icon.setOpaque(true);
 		move_to_icon.setBackground(ColorList.Back_Ground);
 		move_to_icon.setForeground(ColorList.Fore_Ground);
+		
 		rename_icon.setOpaque(true);
 		rename_icon.setBackground(ColorList.Back_Ground);
 		rename_icon.setForeground(ColorList.Fore_Ground);
+		
 		rename_text.setOpaque(true);
 		rename_text.setBackground(ColorList.Back_Ground);
 		rename_text.setForeground(ColorList.Fore_Ground);
+		
 		delete_icon.setOpaque(true);
 		delete_icon.setBackground(ColorList.Back_Ground);
 		delete_icon.setForeground(ColorList.Fore_Ground);
+		
 		delete_text.setOpaque(true);
 		delete_text.setBackground(ColorList.Back_Ground);
 		delete_text.setForeground(ColorList.Fore_Ground);
+		
 		new_file_icon.setOpaque(true);
 		new_file_icon.setBackground(ColorList.Back_Ground);
 		new_file_icon.setForeground(ColorList.Fore_Ground);
+		
 		new_file_text.setOpaque(true);
 		new_file_text.setBackground(ColorList.Back_Ground);
 		new_file_text.setForeground(ColorList.Fore_Ground);
+		
 		new_folder_icon.setOpaque(true);
 		new_folder_icon.setBackground(ColorList.Back_Ground);
 		new_folder_icon.setForeground(ColorList.Fore_Ground);
+		
 		new_folder_text.setOpaque(true);
 		new_folder_text.setBackground(ColorList.Back_Ground);
 		new_folder_text.setForeground(ColorList.Fore_Ground);
+		
 		NewFile.setOpaque(true);
 		NewFile.setBackground(ColorList.Back_Ground);
+		
 		NewFolder.setOpaque(true);
 		NewFolder.setBackground(ColorList.Back_Ground);
+		
 		tdn.setOpaque(true);
 		tdn.setBackground(ColorList.Back_Ground);
 		tdn.setForeground(ColorList.Fore_Ground);
+		
 		dang_xuat.setBackground(Color.BLUE);
 		dang_xuat.setForeground(ColorList.Fore_Ground);
+		
 		hello.setOpaque(true);
 		hello.setBackground(ColorList.Back_Ground);
 		hello.setForeground(ColorList.Fore_Ground);
+		
 		select_all.setOpaque(true);
 		select_all.setBackground(ColorList.Back_Ground);
 		select_all.setForeground(ColorList.Fore_Ground);
+		
 		select_no.setOpaque(true);
 		select_no.setBackground(ColorList.Back_Ground);
 		select_no.setForeground(ColorList.Fore_Ground);
+		
 		Select.setOpaque(true);
 		Select.setBackground(ColorList.Back_Ground);
-		// ;
 	}
 
 	private void init() {
@@ -360,7 +380,6 @@ public class Panel_Functions extends JToolBar {
 
 		this.add(content, BorderLayout.EAST);
 		this.add(container_icon_function, BorderLayout.CENTER);
-		// this.addSeparator();
 	}
 
 	public void EditObj() {
@@ -418,11 +437,9 @@ public class Panel_Functions extends JToolBar {
 		Delete.setEnabled(!root);
 		delete_icon.setEnabled(!root);
 		delete_text.setEnabled(!root);
-
 		Rename.setEnabled(!root);
 		rename_icon.setEnabled(!root);
 		rename_text.setEnabled(!root);
-
 		MoveTo.setEnabled(!root);
 		move_to_icon.setEnabled(!root);
 		move_to_text.setEnabled(!root);
@@ -433,14 +450,17 @@ public class Panel_Functions extends JToolBar {
 		this.addMouseMotionListener(mouseListen);
 		login.addMouseListener(mouseListen);
 		login.addMouseMotionListener(mouseListen);
+		
 		register.addMouseListener(mouseListen);
 		register.addMouseMotionListener(mouseListen);
+		
 		dang_xuat.addMouseListener(mouseListen);
 		dang_xuat.addMouseMotionListener(mouseListen);
 		
-		pin_to_access_icon.addMouseMotionListener(mouseListen);
-		pinTo_text.addMouseMotionListener(mouseListen);
 		pin_to_access_icon.addMouseListener(mouseListen);
+		pin_to_access_icon.addMouseMotionListener(mouseListen);
+		
+		pinTo_text.addMouseMotionListener(mouseListen);
 		pinTo_text.addMouseListener(mouseListen);
 
 		cut_icon.addMouseMotionListener(mouseListen);
@@ -459,41 +479,52 @@ public class Panel_Functions extends JToolBar {
 
 		copy_to_icon.addMouseListener(mouseListen);
 		copy_to_icon.addMouseMotionListener(mouseListen);
+		
 		copy_to_text.addMouseListener(mouseListen);
 		copy_to_text.addMouseMotionListener(mouseListen);
 
 		delete_icon.addMouseListener(mouseListen);
 		delete_icon.addMouseMotionListener(mouseListen);
+		
 		delete_text.addMouseListener(mouseListen);
 		delete_text.addMouseMotionListener(mouseListen);
+		
 		Delete.addMouseListener(mouseListen);
 		Delete.addMouseMotionListener(mouseListen);
 
 		rename_icon.addMouseListener(mouseListen);
 		rename_icon.addMouseMotionListener(mouseListen);
+		
 		rename_text.addMouseListener(mouseListen);
 		rename_text.addMouseMotionListener(mouseListen);
+		
 		Rename.addMouseListener(mouseListen);
 		Rename.addMouseMotionListener(mouseListen);
 
 		NewFile.addMouseListener(mouseListen);
 		NewFile.addMouseMotionListener(mouseListen);
+		
 		new_file_icon.addMouseListener(mouseListen);
 		new_file_icon.addMouseMotionListener(mouseListen);
+		
 		new_file_text.addMouseListener(mouseListen);
 		new_file_text.addMouseMotionListener(mouseListen);
 
 		NewFolder.addMouseListener(mouseListen);
 		NewFolder.addMouseMotionListener(mouseListen);
+		
 		new_folder_icon.addMouseListener(mouseListen);
 		new_folder_icon.addMouseMotionListener(mouseListen);
+		
 		new_folder_text.addMouseListener(mouseListen);
 		new_folder_text.addMouseMotionListener(mouseListen);
 
 		select_all.addMouseListener(mouseListen);
 		select_all.addMouseMotionListener(mouseListen);
+		
 		select_no.addMouseListener(mouseListen);
 		select_no.addMouseMotionListener(mouseListen);
+		
 		Select.addMouseListener(mouseListen);
 		Select.addMouseMotionListener(mouseListen);
 	}

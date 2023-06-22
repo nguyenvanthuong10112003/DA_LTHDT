@@ -8,8 +8,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import define.URL;
 
 public class TreeRender extends DefaultTreeCellRenderer {
-	private String down = "down16px.png";
-	private String right = "right16px.png";
 	private String duoi = "16px.png";
 
 	public TreeRender() {
