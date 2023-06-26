@@ -79,7 +79,7 @@ public class FormLogin extends JFrame {
 			this.setCusor();
 			this.setEvent();
 			this.setVisible(true);
-			System.out.println("Upload success form login");
+			System.out.println("Upload form login success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error Form login");

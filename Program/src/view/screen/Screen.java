@@ -185,7 +185,6 @@ public class Screen extends JFrame {
 
 	private void addListen() {
 		this.addWindowStateListener(new WindowStateListener() {
-			@Override
 			public void windowStateChanged(WindowEvent e) {
 				// TODO Auto-generated method stub
 				update();

@@ -20,18 +20,14 @@ class Key implements KeyListener
     {
     	tf = pl;
     }
-	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if(!tf.IsView()) {
@@ -54,6 +50,8 @@ class Key implements KeyListener
 				t += "*";
 			tf.setText(t);
 		}
+		else
+			tf.setPass(tf.getText());
 	}
 	
 }
@@ -103,31 +101,26 @@ public class JTextFieldPassWord	extends JPanel
 		input.setBorder(new EmptyBorder(0, 2, 0, 0));
 		label.addMouseListener(new MouseListener() {
 			private Boolean isView = false;
-			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				if(!isView)

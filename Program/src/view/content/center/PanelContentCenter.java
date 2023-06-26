@@ -415,7 +415,7 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void Pin() {
-		LinkedList<Element> arr = new LinkedList<>();
+		LinkedList<Element> arr = new LinkedList<Element>();
 		if (nows == null)
 			arr.add(root);
 		else {

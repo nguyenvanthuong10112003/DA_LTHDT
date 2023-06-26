@@ -374,7 +374,7 @@ public class Panel_Navigation extends JPanel {
 	}
 
 	public LinkedList<String> checkLocation(String text) {
-		LinkedList<String> kq = new LinkedList<>();
+		LinkedList<String> kq = new LinkedList<String>();
 		if (text.equals(""))
 			return kq;
 		if (text.charAt(0) != '/')

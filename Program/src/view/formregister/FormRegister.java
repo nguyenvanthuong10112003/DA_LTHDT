@@ -99,7 +99,7 @@ public class FormRegister extends JFrame {
 			this.addObj();
 			this.setCusor();
 			this.setVisible(true);
-			System.out.println("Upload success form register");
+			System.out.println("Upload form register success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error form register");
@@ -441,9 +441,6 @@ public class FormRegister extends JFrame {
 	private Boolean CheckInput() {
 		if (tdn_input.getText().equals("") || pass_input.getText().equals("") || pass_check_input.getText().equals("")
 				|| full_name_input.getText().equals("") || !(nam.isSelected() || nu.isSelected()) ||
-				// ((String)day.getSelectedItem()).equals("") ||
-				// ((String)month.getSelectedItem()).equals("") ||
-				// ((String)year.getSelectedItem()).equals("") ||
 				phone_number_input.getText().equals("") || email_input.getText().equals(""))
 			return false;
 		return true;
@@ -473,15 +470,12 @@ public class FormRegister extends JFrame {
 		year.setSelectedItem(year.getItemAt(year.getItemCount() - 1));
 		year.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				updateTime();
 			}
 		});
 		month.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				updateTime();
@@ -489,7 +483,6 @@ public class FormRegister extends JFrame {
 		});
 		day.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (day.getSelectedItem() == null)
@@ -505,7 +498,7 @@ public class FormRegister extends JFrame {
 	}
 
 	private void updateTime() {
-		int d = (int) day.getSelectedItem();
+		int d = (Integer) day.getSelectedItem();
 		if (year.getSelectedItem() == null)
 			year.setSelectedItem((Integer) year.getItemAt(year.getItemCount() - 1));
 		else if (!year.getSelectedItem().getClass().equals(Integer.class))
@@ -528,10 +521,10 @@ public class FormRegister extends JFrame {
 		for (int i : date.day((Integer) month.getSelectedItem(), (Integer) year.getSelectedItem())) {
 			day.addItem(i);
 		}
-		if (d <= (int) day.getItemAt(day.getItemCount() - 1))
+		if (d <= (Integer) day.getItemAt(day.getItemCount() - 1))
 			day.setSelectedItem(d);
 		else
-			day.setSelectedItem((int) day.getItemAt(day.getItemCount() - 1));
+			day.setSelectedItem((Integer) day.getItemAt(day.getItemCount() - 1));
 
 	}
 }

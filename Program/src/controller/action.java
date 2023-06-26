@@ -37,7 +37,6 @@ public class action implements ActionListener {
 		this.pct = pct;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (sc != null) {
