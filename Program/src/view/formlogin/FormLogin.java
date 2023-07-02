@@ -101,9 +101,16 @@ public class FormLogin extends JFrame {
 			Statement sta = connect.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while (rs.next()) {
-				User user = new User(rs.getString(USER.username), rs.getString(USER.password), rs.getString(USER.name),
-						rs.getString(USER.phone), rs.getString(USER.email), rs.getInt(USER.sex) == 1 ? true : false,
-						rs.getString(USER.address), toDate(rs.getString(USER.create)), toDate(rs.getString(USER.birth)),
+				User user = new User(
+									rs.getString(USER.username).trim(), 
+									rs.getString(USER.password).trim(), 
+									rs.getString(USER.name) == null ? "" :  rs.getString(USER.name).trim(),
+									rs.getString(USER.phone) == null ? "" : rs.getString(USER.phone).trim(), 
+									rs.getString(USER.email) == null ? "" : rs.getString(USER.email).trim(), 
+									rs.getString(USER.sex) == null ? null : ( rs.getInt(USER.sex) == 1 ? true : false),
+									rs.getString(USER.address) == null ? "" : rs.getString(USER.address).trim(), 
+									toDate(rs.getString(USER.create)), 
+									rs.getString(USER.birth) == null ? null : toDate(rs.getString(USER.birth)),
 						new Folder(rs.getInt(USER.folder)));
 				checkUser.put(user.getTenDangNhap(), user);
 			}
@@ -313,7 +320,7 @@ public class FormLogin extends JFrame {
 			user.getRoot().setId(rs.getInt(FOLDER.id));
 			user.getRoot().setName(rs.getString(FOLDER.nameFolder));
 			user.getRoot().setDateCreate(toDateTime(rs.getString(FOLDER.create)));
-			System.out.println("Update thành công");
+			System.out.println("Update success");
 			sta.close();
 			rs.close();
 			connect.close();

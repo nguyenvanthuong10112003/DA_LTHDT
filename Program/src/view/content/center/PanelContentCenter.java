@@ -67,7 +67,6 @@ public class PanelContentCenter extends JScrollPane {
 			this.addObj();
 			System.out.println("Upload success content center");
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error Content center");
 		}
 	}
@@ -87,7 +86,6 @@ public class PanelContentCenter extends JScrollPane {
 
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-				// TODO Auto-generated method stub
 				Component compent = super.prepareRenderer(renderer, row, column);
 				((JLabel) compent).setBorder(new EmptyBorder(0, 2, 0, 0));
 				((JLabel) compent).setOpaque(true);
@@ -758,6 +756,7 @@ public class PanelContentCenter extends JScrollPane {
 			} else {
 				connect.close();
 				System.out.println("Ket noi database that bai");
+				return;
 			}
 			Statement statement = connect.createStatement();
 			e.addToDB(statement);
@@ -781,6 +780,7 @@ public class PanelContentCenter extends JScrollPane {
 			} else {
 				connect.close();
 				System.out.println("Ket noi database that bai");
+				return;
 			}
 			Statement sta = connect.createStatement();
 			e.updateToDB(sta, e.getName(), e.getId());

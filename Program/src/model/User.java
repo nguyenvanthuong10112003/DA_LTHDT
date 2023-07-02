@@ -1,9 +1,13 @@
 package model;
 
+import java.beans.Statement;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.Date;
 
 import javax.lang.model.util.Elements;
+
+import define.table.USER;
 
 public class User {
 	private String name;
@@ -13,7 +17,7 @@ public class User {
 	private String email;
 	private Date dateCreated;
 	private Boolean sex;
-	private String Country;
+	private String address;
 	private Date dateOfBirth;
 	private Folder root;
 
@@ -26,7 +30,7 @@ public class User {
 		this.dateCreated = java.util.Calendar.getInstance().getTime();
 		this.dateCreated.setYear(java.time.LocalDate.now().getYear());
 		this.sex = null;
-		this.Country = "";
+		this.address = "";
 		this.dateOfBirth = null;
 		this.root = null;
 	}
@@ -41,7 +45,7 @@ public class User {
 		this.dateCreated = (Date) java.util.Calendar.getInstance().getTime();
 		this.dateCreated.setYear(java.time.LocalDate.now().getYear());
 		this.sex = sex;
-		this.Country = country;
+		this.address = country;
 		this.dateOfBirth = birth;
 		this.root = root;
 	}
@@ -55,7 +59,7 @@ public class User {
 		this.email = email;
 		this.dateCreated = create;
 		this.sex = sex;
-		this.Country = country;
+		this.address = country;
 		this.dateOfBirth = birth;
 		this.root = root;
 	}
@@ -124,12 +128,12 @@ public class User {
 		this.sex = sex;
 	}
 
-	public String getCountry() {
-		return Country;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setCountry(String country) {
-		Country = country;
+	public void setAddess(String country) {
+		address = country;
 	}
 
 	public Date getDateOfBirth() {
@@ -140,4 +144,77 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public String stringDateOfBirth()
+	{
+		if(dateOfBirth == null)
+			return "";
+		return check(dateOfBirth.getDate()) +  "/" + check(dateOfBirth.getMonth()) + 
+				"/" + check(dateOfBirth.getYear());
+	}
+	
+	public String getTime(Date date) {
+		if (date != null)
+			return check(date.getDate()) + "/" + check(date.getMonth()) + "/" + check(date.getYear()) + " "
+					+ check(date.getHours()) + ":" + check(date.getMinutes()) + ":" + check(date.getSeconds());
+		return "";
+	}
+	
+	public String check(int a) {
+		if (a >= 10)
+			return ((Integer) a).toString();
+		return "0" + a;
+	}
+	
+	public void updateToSql(java.sql.Statement sta)
+	{
+		String sql = "Update " + USER.nametable + " SET ";
+		if(sex != null)
+		{
+			sql += USER.sex + " = " + (sex == true ? 1 : 0) + " , ";
+		}
+		if(dateOfBirth != null)
+		{
+			sql += USER.birth + " = '" + dateOfBirth.getDate() + "-" + dateOfBirth.getMonth() + "-" + dateOfBirth.getYear() + "' , "; 
+		}
+		if(!"".equals(name))
+		{
+			sql += USER.name + " = N'" + name + "', ";
+		}
+		if(!"".equals(address))
+		{
+			sql += USER.address + " = N'" + address + "', ";	
+		}
+		if(!"".equals(email))
+		{
+			sql += USER.email + " = '" + email + "', ";	
+		}
+		if(!"".equals(phoneNumber))
+		{
+			sql += USER.phone + " = '" + phoneNumber + "', ";	
+		}
+		sql = sql.substring(0, sql.length() - 2);
+		sql += " WHERE " + USER.username + " = '" + tenDangNhap + "'";
+		System.out.println(sql);
+		try {
+			int check = sta.executeUpdate(sql);
+			if(check > 0)
+				System.out.println("Update " + USER.nametable + " SUCCESS");
+		} catch (SQLException e) {
+			System.out.println("Update " + USER.nametable + " ERROR");
+			e.printStackTrace();
+		}
+	}
+	
+	public void UpdatePassWordToSql(java.sql.Statement sta)
+	{
+		String sql = "Update " + USER.nametable + " SET " + USER.password + " = '" + passWord + "' WHERE " + USER.username + " = '" + tenDangNhap + "'";
+		try {
+			int check = sta.executeUpdate(sql);
+			if(check > 0)
+				System.out.println("Update PassWord" + USER.nametable + " SUCCESS");
+		} catch (SQLException e) {
+			System.out.println("Update PassWord" + USER.nametable + " ERROR");
+			e.printStackTrace();
+		}
+	}
 }

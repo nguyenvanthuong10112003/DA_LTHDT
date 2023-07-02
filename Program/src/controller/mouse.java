@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,6 +17,7 @@ import view.formregister.FormRegister;
 import view.menubar.Screen_MenuBar;
 import view.screen.Screen;
 import view.toolbar.Panel_Navigation;
+import view.toolbar.ScreenPageUser;
 import view.toolbar.Panel_Functions;
 
 public class mouse extends MouseAdapter implements MouseListener {
@@ -31,7 +33,13 @@ public class mouse extends MouseAdapter implements MouseListener {
 	private PanelContentCenter pct;
 	private FormLogin formlogin;
 	private FormRegister formregister;
-
+	private ScreenPageUser page;
+	
+	public mouse(ScreenPageUser page)
+	{
+		this.page = page;
+	}
+	
 	public mouse(FormLogin formlogin) {
 		this.formlogin = formlogin;
 	}
@@ -81,8 +89,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		// System.out.println(e.getSource());
 		if (tb != null) {
 			try {
 				tb.setClicked(e.getSource().hashCode());
@@ -127,13 +133,15 @@ public class mouse extends MouseAdapter implements MouseListener {
 			formlogin.clicked(e.getSource().hashCode(), e.getX(), e.getY());
 		} else if (formregister != null) {
 			formregister.clicked(e.getSource().hashCode(), e.getX(), e.getY());
+		} else if (page != null)
+		{
+			page.clicked(e.getSource().hashCode());
 		}
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (sc != null) {
 
 		} else if (pc != null) {
@@ -147,7 +155,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (scroll != null) {
 			if (e.getSource().equals(scroll))
 				mousep = false;
@@ -161,21 +168,14 @@ public class mouse extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (scroll != null) {
 			if (e.getSource().equals(scroll)) {
-				// System.out.println(e.getX() + " " + e.getY());
-				// pc.setCursor(scroll.getDefaultCursor());
-				// scroll.setCursor(scroll.getDefaultCursor());
+				scroll.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-			// if(e.getSource().equals(scroll))
-			// scroll.mouseExit(e.getX(), e.getY());
-
 		} else if (pf != null) {
 			if (e.getSource().getClass().equals(JLabel.class)) {
 				pf.setColorIcon(e.getSource().hashCode(), ColorList.Back_Ground);
@@ -197,12 +197,12 @@ public class mouse extends MouseAdapter implements MouseListener {
 			formlogin.exit(e.getSource().hashCode());
 		} else if (formregister != null) {
 			formregister.exit(e.getSource().hashCode());
+		} else if (page != null) {
+			page.exit(e.getSource().hashCode());
 		}
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (scroll != null) {
 			if (e.getSource().equals(scroll)) {
 				scroll.setSize(e.getX(), e.getY());
@@ -219,27 +219,26 @@ public class mouse extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (scroll != null) {
 			if (scroll != null) {
 				try {
 					if (e.getSource().equals(scroll)) {
 						scroll.SetCusorScroll(e.getX(), e.getY());
-					} else if (e.getSource().equals(tree))
+					} else if (e.getSource().equals(tree)) {
 						scroll.SetCusorTreeBar();
-					else if (e.getSource().equals(pc)) {
+					} else if (e.getSource().equals(pc)) {
 						scroll.setCusorPanelContent(e.getX(), e.getY());
 					}
 				} catch (Exception ex) {
 					System.out.println("error");
 				}
 			} else if (e.getSource().equals(scroll.getPanelContent())) {
-				// scroll.mouseExit(e.getX(), e.getY());
+				
 			}
-
 		} else if (cr != null) {
-			if (e.getSource().equals(cr))
+			if (e.getSource().equals(cr)) {
 				cr.setCusor(e.getX(), e.getY());
+			}
 			else if (e.getSource().equals(cr.getLabelIconClose())) {
 				cr.setDefaultCursor();
 				cr.hoverClose();
@@ -254,19 +253,23 @@ public class mouse extends MouseAdapter implements MouseListener {
 			if (e.getSource().equals(tree.getIconClose())) {
 				tree.hoverClose();
 			}
+			tree.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		} else if (pct != null) {
+			
 		} else if (cr != null) {
 			if (e.getSource().equals(cr.getLabelIconClose())) {
 
 			}
 		} else if (tb != null) {
-			// System.out.println(e.getSource());
 			tb.setHover(e.getSource().hashCode(), ColorList.Hover);
 			tb.hover(e.getSource().hashCode());
 		} else if (formlogin != null) {
 			formlogin.hover(e.getSource().hashCode());
 		} else if (formregister != null) {
 			formregister.hover(e.getSource().hashCode());
+		} else if (page != null)
+		{
+			page.hover(e.getSource().hashCode());
 		}
 	}
 

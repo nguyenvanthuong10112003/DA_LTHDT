@@ -91,7 +91,7 @@ public class Panel_Navigation extends JPanel {
 	private int search_down_up[] = { 0, 0 };
 	private String iconsr = "search";
 	private Element ele;
-
+	
 	public Panel_Navigation(Screen screen, Element root) {
 		super();
 		this.screen = screen;

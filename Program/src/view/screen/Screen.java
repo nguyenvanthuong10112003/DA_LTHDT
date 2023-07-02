@@ -186,7 +186,6 @@ public class Screen extends JFrame {
 	private void addListen() {
 		this.addWindowStateListener(new WindowStateListener() {
 			public void windowStateChanged(WindowEvent e) {
-				// TODO Auto-generated method stub
 				update();
 			}
 		});
@@ -297,12 +296,10 @@ public class Screen extends JFrame {
 		}
 	}
 
-	// table chọn tất cả các dòng
 	public void SelectAll() {
 		this.content_center.getCenter().selectAll();
 	}
 
-	// table bỏ chọn tất cả các dòng
 	public void NoSelect() {
 		this.content_center.getCenter().NoSelected();
 	}
@@ -348,7 +345,6 @@ public class Screen extends JFrame {
 		}
 	}
 
-	// hiển thị nút new folder, file
 	public void showNew(Boolean show) {
 		toolbar.getFunction().setNew(show);
 	}

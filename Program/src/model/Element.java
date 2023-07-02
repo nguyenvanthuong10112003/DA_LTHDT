@@ -169,14 +169,14 @@ abstract public class Element {
 		return "0" + a;
 	}
 
-	public String to2(String s) {
+	public static String to2(String s) {
 		if (s.length() > 1)
 			return s;
 		else
 			return "0" + s;
 	}
 
-	public String toDateTimeSQL(java.util.Date date) {
+	public static String toDateTimeSQL(java.util.Date date) {
 		return date.getYear() + "-" + to2(((Integer) date.getMonth()).toString()) + "-"
 				+ to2(((Integer) date.getDate()).toString()) + " " + to2(((Integer) date.getHours()).toString()) + ":"
 				+ to2(((Integer) date.getMinutes()).toString()) + ":" + to2(((Integer) date.getSeconds()).toString());

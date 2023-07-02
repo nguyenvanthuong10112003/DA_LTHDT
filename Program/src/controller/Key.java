@@ -13,16 +13,12 @@ public class Key implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 	}
 
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		if (navi != null) {
 			if (e.getSource().equals(navi.getInput_Location().getComponents()[2])) {
 				navi.eventKeySearchLocation(e.getKeyCode(), e.getKeyChar());

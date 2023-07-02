@@ -12,5 +12,6 @@ public interface URL {
 	public final String urlContentLeftIcon = "\\Icon\\content\\left\\icon\\";
 	public final String urlQuickAccess = "\\data\\truycapnhanh.txt";
 	public final String urlToolBarNavi = "\\Icon\\toolbar\\navi\\";
+	public final String urlToolBarFun = "\\Icon\\toolbar\\fun\\";
 	public final String fileIcon = "\\data\\iconfile.txt";
 }

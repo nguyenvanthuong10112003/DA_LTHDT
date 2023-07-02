@@ -4,31 +4,16 @@ import model.User;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.im.InputContext;
-import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.LinkedList;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import controller.mouse;
 import define.ColorList;
@@ -36,8 +21,10 @@ import define.FONT;
 import view.formlogin.FormLogin;
 import view.formregister.FormRegister;
 import view.screen.Screen;
+import controller.*;
 
 public class Panel_Functions extends JToolBar {
+	private ScreenPageUser pageUser;
 	private Screen screen;
 	private JPanel content;
 	private JLabel login;
@@ -54,10 +41,11 @@ public class Panel_Functions extends JToolBar {
 	private String copy_to = "\\Icon\\toolbar\\fun\\copy_to32.png";
 	private String delete = "\\Icon\\toolbar\\fun\\delete24.png";
 	private String rename = "\\Icon\\toolbar\\fun\\rename32.png";
-	private String new_folder = "\\Icon\\toolbar\\fun\\new_folder24.png";
-	private String new_file = "\\Icon\\toolbar\\fun\\new_file24.png";
+	private String new_folder = "\\Icon\\toolbar\\fun\\newfolder24px.png";
+	private String new_file = "\\Icon\\toolbar\\fun\\newfile24px.png";
 	private String select_all_icon = "\\Icon\\toolbar\\fun\\selectall24.png";
 	private String select_no_icon = "\\Icon\\toolbar\\fun\\noselect24.png";
+	private String threedots = "\\Icon\\toolbar\\fun\\dots16px.png";
 	private JLabel pin_to_access_icon;
 	private JTextArea pinTo_text;
 	private JLabel cut_icon;
@@ -85,12 +73,14 @@ public class Panel_Functions extends JToolBar {
 	private JPanel NewFile;
 	private JPanel NewFolder;
 	private JPanel Select;
-	private mouse mouseListen;
 	private JLabel tdn;
 	private JLabel dang_xuat;
 	private Boolean islogin;
 	private JLabel hello;
-
+	private JButton button; 
+	private mouse mouseListen;
+	private action actionListen;
+	
 	public Panel_Functions(Screen screen, Boolean islogin) {
 		super();
 		try {
@@ -237,10 +227,13 @@ public class Panel_Functions extends JToolBar {
 		
 		Select.setOpaque(true);
 		Select.setBackground(ColorList.Back_Ground);
+		
+		button.setBackground(ColorList.Back_Ground);
 	}
 
 	private void init() {
 		mouseListen = new mouse(this);
+		actionListen = new action(this);
 		container_icon_function = new JPanel();
 		content = new JPanel();
 		login = new JLabel();
@@ -275,6 +268,7 @@ public class Panel_Functions extends JToolBar {
 		select_no = new JLabel(new ImageIcon(define.URL.url + select_no_icon));
 		select_all = new JLabel(new ImageIcon(define.URL.url + select_all_icon));
 		Select = new JPanel();
+		button = new JButton();
 	}
 
 	private void setText() {
@@ -282,9 +276,9 @@ public class Panel_Functions extends JToolBar {
 		register.setText("      Đăng ký      ");
 		pinTo_text.setText("    Ghim vào \ntruy cập nhanh");
 		pin_to_access_icon.setToolTipText("Thêm vào truy cập nhanh");
-		cut_icon.setText("Cut");
-		copy_icon.setText("Copy");
-		paste_icon.setText("Paste");
+		cut_icon.setText("Cắt");
+		copy_icon.setText("Sao chép");
+		paste_icon.setText("Dán");
 		copy_to_text.setText("Sao chép\r\n    đến");
 		move_to_text.setText("Di chuyển\r\n     đến");
 		rename_text.setText("Đổi tên");
@@ -314,7 +308,11 @@ public class Panel_Functions extends JToolBar {
 			panel.add(hello);
 			panel.add(tdn);
 			content.add(panel);
-			content.add(dang_xuat);
+			panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			panel.add(dang_xuat, BorderLayout.CENTER);
+			panel.add(button, BorderLayout.EAST);
+			content.add(panel);
 			content.setBorder(new EmptyBorder(3, 3, 3, 3));
 		}
 
@@ -339,13 +337,11 @@ public class Panel_Functions extends JToolBar {
 		MoveTo.add(move_to_icon);
 		MoveTo.add(move_to_text);
 		MoveTo.setBackground(ColorList.Back_Ground);
-		// container_icon_function.add(MoveTo);
 
 		CopyTo.setLayout(new GridLayout(2, 1, 0, 0));
 		CopyTo.add(copy_to_icon);
 		CopyTo.add(copy_to_text);
 		CopyTo.setBackground(ColorList.Back_Ground);
-		// container_icon_function.add(CopyTo);
 
 		Delete.setLayout(new GridLayout(2, 1, 0, 0));
 		Delete.add(delete_icon);
@@ -431,6 +427,9 @@ public class Panel_Functions extends JToolBar {
 		register.setHorizontalAlignment(JLabel.CENTER);
 		login.setHorizontalAlignment(JLabel.CENTER);
 		dang_xuat.setHorizontalAlignment(JLabel.CENTER);
+		
+		button.setIcon(new ImageIcon(define.URL.url + threedots));
+		button.setBorder(new EmptyBorder(0,-1,0,-1));
 	}
 
 	public void EnableRoot(Boolean root) {
@@ -527,6 +526,8 @@ public class Panel_Functions extends JToolBar {
 		
 		Select.addMouseListener(mouseListen);
 		Select.addMouseMotionListener(mouseListen);
+		
+		button.addActionListener(actionListen);
 	}
 
 	public JLabel btlogin() {
@@ -557,10 +558,15 @@ public class Panel_Functions extends JToolBar {
 			Fregister = new FormRegister(this);
 			Fregister.setLocation(x - (x > Fregister.getSize().width ? Fregister.getSize().width : 0), y);
 		} else if (code == dang_xuat.hashCode()) {
-			screen.setVisible(false);
-			screen = new Screen(screen.getTitle(), null, false);
+			logOut();
 		}
 
+	}
+	
+	public void logOut()
+	{
+		screen.setVisible(false);
+		screen = new Screen(screen.getTitle(), null, false);
 	}
 
 	public void onclick_InForm(Boolean f, int x, int y) {
@@ -756,5 +762,17 @@ public class Panel_Functions extends JToolBar {
 
 	public void setEnPaste(Boolean bool) {
 		paste_icon.setEnabled(bool);
+	}
+	
+	public void clickedThreeDots()
+	{
+		if(pageUser == null)
+		{
+			pageUser = new ScreenPageUser(Screen.getUser(), this);
+		} else
+		{
+			pageUser.setVisible(false);
+			pageUser = new ScreenPageUser(Screen.getUser(), this);
+		}
 	}
 }

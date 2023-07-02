@@ -31,7 +31,6 @@ class Key implements KeyListener
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if(!tf.IsView()) {
-			String p = "";
 			if(Integer.valueOf(e.getKeyChar()) == 8) {
 	              if(tf.getPass().length() > 0)
 	              {
@@ -42,6 +41,8 @@ class Key implements KeyListener
 			{
 				if(tf.getText().length() > tf.getPass().length())
 				  tf.setPass(tf.getPass() + e.getKeyChar());
+				else if(tf.getText().length() == 1)
+				  tf.setPass(tf.getText());	
 				else
 				  tf.setPass((tf.getPass().substring(0, tf.getText().length()) + e.getKeyChar()).substring(0, tf.getText().length()));
 			}
@@ -153,5 +154,13 @@ public class JTextFieldPassWord	extends JPanel
 	public String getText()
 	{
 		return input.getText();
+	}
+	
+	public void setText(String str)
+	{
+		input.setPass(str);
+		input.setText("");
+		for(int i = 0; i < str.length(); i++)
+			input.setText(input.getText() + "*");
 	}
 }

@@ -12,7 +12,6 @@ public class treeselection implements TreeSelectionListener {
 	}
 
 	public void valueChanged(TreeSelectionEvent e) {
-		// TODO Auto-generated method stub
 		tree.treeSelection(e.getPath());
 	}
 }

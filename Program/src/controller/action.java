@@ -7,6 +7,8 @@ import view.content.center.PanelContentCenter;
 import view.content.left.TreeBar;
 import view.menubar.Screen_MenuBar;
 import view.screen.Screen;
+import view.toolbar.Panel_Functions;
+import view.toolbar.ScreenPageUser;
 
 public class action implements ActionListener {
 	private Screen sc;
@@ -14,6 +16,13 @@ public class action implements ActionListener {
 	private PanelContent pc;
 	private TreeBar tree;
 	private PanelContentCenter pct;
+	private Panel_Functions fun;
+	private ScreenPageUser page;
+	
+	public action(ScreenPageUser page)
+	{
+		this.page = page;
+	}
 
 	public action(Screen sc) {
 		super();
@@ -36,9 +45,13 @@ public class action implements ActionListener {
 	public action(PanelContentCenter pct) {
 		this.pct = pct;
 	}
+	
+	public action(Panel_Functions fun)
+	{
+		this.fun = fun;
+	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (sc != null) {
 			if (e.getSource().equals(sc)) {
 				System.out.println("ok");
@@ -52,6 +65,10 @@ public class action implements ActionListener {
 			tree.eventaction(e.getSource().hashCode());
 		} else if (pct != null) {
 			pct.clickedItemPopup(e.getSource().hashCode());
+		} else if (fun != null) {
+			fun.clickedThreeDots();
+		} else if (page != null) {
+			page.clicked(e.getSource().hashCode());
 		}
 	}
 

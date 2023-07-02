@@ -100,7 +100,6 @@ public class TreeBar extends JTree {
 		this.addTreeSelectionListener(SelectListen);
 		open.addActionListener(ActionListen);
 		delete_quick.addActionListener(ActionListen);
-		;
 	}
 
 	public void treeSelection(TreePath e) {
