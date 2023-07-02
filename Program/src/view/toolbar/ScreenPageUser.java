@@ -707,6 +707,7 @@ public class ScreenPageUser extends JFrame {
 				JOptionPane.showMessageDialog(inputnewPass, "Mật khẩu hiện tại sai!", "Thông báo", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
+			user.setPassWord(inputnewPass.getPass());
 			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
@@ -726,7 +727,6 @@ public class ScreenPageUser extends JFrame {
 				System.out.println("Ket noi database that bai");
 				return;
 			}
-			user.setPassWord(inputnewPass.getPass());
 			JOptionPane.showMessageDialog(inputnewPass, "Thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			inputcheckPass.setText("");
 			inputPass.setText("");
