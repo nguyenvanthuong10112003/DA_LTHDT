@@ -188,6 +188,10 @@ public class PanelContent extends JPanel {
 		contentRight.selected(e);
 	}
 
+	public Element getSelect() {
+		return contentRight.getSelect();
+	}
+	
 	public void noSelected() {
 		contentRight.noselected();
 	}

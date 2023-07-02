@@ -124,6 +124,9 @@ public class mouse extends MouseAdapter implements MouseListener {
 		} else if (pct != null) {
 			if (e.getSource().equals(pct.getTable())) {
 				pct.clickedTable();
+				if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+					pct.Open();
+				} 
 			} else {
 				pct.getTable().clearSelection();
 				pct.getPanelContent().noSelected();

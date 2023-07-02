@@ -283,6 +283,7 @@ public class PanelContentRight extends JPanel {
 	}
 
 	public void noselected() {
+		select = null;
 		panel.setVisible(false);
 		containText.setVisible(false);
 		contain.setVisible(false);
@@ -392,6 +393,11 @@ public class PanelContentRight extends JPanel {
 			pc.getCenter().ghiFile();
 		else
 			pc.getCenter().updateDB(select);
+	}
+	
+	public Element getSelect()
+	{
+		return select;
 	}
 
 }

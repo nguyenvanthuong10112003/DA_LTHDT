@@ -46,7 +46,8 @@ public class PanelContentCenter extends JScrollPane {
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private LinkedList<Integer> selectCut;
 	private action ActionListen;
-
+	private String select = null;
+	
 	public PanelContentCenter(PanelContent pct, Element root) {
 		super();
 		try {
@@ -295,8 +296,9 @@ public class PanelContentCenter extends JScrollPane {
 	
 	public void clickedTable() {
 		if (table.getSelectedRow() >= 0 && table.getSelectedRowCount() == 1) {
-			if (nows == null)
+			if (nows == null) {
 				pct.SELECTtable(root);
+			}
 			else {
 				for (Element child : nows.getChildrents()) {
 					if (child.getName().equals(data[table.getSelectedRow()][1])) {
@@ -316,39 +318,44 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void clickedItemPopup(int hash) {
 		if (hash == open.hashCode()) {
-			if (nows != null) {
-				if (nows.getChildrents().size() > 0) {
-					for (Element el : nows.getChildrents())
-						if (el.getClass().equals(Folder.class))
-							if (el.getName().equals(data[table.getSelectedRow()][1])) {
-								nows = el;
-								break;
-							}
-				}
-			} else {
-				nows = root;
+			Open();
+		}
+	}
+	
+	public void Open()
+	{
+		if (nows != null) {
+			if (nows.getChildrents().size() > 0) {
+				for (Element el : nows.getChildrents())
+					if (el.getClass().equals(Folder.class))
+						if (el.getName().equals(data[table.getSelectedRow()][1])) {
+							nows = el;
+							break;
+						}
 			}
-			if (cuoi == null) {
+		} else {
+			nows = root;
+		}
+		if (cuoi == null) {
+			if (nows.getParent() == cuoi)
+				cuoi = nows;
+		} else {
+			if (nows != root) {
 				if (nows.getParent() == cuoi)
 					cuoi = nows;
-			} else {
-				if (nows != root) {
-					if (nows.getParent() == cuoi)
-						cuoi = nows;
-					else if (!Folder.isChild(cuoi, nows))
-						cuoi = nows;
-				}
+				else if (!Folder.isChild(cuoi, nows))
+					cuoi = nows;
 			}
-			pct.getScreen().showNew(true);
-			check();
-			if (cut == null && copy == null)
-				pct.getScreen().setEnPaste(false);
-			else
-				pct.getScreen().setEnPaste(true);
-			pct.getScreen().FunEnablueRoot(true);
-			pct.getScreen().setNowsNavi(nows);
-			Update();
 		}
+		pct.getScreen().showNew(true);
+		check();
+		if (cut == null && copy == null)
+			pct.getScreen().setEnPaste(false);
+		else
+			pct.getScreen().setEnPaste(true);
+		pct.getScreen().FunEnablueRoot(true);
+		pct.getScreen().setNowsNavi(nows);
+		Update();
 	}
 	
 	public void showPopup(Component comp, int x, int y) {
