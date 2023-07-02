@@ -497,7 +497,7 @@ public class PanelContentCenter extends JScrollPane {
 		Statement sta = null;
 		if (pct.isLogin()) {
 			try {
-				connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+				connect = ConnectSQL.getJDBCConnection();
 				if (connect != null) {
 					System.out.println("Ket noi database thanh cong");
 				} else {
@@ -642,7 +642,7 @@ public class PanelContentCenter extends JScrollPane {
 						}
 					if (pct.isLogin()) {
 						try {
-							Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+							Connection connect = ConnectSQL.getJDBCConnection();
 							if (connect != null) {
 								System.out.println("Ket noi database thanh cong");
 							} else {
@@ -757,7 +757,7 @@ public class PanelContentCenter extends JScrollPane {
 		Element e = nows.getChildrents().get(nows.getChildrents().size() - 1);
 
 		try {
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
@@ -781,7 +781,7 @@ public class PanelContentCenter extends JScrollPane {
 
 	public void updateDB(Element e) throws ClassNotFoundException {
 		try {
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {

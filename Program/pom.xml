@@ -5,7 +5,7 @@
 	<groupId>vn.thuong.nhom11.huce</groupId>
 	<artifactId>0.0.1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Management</name>
+	<name>Program</name>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
 		<dependency>

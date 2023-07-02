@@ -90,7 +90,7 @@ public class FormLogin extends JFrame {
 		checkUser = new HashMap<String, User>();
 		try {
 			String sql = "SELECT * FROM " + USER.nametable;
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
@@ -306,7 +306,7 @@ public class FormLogin extends JFrame {
 	private void success(User user) {
 		try {
 			String sql = "SELECT * FROM " + FOLDER.nametable + " WHERE " + FOLDER.id + " = " + user.getRoot().getId();
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {

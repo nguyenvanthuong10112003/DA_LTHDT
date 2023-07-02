@@ -666,7 +666,7 @@ public class ScreenPageUser extends JFrame {
 				inputEmail.setVisible(!true);
 				((JLabel) Email).setText(user.getEmail());
 			}
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 				Statement sta = connect.createStatement();
@@ -708,7 +708,7 @@ public class ScreenPageUser extends JFrame {
 				return;
 			}
 			user.setPassWord(inputnewPass.getPass());
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 				Statement sta = connect.createStatement();

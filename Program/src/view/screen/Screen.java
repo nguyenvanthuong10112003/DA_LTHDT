@@ -110,7 +110,7 @@ public class Screen extends JFrame {
 			}
 		} else {
 			try {
-				Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
+				Connection connect = ConnectSQL.getJDBCConnection();
 				Statement sta = connect.createStatement();
 				Folder.setIdMax(sta);
 				model.File.setIdMax(sta);

@@ -91,7 +91,7 @@ public class FormRegister extends JFrame {
 		checkUser = new HashMap<String, Boolean>();
 		try {
 			String sql = "SELECT " + USER.username + " FROM " + USER.nametable;
-			Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
@@ -332,7 +332,7 @@ public class FormRegister extends JFrame {
 	}
 	
 	private void Accept() throws ClassNotFoundException, SQLException {
-		Connection connect = ConnectSQL.getJDBCConnection(define.DefineSQL.database);
+		Connection connect = ConnectSQL.getJDBCConnection();
 		if (connect != null) {
 			System.out.println("Ket noi database thanh cong");
 		} else {

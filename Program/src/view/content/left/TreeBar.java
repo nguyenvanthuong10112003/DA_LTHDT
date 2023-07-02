@@ -158,7 +158,7 @@ public class TreeBar extends JTree {
 		} else {
 			String sql = "SELECT * FROM " + QUICKACCESS.nametable + " WHERE " + QUICKACCESS.user + " = '"
 					+ Screen.getUser().getTenDangNhap() + "'";
-			Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
+			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect == null) {
 				System.out.println("Connect database error");
 				try {
@@ -227,7 +227,7 @@ public class TreeBar extends JTree {
 
 	public Boolean addQADB(Element e) throws ClassNotFoundException {
 		Boolean check = false;
-		Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
+		Connection connect = ConnectSQL.getJDBCConnection();
 		try {
 			Statement sta;
 			sta = connect.createStatement();
@@ -311,7 +311,7 @@ public class TreeBar extends JTree {
 				try {
 					String sql = "DELETE " + QUICKACCESS.nametable + " WHERE " + USER.username + " = '"
 							+ Screen.getUser().getTenDangNhap() + "' and " + FOLDER.id + " = " + e.getId();
-					Connection connect = ConnectSQL.getJDBCConnection(DefineSQL.database);
+					Connection connect = ConnectSQL.getJDBCConnection();
 					if (connect != null) {
 						System.out.println("Ket noi database thanh cong");
 					} else {
