@@ -3,30 +3,27 @@ package view.toolbar;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.Date;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import controller.mouse;
 import java.awt.*;
 import define.ColorList;
-import define.FONT;
 import define.URL;
 import libary.ConnectSQL;
 import libary.DATE;
 import libary.JTextFieldPassWord;
-import view.screen.Screen;
 import controller.action;
 
 public class ScreenPageUser extends JFrame {
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 		private Panel_Functions fun;
 		private JPanel container;
 		private JPanel contentTTCN;
@@ -65,9 +62,9 @@ public class ScreenPageUser extends JFrame {
 		private JLabel acept;
 		private JTextField inputName;
 		private JTextField inputAddress;
-		private JComboBox day;
-		private JComboBox month;
-		private JComboBox year;
+		private JComboBox<Integer> day;
+		private JComboBox<Integer> month;
+		private JComboBox<Integer> year;
 		private JPanel inputBirth;
 		private JTextField inputPhoneNumber;
 		private JTextField inputEmail;
@@ -81,7 +78,6 @@ public class ScreenPageUser extends JFrame {
 		private mouse mouseListen;
 		private action actionListen;
 		private DATE date = new DATE(LocalDateTime.now().getYear());
-		private Font fontb = new Font("Arial", Font.BOLD, 14);
 		public enum Select{
 			TTCN, DMK
 		}
@@ -113,9 +109,9 @@ public class ScreenPageUser extends JFrame {
 			gb = new ButtonGroup();
 			nam = new JRadioButton();
 			nu = new JRadioButton();
-			year = new JComboBox();
-			month = new JComboBox();
-			day = new JComboBox();
+			year = new JComboBox<Integer>();
+			month = new JComboBox<Integer>();
+			day = new JComboBox<Integer>();
 			container = new JPanel();
 			avatar = new JLabel(new ImageIcon(URL.url + URL.urlToolBarFun + iconAvatar));
 			textName = new JLabel("Họ và tên: ");
@@ -562,6 +558,7 @@ public class ScreenPageUser extends JFrame {
 			addEvent();
 		}
 		
+		@SuppressWarnings("deprecation")
 		public void edit(int i)
 		{
 			if(i == 0)
@@ -584,7 +581,7 @@ public class ScreenPageUser extends JFrame {
 				inputBirth.setVisible(true);
 				if(user.getDateOfBirth() != null)
 				{
-					day.setSelectedItem(user.getDateOfBirth().getDay());
+					day.setSelectedItem(user.getDateOfBirth().getDate());
 					month.setSelectedItem(user.getDateOfBirth().getMonth());
 					year.setSelectedItem(user.getDateOfBirth().getYear());
 				} 
@@ -615,6 +612,7 @@ public class ScreenPageUser extends JFrame {
 			return false;
 		}
 		
+		@SuppressWarnings("deprecation")
 		public void save(int i) throws ClassNotFoundException, SQLException
 		{
 			if(i == 0)
@@ -681,7 +679,6 @@ public class ScreenPageUser extends JFrame {
 				sta.close();
 				connect.close();
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
@@ -723,7 +720,6 @@ public class ScreenPageUser extends JFrame {
 				sta.close();
 				connect.close();
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
@@ -777,10 +773,8 @@ public class ScreenPageUser extends JFrame {
 				try {
 					DoiMatKhau();
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else 

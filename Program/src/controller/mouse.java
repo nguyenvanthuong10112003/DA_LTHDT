@@ -28,7 +28,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 	private Screen sc;
 	private ScrollPaneTree scroll;
 	private TreeBar tree;
-	private Boolean mousep = false;
 	private Screen_MenuBar menu;
 	private PanelContentCenter pct;
 	private FormLogin formlogin;
@@ -102,23 +101,19 @@ public class mouse extends MouseAdapter implements MouseListener {
 			}
 		} else if (cr != null) {
 			if (e.getSource().equals(cr.getLabelIconClose())) {
-				// System.out.println(e.getSource());
 				cr.closeClick();
 			} else if (e.getSource().equals(cr.getSave())) {
 				try {
 					cr.clickedSave();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		} else if (menu != null) {
 			menu.onClick(e.getSource().hashCode());
 		} else if (pf != null) {
-			// System.out.println(e.getSource());
 			pf.mouseOnclick(e.getSource().hashCode());
 			pf.Onclick(e.getSource().hashCode());
 		} else if (pct != null) {
@@ -159,8 +154,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (scroll != null) {
-			if (e.getSource().equals(scroll))
-				mousep = false;
 		} else if (pc != null) {
 		} else if (pct != null) {
 			if (e.isPopupTrigger()) {

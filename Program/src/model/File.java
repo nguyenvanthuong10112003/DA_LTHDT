@@ -5,16 +5,10 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
-
 import define.table.FILE;
-import define.table.FOLDER;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class File extends Element {
@@ -46,7 +40,6 @@ public class File extends Element {
 				br.close();
 
 			} catch (Exception ex) {
-				// TODO: handle exception
 				System.out.println("error read file icon: " + ex);
 			}
 		}
@@ -67,6 +60,7 @@ public class File extends Element {
 		return kq;
 	}
 
+	@SuppressWarnings("deprecation")
 	public File(int id) {
 		super(id, "File new 1");
 		this.exName = "";
@@ -80,6 +74,7 @@ public class File extends Element {
 			max = id;
 	}
 
+	@SuppressWarnings("deprecation")
 	public File(int id, String name, String ex) {
 		super(id, name);
 		this.exType = ex;
@@ -101,6 +96,7 @@ public class File extends Element {
 			max = id;
 	}
 
+	@SuppressWarnings("deprecation")
 	public File(int id, String name, String ex, Folder parent) {
 		super(id, name, parent);
 		this.exType = ex;
@@ -122,6 +118,7 @@ public class File extends Element {
 			max = id;
 	}
 
+	@SuppressWarnings("deprecation")
 	public File(int id, String name, String ex, double size, String modifield) {
 		super(id, name);
 		this.exType = ex;
@@ -143,6 +140,7 @@ public class File extends Element {
 			max = id;
 	}
 
+	@SuppressWarnings("deprecation")
 	public File(int id, String name, Folder parent, String ex, double size, String modifield) {
 		super(id, name, parent);
 		this.exType = ex;
@@ -195,6 +193,7 @@ public class File extends Element {
 		return max;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setSize(double size) {
 		this.size = size;
@@ -210,25 +209,21 @@ public class File extends Element {
 
 	@Override
 	public double getSize(Element e) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setChildrents(LinkedList<Element> childrens) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public LinkedList<Element> getChildrents() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setExType(String exType) {
-		// TODO Auto-generated method stub
 		this.exType = exType;
 		if (type_name.get(exType) != null) {
 			this.exName = type_name.get(exType);
@@ -247,13 +242,12 @@ public class File extends Element {
 
 	@Override
 	public String getExType() {
-		// TODO Auto-generated method stub
 		return exType;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setDateModified(Date dateModified) {
-		// TODO Auto-generated method stub
 		this.dateModified = dateModified;
 		this.dateModified = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),
 				LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(),
@@ -262,7 +256,6 @@ public class File extends Element {
 
 	@Override
 	public Date getDateModified() {
-		// TODO Auto-generated method stub
 		return dateModified;
 	}
 
@@ -279,7 +272,6 @@ public class File extends Element {
 			else
 				System.out.println("CAN'T ADD to " + table);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("ERROR ADD to " + table);
 		}
@@ -296,7 +288,6 @@ public class File extends Element {
 			if (check >= 1)
 				System.out.println("Xoa du lieu tu " + table + " thanh cong");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -311,13 +302,12 @@ public class File extends Element {
 				System.out.println("Cập nhật dữ liệu thành công");
 			sta.close();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 
 	public static File TaoBanSao(File file, Folder parent) {
-		return new File(file.max + 1, file.name, file.dateCreate, file.dateModified, file.exType, file.size, parent);
+		return new File(File.max + 1, file.name, file.dateCreate, file.dateModified, file.exType, file.size, parent);
 	}
 
 	@Override
@@ -340,20 +330,17 @@ public class File extends Element {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void ghiFile(FileWriter out) {
-		// TODO Auto-generated method stub
 		try {
-			out.write(id + "|" + name + "|" + getTime(dateCreate) + "|"
-					+ getTime(dateModified) + "|" + exType + "|"
+			out.write(id + "|" + name + "|" + getStringTime(dateCreate) + "|"
+					+ getStringTime(dateModified) + "|" + exType + "|"
 					+ size + "|" + (parent != null ? parent.id : "") + '\n');
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

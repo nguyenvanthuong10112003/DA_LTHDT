@@ -19,7 +19,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.*;
 import controller.mouse;
 import define.FONT;
-import define.DefineSQL;
 import define.URL;
 import define.table.FOLDER;
 import define.table.QUICKACCESS;
@@ -32,6 +31,10 @@ import view.screen.Screen;
 import controller.*;
 
 public class TreeBar extends JTree {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PanelContent pc;
 	private JLabel close;
 	private mouse mouseListen;
@@ -135,6 +138,7 @@ public class TreeBar extends JTree {
 		tree.add(rootTree);
 	}
 
+	@SuppressWarnings("resource")
 	public void setListQuick() throws ClassNotFoundException {
 		listquick = new LinkedList<Element>();
 		if (!pc.isLogin()) {
@@ -152,7 +156,6 @@ public class TreeBar extends JTree {
 				fr.close();
 				br.close();
 			} catch (Exception ex) {
-				// TODO: handle exception
 				System.out.println("Loi doc file: " + ex);
 			}
 		} else {
@@ -161,12 +164,6 @@ public class TreeBar extends JTree {
 			Connection connect = ConnectSQL.getJDBCConnection();
 			if (connect == null) {
 				System.out.println("Connect database error");
-				try {
-					connect.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				return;
 			} else {
 				System.out.println("Connect database success!");
@@ -181,7 +178,6 @@ public class TreeBar extends JTree {
 				sta.close();
 				connect.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -235,7 +231,6 @@ public class TreeBar extends JTree {
 			sta.close();
 			connect.close();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return check;
@@ -252,7 +247,6 @@ public class TreeBar extends JTree {
 							try {
 								addQADB(e);
 							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
@@ -267,7 +261,6 @@ public class TreeBar extends JTree {
 					try {
 						addQADB(e);
 					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				listquick.add(e);
@@ -316,7 +309,6 @@ public class TreeBar extends JTree {
 						System.out.println("Ket noi database thanh cong");
 					} else {
 						System.out.println("Ket noi database that bai");
-						connect.close();
 						return;
 					}
 					Statement sta = connect.createStatement();
@@ -327,10 +319,8 @@ public class TreeBar extends JTree {
 					sta.close();
 					connect.close();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -350,7 +340,6 @@ public class TreeBar extends JTree {
 						(Element) ((DefaultMutableTreeNode) getSelectionPath().getLastPathComponent()).getUserObject());
 				System.out.print("remove to quick access success!");
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				System.out.print("error remove to quick access!");
 				e1.printStackTrace();
 			}

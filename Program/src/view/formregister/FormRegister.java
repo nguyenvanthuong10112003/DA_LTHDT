@@ -5,28 +5,21 @@ import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.Map;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import controller.mouse;
 import define.ColorList;
-import libary.DATE;
 import libary.JTextFieldPassWord;
 import define.table.FOLDER;
 import define.table.USER;
@@ -35,6 +28,10 @@ import view.toolbar.Panel_Functions;
 import java.util.HashMap;
 
 public class FormRegister extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel content;
 	private JLabel register_text;
 	private JLabel tdn_text;
@@ -82,7 +79,6 @@ public class FormRegister extends JFrame {
 			this.setVisible(true);
 			System.out.println("Upload form register success");
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error form register");
 		}
 	}
@@ -95,7 +91,6 @@ public class FormRegister extends JFrame {
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
@@ -107,7 +102,6 @@ public class FormRegister extends JFrame {
 			rs.close();
 			System.out.println("Upload data success!");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -336,7 +330,6 @@ public class FormRegister extends JFrame {
 		if (connect != null) {
 			System.out.println("Ket noi database thanh cong");
 		} else {
-			connect.close();
 			System.out.println("Ket noi database that bai");
 			return;
 		}
@@ -376,10 +369,9 @@ public class FormRegister extends JFrame {
 			} catch (Exception e) {
 				System.out.println("Error" + e.getMessage());
 			}
-		} else
-			return;
-		checkUser.put(tdn_input.getText(), true);
-		this.setVisible(false);
+			checkUser.put(tdn_input.getText(), true);
+			this.setVisible(false);
+		} 
 	}
 
 	private String two(String s) {

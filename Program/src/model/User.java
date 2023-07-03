@@ -1,12 +1,7 @@
 package model;
 
-import java.beans.Statement;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.Date;
-
-import javax.lang.model.util.Elements;
-
 import define.table.USER;
 
 public class User {
@@ -21,6 +16,7 @@ public class User {
 	private Date dateOfBirth;
 	private Folder root;
 
+	@SuppressWarnings("deprecation")
 	public User(String tendangnhap, String password) {
 		this.tenDangNhap = tendangnhap;
 		this.passWord = password;
@@ -35,6 +31,7 @@ public class User {
 		this.root = null;
 	}
 
+	@SuppressWarnings("deprecation")
 	public User(String tendangnhap, String password, String name, String phone, String email, Boolean sex,
 			String country, Date birth, Folder root) {
 		this.tenDangNhap = tendangnhap;
@@ -144,6 +141,7 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	@SuppressWarnings("deprecation")
 	public String stringDateOfBirth()
 	{
 		if(dateOfBirth == null)
@@ -152,6 +150,7 @@ public class User {
 				"/" + check(dateOfBirth.getYear());
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String getTime(Date date) {
 		if (date != null)
 			return check(date.getDate()) + "/" + check(date.getMonth()) + "/" + check(date.getYear()) + " "
@@ -165,6 +164,7 @@ public class User {
 		return "0" + a;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void updateToSql(java.sql.Statement sta)
 	{
 		String sql = "Update " + USER.nametable + " SET ";
@@ -194,7 +194,6 @@ public class User {
 		}
 		sql = sql.substring(0, sql.length() - 2);
 		sql += " WHERE " + USER.username + " = '" + tenDangNhap + "'";
-		System.out.println(sql);
 		try {
 			int check = sta.executeUpdate(sql);
 			if(check > 0)

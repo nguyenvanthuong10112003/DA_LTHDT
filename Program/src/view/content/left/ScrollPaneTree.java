@@ -7,6 +7,10 @@ import model.Element;
 import view.content.PanelContent;
 
 public class ScrollPaneTree extends JScrollPane {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PanelContent pc;
 	private int space;
 	private TreeBar tree;

@@ -18,34 +18,25 @@ import javax.swing.border.LineBorder;
 import controller.mouse;
 import define.ColorList;
 import define.FONT;
+import define.URL;
 import view.formlogin.FormLogin;
 import view.formregister.FormRegister;
 import view.screen.Screen;
 import controller.*;
 
 public class Panel_Functions extends JToolBar {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ScreenPageUser pageUser;
 	private Screen screen;
 	private JPanel content;
 	private JLabel login;
 	private JLabel register;
-	private Color blue = Color.BLUE;
 	private FormLogin Flogin;
 	private FormRegister Fregister;
 	private JPanel container_icon_function;
-	private String pin_to = "\\Icon\\toolbar\\fun\\pin_to_access_24.png";
-	private String cut = "\\Icon\\toolbar\\fun\\cut16.png";
-	private String copy = "\\Icon\\toolbar\\fun\\copy2_16.png";
-	private String paste = "\\Icon\\toolbar\\fun\\paste16.png";
-	private String move_to = "\\Icon\\toolbar\\fun\\move.png";
-	private String copy_to = "\\Icon\\toolbar\\fun\\copy_to32.png";
-	private String delete = "\\Icon\\toolbar\\fun\\delete24.png";
-	private String rename = "\\Icon\\toolbar\\fun\\rename32.png";
-	private String new_folder = "\\Icon\\toolbar\\fun\\newfolder24px.png";
-	private String new_file = "\\Icon\\toolbar\\fun\\newfile24px.png";
-	private String select_all_icon = "\\Icon\\toolbar\\fun\\selectall24.png";
-	private String select_no_icon = "\\Icon\\toolbar\\fun\\noselect24.png";
-	private String threedots = "\\Icon\\toolbar\\fun\\dots16px.png";
 	private JLabel pin_to_access_icon;
 	private JTextArea pinTo_text;
 	private JLabel cut_icon;
@@ -80,14 +71,24 @@ public class Panel_Functions extends JToolBar {
 	private JButton button; 
 	private mouse mouseListen;
 	private action actionListen;
+	private String pin_to = "pin_to_access_24.png";
+	private String cut = "cut16.png";
+	private String copy = "copy2_16.png";
+	private String paste = "paste16.png";
+	private String move_to = "move.png";
+	private String copy_to = "copy_to32.png";
+	private String delete = "delete24.png";
+	private String rename = "rename32.png";
+	private String new_folder = "newfolder24px.png";
+	private String new_file = "newfile24px.png";
+	private String select_all_icon = "selectall24.png";
+	private String select_no_icon = "noselect24.png";
+	private String threedots = "dots16px.png";
 	
 	public Panel_Functions(Screen screen, Boolean islogin) {
 		super();
 		try {
-			if (screen != null)
-				this.screen = screen;
-			else
-				this.screen = null;
+			this.screen = screen;
 			this.islogin = islogin;
 			init();
 			setFont();
@@ -252,23 +253,23 @@ public class Panel_Functions extends JToolBar {
 		Rename = new JPanel();
 		NewFile = new JPanel();
 		NewFolder = new JPanel();
-		pin_to_access_icon = new JLabel(new ImageIcon(define.URL.url + pin_to));
-		cut_icon = new JLabel(new ImageIcon(define.URL.url + cut));
-		copy_icon = new JLabel(new ImageIcon(define.URL.url + copy));
-		paste_icon = new JLabel(new ImageIcon(define.URL.url + paste));
-		move_to_icon = new JLabel(new ImageIcon(define.URL.url + move_to));
-		copy_to_icon = new JLabel(new ImageIcon(define.URL.url + copy_to));
-		delete_icon = new JLabel(new ImageIcon(define.URL.url + delete));
-		rename_icon = new JLabel(new ImageIcon(define.URL.url + rename));
-		new_folder_icon = new JLabel(new ImageIcon(define.URL.url + new_folder));
-		new_file_icon = new JLabel(new ImageIcon(define.URL.url + new_file));
 		tdn = new JLabel();
 		dang_xuat = new JLabel();
 		hello = new JLabel();
-		select_no = new JLabel(new ImageIcon(define.URL.url + select_no_icon));
-		select_all = new JLabel(new ImageIcon(define.URL.url + select_all_icon));
 		Select = new JPanel();
 		button = new JButton();
+		pin_to_access_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + pin_to));
+		cut_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + cut));
+		copy_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + copy));
+		paste_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + paste));
+		move_to_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + move_to));
+		copy_to_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + copy_to));
+		delete_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + delete));
+		rename_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + rename));
+		new_folder_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + new_folder));
+		new_file_icon = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + new_file));
+		select_no = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + select_no_icon));
+		select_all = new JLabel(new ImageIcon(define.URL.url + URL.urlToolBarFun + select_all_icon));
 	}
 
 	private void setText() {
@@ -289,13 +290,12 @@ public class Panel_Functions extends JToolBar {
 		hello.setText("Xin chào,");
 		select_all.setText("Chọn tất cả");
 		select_no.setText("Bỏ chọn");
-		if (screen.getUser() != null)
-			tdn.setText(screen.getUser().getName());
+		if (Screen.getUser() != null)
+			tdn.setText(Screen.getUser().getName());
 	}
 
 	private void addObj() {
 		this.setLayout(new BorderLayout());
-		// this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		if (!islogin) {
 			content.setLayout(new GridLayout(2, 1, 5, 5));
 			content.add(login);
@@ -331,6 +331,7 @@ public class Panel_Functions extends JToolBar {
 		panel.add(cut_icon);
 		panel.add(copy_icon);
 		panel.add(paste_icon);
+		
 		container_icon_function.add(panel);
 
 		MoveTo.setLayout(new GridLayout(2, 1, 0, 0));
@@ -353,25 +354,31 @@ public class Panel_Functions extends JToolBar {
 		Rename.add(rename_icon);
 		Rename.add(rename_text);
 		Rename.setBackground(ColorList.Back_Ground);
+		
 		container_icon_function.add(Rename);
 
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 1, 0, -5));
+		
 		NewFile.setLayout(new FlowLayout(FlowLayout.LEFT));
 		NewFile.add(new_file_icon);
 		NewFile.add(new_file_text);
+		
 		NewFolder.setLayout(new FlowLayout(FlowLayout.LEFT));
 		NewFolder.add(new_folder_icon);
 		NewFolder.add(new_folder_text);
+		
 		panel.setOpaque(true);
 		panel.setBackground(ColorList.Back_Ground);
 		panel.add(NewFolder);
 		panel.add(NewFile);
+		
 		container_icon_function.add(panel);
 
 		Select.setLayout(new GridLayout(2, 1, 0, 0));
 		Select.add(select_all);
 		Select.add(select_no);
+		
 		container_icon_function.add(Select);
 
 		this.add(content, BorderLayout.EAST);
@@ -382,6 +389,13 @@ public class Panel_Functions extends JToolBar {
 		cut_icon.setHorizontalAlignment(JLabel.LEFT);
 		copy_icon.setHorizontalAlignment(JLabel.LEFT);
 		paste_icon.setHorizontalAlignment(JLabel.LEFT);
+		tdn.setHorizontalAlignment(JLabel.CENTER);
+		hello.setHorizontalAlignment(JLabel.CENTER);
+		select_all.setHorizontalAlignment(JLabel.LEFT);
+		select_no.setHorizontalAlignment(JLabel.LEFT);
+		register.setHorizontalAlignment(JLabel.CENTER);
+		login.setHorizontalAlignment(JLabel.CENTER);
+		dang_xuat.setHorizontalAlignment(JLabel.CENTER);
 
 		pinTo_text.setEditable(false);
 		copy_to_text.setEditable(false);
@@ -394,42 +408,32 @@ public class Panel_Functions extends JToolBar {
 		paste_icon.setBorder(new EmptyBorder(3, 3, 3, 3));
 		select_all.setBorder(new EmptyBorder(3, 3, 3, 3));
 		select_no.setBorder(new EmptyBorder(3, 3, 3, 3));
-
-		tdn.setHorizontalAlignment(JLabel.CENTER);
-		hello.setHorizontalAlignment(JLabel.CENTER);
-
-		select_all.setHorizontalAlignment(JLabel.LEFT);
-		select_no.setHorizontalAlignment(JLabel.LEFT);
-
-		SETselected(false);
+		register.setBorder(new LineBorder(ColorList.Fore_Ground));
+		login.setBorder(new LineBorder(ColorList.Fore_Ground));
+		dang_xuat.setBorder(new LineBorder(ColorList.Fore_Ground));
+		button.setBorder(new EmptyBorder(0,-1,0,-1));
+		
+		setSelected(false);
 
 		NewFile.setEnabled(false);
 		new_file_icon.setEnabled(false);
 		new_file_text.setEnabled(false);
-
 		NewFolder.setEnabled(false);
 		new_folder_icon.setEnabled(false);
 		new_folder_text.setEnabled(false);
-
 		paste_icon.setEnabled(false);
+		
 		EnableRoot(true);
 		
-		LineBorder border = new LineBorder(ColorList.Fore_Ground);
 		register.setOpaque(true);
 		dang_xuat.setOpaque(true);
 		login.setOpaque(isOpaque());
-		register.setBorder(border);
-		login.setBorder(border);
-		dang_xuat.setBorder(border);
+		
 		exit(register.hashCode());
 		exit(login.hashCode());
 		exit(dang_xuat.hashCode());
-		register.setHorizontalAlignment(JLabel.CENTER);
-		login.setHorizontalAlignment(JLabel.CENTER);
-		dang_xuat.setHorizontalAlignment(JLabel.CENTER);
 		
-		button.setIcon(new ImageIcon(define.URL.url + threedots));
-		button.setBorder(new EmptyBorder(0,-1,0,-1));
+		button.setIcon(new ImageIcon(URL.url + URL.urlToolBarFun + threedots));
 	}
 
 	public void EnableRoot(Boolean root) {
@@ -446,7 +450,8 @@ public class Panel_Functions extends JToolBar {
 	}
 
 	public void addEvent() {
-		this.addMouseMotionListener(mouseListen);
+		addMouseMotionListener(mouseListen);
+		
 		login.addMouseListener(mouseListen);
 		login.addMouseMotionListener(mouseListen);
 		
@@ -473,6 +478,7 @@ public class Panel_Functions extends JToolBar {
 
 		move_to_icon.addMouseListener(mouseListen);
 		move_to_icon.addMouseMotionListener(mouseListen);
+		
 		move_to_text.addMouseListener(mouseListen);
 		move_to_text.addMouseMotionListener(mouseListen);
 
@@ -565,6 +571,8 @@ public class Panel_Functions extends JToolBar {
 	
 	public void logOut()
 	{
+		if(pageUser != null)
+			pageUser.setVisible(false);
 		screen.setVisible(false);
 		screen = new Screen(screen.getTitle(), null, false);
 	}
@@ -750,7 +758,7 @@ public class Panel_Functions extends JToolBar {
 		}
 	}
 	
-	public void SETselected(Boolean selected) {
+	public void setSelected(Boolean selected) {
 		PinTo.setEnabled(selected);
 		pin_to_access_icon.setEnabled(selected);
 		pinTo_text.setEnabled(selected);

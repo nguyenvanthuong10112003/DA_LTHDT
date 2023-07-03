@@ -22,8 +22,6 @@ public class ConnectSQL {
 		try {
 			connect = DriverManager.getConnection(url);
 		} catch (SQLException e) {
-			//System.exit(0);
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (connect != null)

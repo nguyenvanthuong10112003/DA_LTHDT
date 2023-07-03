@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Set;
-
 import define.table.FOLDER;
 import define.table.QUICKACCESS;
 
@@ -95,19 +92,15 @@ public class Folder extends Element {
 
 	@Override
 	public void setSize(double size) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public double getSize() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public double getSize(Element e) {
-		// TODO Auto-generated method stub
 		double size = 0;
 		if (e.getClass().equals(File.class))
 			return ((File) e).getSize();
@@ -123,25 +116,21 @@ public class Folder extends Element {
 
 	@Override
 	public void setExType(String exType) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public String getExType() {
-		// TODO Auto-generated method stub
 		return "";
 	}
 
 	@Override
 	public void setDateModified(Date dateModified) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Date getDateModified() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -192,7 +181,6 @@ public class Folder extends Element {
 			System.out.println("Khong the them vi Statement is null");
 			return;
 		}
-		System.out.println(id);
 		sql = "INSERT INTO " + table + " VALUES (" + id + ", N'" + name + "', '" + toDateTimeSQL(dateCreate) + "', "
 				+ parent.id + ")";
 		try {
@@ -202,7 +190,6 @@ public class Folder extends Element {
 			else
 				System.out.println("CAN'T ADD to " + table);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("ERROR ADD to " + table);
 		}
@@ -241,7 +228,6 @@ public class Folder extends Element {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
@@ -249,7 +235,6 @@ public class Folder extends Element {
 			if (check > 0)
 				System.out.println("Xoa du lieu tu " + table + " thanh cong");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -267,7 +252,6 @@ public class Folder extends Element {
 							System.out.println("Cập nhật dữ liệu thành công");
 						sta.close();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -278,23 +262,21 @@ public class Folder extends Element {
 		try {
 			int check = sta.executeUpdate(sql);
 			if (check > 0)
-				System.out.println("Cập nhật dữ liệu thành công");
 			sta.close();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 
 	public static Folder TaoBanSao(Folder folder, Folder parent) {
-		Folder newfolder = new Folder(folder.max + 1, folder.name, folder.dateCreate, null, parent);
+		Folder newfolder = new Folder(Folder.max + 1, folder.name, folder.dateCreate, null, parent);
 		if (folder.childrens.size() > 0) {
 			for (Element child : folder.childrens) {
 				Element e;
 				if (child.getClass().equals(File.class))
-					e = ((File) child).TaoBanSao((File) child, newfolder);
+					e = File.TaoBanSao((File) child, newfolder);
 				else
-					e = ((Folder) child).TaoBanSao((Folder) child, newfolder);
+					e = Folder.TaoBanSao((Folder) child, newfolder);
 				newfolder.childrens.add(e);
 			}
 		}
@@ -335,7 +317,6 @@ public class Folder extends Element {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -347,7 +328,6 @@ public class Folder extends Element {
 		try {
 			check = sta.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (check == 0)
@@ -366,12 +346,10 @@ public class Folder extends Element {
 
 	@Override
 	public void ghiFile(FileWriter out) {
-		// TODO Auto-generated method stub
 		try {
-			out.write(id + "|" + name + "|" + getTime(dateCreate) + "||||"
+			out.write(id + "|" + name + "|" + getStringTime(dateCreate) + "||||"
 					+ (parent != null ? parent.id : "") + '\n');
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (childrens.size() > 0) {

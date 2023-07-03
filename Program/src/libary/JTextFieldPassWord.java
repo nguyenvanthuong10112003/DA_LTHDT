@@ -1,8 +1,6 @@
 package libary;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
+
 class Key implements KeyListener
 {
     private Input tf;
@@ -54,6 +52,10 @@ class Key implements KeyListener
 	
 }
 class Input extends JTextField{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String pass;
 	private Boolean isView;
     public Input()
@@ -83,6 +85,10 @@ class Input extends JTextField{
 }
 public class JTextFieldPassWord	extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Input input;
 	private JLabel label;
 	public JTextFieldPassWord()
@@ -100,27 +106,18 @@ public class JTextFieldPassWord	extends JPanel
 		label.addMouseListener(new MouseListener() {
 			private Boolean isView = false;
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
 				if(!isView)
 				{
 					label.setIcon(new ImageIcon(define.URL.url + "\\Icon\\inputpassword\\" + "hidden16px.png"));

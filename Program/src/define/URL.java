@@ -7,11 +7,13 @@ public interface URL {
   	public final String urlQuyen = "\\data\\quyen.txt";
   	public final String urlQuick = "\\data\\truycapnhanh.txt";
 	public final String url = System.getProperty("user.dir");
+	public final String urlContentRight = "\\Icon\\content\\right\\";
 	public final String urlContentLeft = "\\Icon\\content\\left\\";
 	public final String urlContentLeftFolder = "\\Icon\\content\\left\\folder\\";
 	public final String urlContentLeftIcon = "\\Icon\\content\\left\\icon\\";
 	public final String urlQuickAccess = "\\data\\truycapnhanh.txt";
 	public final String urlToolBarNavi = "\\Icon\\toolbar\\navi\\";
 	public final String urlToolBarFun = "\\Icon\\toolbar\\fun\\";
+	public final String urlScreen = "\\Icon\\screen\\";
 	public final String fileIcon = "\\data\\iconfile.txt";
 }

@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
@@ -31,6 +30,10 @@ import libary.ConnectSQL;
 import model.Folder;
 
 public class FormLogin extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel content;
 	private JLabel login_text;
 	private JPanel form;
@@ -52,7 +55,6 @@ public class FormLogin extends JFrame {
 	private Color blue = Color.BLUE;
 	private Map<String, User> checkUser;
 	private Panel_Functions fun;
-	private JOptionPane option;
 	private String thongbao = "Thông báo";
 	private String text_accept = "Thành công!";
 	private String text_no = "Thông tin đăng nhập không tồn tại!\nHãy tạo tài khoản mới.";
@@ -94,7 +96,6 @@ public class FormLogin extends JFrame {
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
@@ -109,8 +110,8 @@ public class FormLogin extends JFrame {
 									rs.getString(USER.email) == null ? "" : rs.getString(USER.email).trim(), 
 									rs.getString(USER.sex) == null ? null : ( rs.getInt(USER.sex) == 1 ? true : false),
 									rs.getString(USER.address) == null ? "" : rs.getString(USER.address).trim(), 
-									toDate(rs.getString(USER.create)), 
-									rs.getString(USER.birth) == null ? null : toDate(rs.getString(USER.birth)),
+									model.Element.toDate(rs.getString(USER.create)), 
+									rs.getString(USER.birth) == null ? null : model.Element.toDate(rs.getString(USER.birth)),
 						new Folder(rs.getInt(USER.folder)));
 				checkUser.put(user.getTenDangNhap(), user);
 			}
@@ -122,17 +123,6 @@ public class FormLogin extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private java.util.Date toDate(String d) {
-		return new Date(Integer.parseInt(d.substring(0, 4)), Integer.parseInt(d.substring(5, 7)),
-				Integer.parseInt(d.substring(8, 10)));
-	}
-
-	private java.util.Date toDateTime(String d) {
-		return new Date(Integer.parseInt(d.substring(0, 4)), Integer.parseInt(d.substring(5, 7)),
-				Integer.parseInt(d.substring(8, 10)), Integer.parseInt(d.substring(11, 13)),
-				Integer.parseInt(d.substring(14, 16)));
 	}
 
 	private void setColor(Color back, Color font) {
@@ -310,7 +300,6 @@ public class FormLogin extends JFrame {
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
@@ -319,7 +308,7 @@ public class FormLogin extends JFrame {
 			rs.next();
 			user.getRoot().setId(rs.getInt(FOLDER.id));
 			user.getRoot().setName(rs.getString(FOLDER.nameFolder));
-			user.getRoot().setDateCreate(toDateTime(rs.getString(FOLDER.create)));
+			user.getRoot().setDateCreate(model.Element.toDateTimeSQL(rs.getString(FOLDER.create)));
 			System.out.println("Update success");
 			sta.close();
 			rs.close();

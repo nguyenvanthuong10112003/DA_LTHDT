@@ -13,7 +13,6 @@ import libary.ConnectSQL;
 import view.content.PanelContent;
 import view.menubar.Screen_MenuBar;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.*;
@@ -46,7 +45,6 @@ public class PanelContentCenter extends JScrollPane {
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";
 	private LinkedList<Integer> selectCut;
 	private action ActionListen;
-	private String select = null;
 	
 	public PanelContentCenter(PanelContent pct, Element root) {
 		super();
@@ -81,7 +79,7 @@ public class PanelContentCenter extends JScrollPane {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Class getColumnClass(int column) {
+			public Class<? extends Object> getColumnClass(int column) {
 				return getValueAt(0, column).getClass();
 			}
 
@@ -146,7 +144,7 @@ public class PanelContentCenter extends JScrollPane {
 			ImageIcon icon = new ImageIcon(define.URL.url + urlIconFolder + root.getIcon() + this.px + this.duoi);
 			data[0][0] = icon;
 			data[0][1] = root.getName();
-			data[0][2] = root.getTime(root.getDateCreate());
+			data[0][2] = Element.getStringTime(root.getDateCreate());
 			data[0][3] = root.getExName();
 			data[0][4] = "";
 		} else if (nows.getChildrents().size() > 0) {
@@ -157,7 +155,7 @@ public class PanelContentCenter extends JScrollPane {
 								+ el.getIcon() + this.px + this.duoi);
 				data[i][0] = icon;
 				data[i][1] = el.getName();
-				data[i][2] = el.getTime(
+				data[i][2] = Element.getStringTime(
 						el.getClass().equals(Folder.class) == true ? el.getDateCreate() : el.getDateModified());
 				data[i][3] = el.getExName();
 				data[i][4] = el.getClass().equals(Folder.class) == true ? ""
@@ -354,7 +352,6 @@ public class PanelContentCenter extends JScrollPane {
 		else
 			pct.getScreen().setEnPaste(true);
 		pct.getScreen().FunEnablueRoot(true);
-		pct.getScreen().setNowsNavi(nows);
 		Update();
 	}
 	
@@ -437,7 +434,6 @@ public class PanelContentCenter extends JScrollPane {
 		try {
 			pct.getPanelContentLeft().getTreeBar().addPin(arr);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -501,13 +497,11 @@ public class PanelContentCenter extends JScrollPane {
 				if (connect != null) {
 					System.out.println("Ket noi database thanh cong");
 				} else {
-					connect.close();
 					System.out.println("Ket noi database that bai");
 					return;
 				}
 				sta = connect.createStatement();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -538,14 +532,12 @@ public class PanelContentCenter extends JScrollPane {
 							try {
 								pct.getPanelContentLeft().getTreeBar().removePin(e);
 							} catch (IOException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						if (sta != null) {
 							try {
 								e.deleteToDB(sta);
 							} catch (Exception e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
@@ -587,7 +579,6 @@ public class PanelContentCenter extends JScrollPane {
 					else
 						((File) el).addToDB(sta);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -611,7 +602,6 @@ public class PanelContentCenter extends JScrollPane {
 				sta.close();
 				connect.close();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -629,7 +619,6 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void deletedRow() throws ClassNotFoundException {
-		int[] sl = table.getSelectedRows();
 		for (int i = table.getSelectedRowCount() - 1; i >= 0; i--) {
 			for (Element e : nows.getChildrents()) {
 				if (e.getName().equals(data[table.getSelectedRows()[i]][1])) {
@@ -637,7 +626,6 @@ public class PanelContentCenter extends JScrollPane {
 						try {
 							pct.getPanelContentLeft().getTreeBar().removePin(e);
 						} catch (IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					if (pct.isLogin()) {
@@ -647,7 +635,6 @@ public class PanelContentCenter extends JScrollPane {
 								System.out.println("Ket noi database thanh cong");
 							} else {
 								System.out.println("Ket noi database that bai");
-								connect.close();
 								return;
 							}
 							Statement sta = connect.createStatement();
@@ -655,7 +642,6 @@ public class PanelContentCenter extends JScrollPane {
 							sta.close();
 							connect.close();
 						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -668,14 +654,12 @@ public class PanelContentCenter extends JScrollPane {
 			try {
 				ghiFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		pct.getPanelContentLeft().getTreeBar().setListQuick();
 		try {
 			pct.getPanelContentLeft().getTreeBar().ghiFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		pct.UpdateLeft();
@@ -761,7 +745,6 @@ public class PanelContentCenter extends JScrollPane {
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
@@ -770,7 +753,6 @@ public class PanelContentCenter extends JScrollPane {
 			statement.close();
 			connect.close();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			Update();
 			nows.getChildrents().remove(nows.getChildrents().size() - 1);
 			pct.SELECTtable(nows.getChildrents().get(nows.getChildrents().size() - 1));
@@ -785,16 +767,15 @@ public class PanelContentCenter extends JScrollPane {
 			if (connect != null) {
 				System.out.println("Ket noi database thanh cong");
 			} else {
-				connect.close();
 				System.out.println("Ket noi database that bai");
 				return;
 			}
+			System.out.println(e);
 			Statement sta = connect.createStatement();
 			e.updateToDB(sta, e.getName(), e.getId());
 			sta.close();
 			connect.close();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -820,8 +801,8 @@ public class PanelContentCenter extends JScrollPane {
 			return;
 		if(pct.getPanelContentLeft().getTreeBar().getListquick().contains(e))
 			pct.getPanelContentLeft().getTreeBar().removePin(e);
-		out.write(e.getId() + "|" + e.getName() + "|" + e.getTime(e.getDateCreate()) + "|"
-				+ e.getTime(e.getDateModified()) + "|" + e.getExType() + "|"
+		out.write(e.getId() + "|" + e.getName() + "|" + Element.getStringTime(e.getDateCreate()) + "|"
+				+ Element.getStringTime(e.getDateModified()) + "|" + e.getExType() + "|"
 				+ (e.getClass().equals(Folder.class) == true ? "" : e.getSize()) + "|"
 				+ (e.getParent() != null ? e.getParent().getId() : "") + '\n');
 		if (e.getClass().equals(Folder.class)) {
@@ -859,5 +840,6 @@ public class PanelContentCenter extends JScrollPane {
 		Edit();
 		table.clearSelection();
 		NoSelected();
+		pct.getScreen().setNowsNavi(nows);
 	}
 }

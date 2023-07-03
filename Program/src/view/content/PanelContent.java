@@ -2,7 +2,6 @@ package view.content;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import model.Element;
 import javax.swing.JPanel;
 import controller.mouse;
@@ -14,6 +13,10 @@ import view.content.right.PanelContentRight;
 import view.screen.Screen;
 
 public class PanelContent extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Screen screen;
 	private ScrollPaneTree contentLeft;
 	private PanelContentCenter contentCenter;

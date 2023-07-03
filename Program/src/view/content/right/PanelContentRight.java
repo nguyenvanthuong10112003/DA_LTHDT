@@ -19,10 +19,13 @@ import model.Folder;
 import view.content.PanelContent;
 
 public class PanelContentRight extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PanelContent pc;
 	private JLabel close;
-	private String iconClose16 = "\\Icon\\content\\right\\close16.png";
-	private String iconClose24 = "\\Icon\\content\\right\\close24.png";
+	private String iconClose16 = "close16.png";
 	private mouse mouselisten;
 	private Cursor cursorResize = new Cursor(Cursor.W_RESIZE_CURSOR);
 	private JLabel iconContent;
@@ -67,7 +70,7 @@ public class PanelContentRight extends JPanel {
 
 	public void init() {
 		mouselisten = new mouse(this, pc);
-		close = new JLabel(new ImageIcon(define.URL.url + iconClose16));
+		close = new JLabel(new ImageIcon(define.URL.url + define.URL.urlContentRight + iconClose16));
 		iconContent = new JLabel();
 		nameContent = new JTextArea();
 		locationText = new JLabel("Location:");
@@ -257,7 +260,7 @@ public class PanelContentRight extends JPanel {
 		select = e;
 		if (e.getClass().equals(Folder.class)) {
 			contain.setText("Folder(" + countFolder(e) + ")  File(" + countFile(e) + ")");
-			create.setText(e.getTime(e.getDateCreate()));
+			create.setText(Element.getStringTime(e.getDateCreate()));
 			type.setText(e.getExName());
 			iconContent.setIcon(new ImageIcon(define.URL.url + urlIconFolder + e.getIcon() + px + duoi));
 			nameContent.setText(e.getName());
@@ -266,8 +269,8 @@ public class PanelContentRight extends JPanel {
 			modifieldText.setVisible(false);
 			modifield.setVisible(false);
 		} else {
-			create.setText(e.getTime(e.getDateCreate()));
-			modifield.setText(e.getTime(e.getDateModified()));
+			create.setText(Element.getStringTime(e.getDateCreate()));
+			modifield.setText(Element.getStringTime(e.getDateModified()));
 			type.setText(e.getExName());
 			iconContent.setIcon(new ImageIcon(define.URL.url + urlIconFile + e.getIcon() + px + duoi));
 			nameContent.setText(e.getName() + (e.getExType().equals("") == true ? "" : ".") + e.getExType());
@@ -332,6 +335,8 @@ public class PanelContentRight extends JPanel {
 	}
 
 	public void clickedSave() throws IOException, ClassNotFoundException {
+		if (select == null)
+			return;
 		if (select.getParent() == null) {
 			return;
 		}
@@ -352,14 +357,15 @@ public class PanelContentRight extends JPanel {
 			return;
 		}
 
-		for (Element e : select.getParent().getChildrents())
+		for (Element e : select.getParent().getChildrents()) {
 			if (e.getName().equals(s) && !e.equals(select)) {
 				nameContent.setText(select.getName());
 				JOptionPane.showMessageDialog(typeText, "Tên đã tồn tại!\nHãy đặt tên khác.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-
+		}
+		
 		if (select.getClass().equals(model.File.class)) {
 			int in = -1;
 			for (int i = s.length() - 1; i >= 0; i--)
@@ -387,12 +393,12 @@ public class PanelContentRight extends JPanel {
 		}
 		type.setText(select.getExName());
 		select.setName(s);
-		pc.getCenter().Update();
-		pc.UpdateLeft();
 		if (!pc.isLogin())
 			pc.getCenter().ghiFile();
 		else
 			pc.getCenter().updateDB(select);
+		pc.getCenter().Update();
+		pc.UpdateLeft();
 	}
 	
 	public Element getSelect()

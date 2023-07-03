@@ -14,6 +14,10 @@ import view.screen.Screen;
 import controller.action;
 
 public class Screen_MenuBar extends JMenuBar {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Screen sc;
 	private PanelContent pc;
 	private JMenu File;
@@ -29,7 +33,6 @@ public class Screen_MenuBar extends JMenuBar {
 	private JMenu item3_3;
 	private JMenuItem item3_3_1;
 	private JMenuItem item3_3_2;
-	private JMenuItem item3_3_3;
 	private JMenuItem item3_2_1;
 	private JMenuItem item3_2_2;
 	private JMenuItem item3_2_3;
@@ -41,7 +44,7 @@ public class Screen_MenuBar extends JMenuBar {
 	public Screen_MenuBar(Screen sc) {
 		super();
 		try {
-			this.sort = 2;
+			Screen_MenuBar.sort = 2;
 			this.sc = sc;
 			init();
 			setIconItem();
@@ -222,7 +225,7 @@ public class Screen_MenuBar extends JMenuBar {
 
 	public void onClick(int hash) {
 		if (hash == Edit.hashCode()) {
-			sc.setToolVisiable();
+			sc.setToolBarVisiable();
 		}
 	}
 

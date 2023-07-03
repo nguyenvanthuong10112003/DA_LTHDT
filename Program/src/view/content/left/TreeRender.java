@@ -8,6 +8,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import define.URL;
 
 public class TreeRender extends DefaultTreeCellRenderer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String duoi = "16px.png";
 
 	public TreeRender() {

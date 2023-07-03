@@ -1,14 +1,11 @@
 package test;
 
-import java.sql.Connection;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import view.formlogin.FormLogin;
-import view.formregister.FormRegister;
 import view.screen.Screen;
-import libary.ConnectSQL;
 
 public class Main {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 		/*
@@ -29,8 +26,7 @@ public class Main {
 			Screen form = new Screen("Chương trình quản lý file và folder", null, false);
 			System.out.println("Upload success!");
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Error!");
+			e.printStackTrace();
 		}
 	}
 }

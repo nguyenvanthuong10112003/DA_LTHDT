@@ -2,83 +2,40 @@ package view.toolbar;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.util.LinkedList;
-import java.util.Set;
-import java.util.TreeSet;
 import model.Element;
 import model.Folder;
 import view.screen.Screen;
-
-import javax.swing.ComboBoxEditor;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
-import org.w3c.dom.html.HTMLLabelElement;
-
 import controller.Key;
 import controller.mouse;
 import define.ColorList;
 import define.FONT;
 import define.URL;
 
-import javax.swing.event.EventListenerList;
-import java.util.HashSet;
-import java.util.Set;
-
 public class Panel_Navigation extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel iconback;
 	private JLabel iconforward;
-	private String back = "\\Icon\\toolbar\\navi\\back16.png";
-	private String forward = "\\Icon\\toolbar\\navi\\forward16.png";
-	private String folder = "\\Icon\\toolbar\\navi\\folder.png";
+	private String backIcon = "back16.png";
+	private String forwardIcon = "forward16.png";
 	private mouse mouselisten;
 	private JPanel address;
 	private JPanel search;
-	private JComboBox input_location;
-	private JComboBox input_search;
+	private JComboBox<String> input_location;
+	private JComboBox<String> input_search;
 	private JLabel icon;
 	private JLabel iconsearch;
 	private Boolean in_input = false;
@@ -97,7 +54,6 @@ public class Panel_Navigation extends JPanel {
 		this.screen = screen;
 		this.root = root;
 		this.nows = null;
-		this.setBorder(new LineBorder(Color.black));
 		this.init();
 		this.EditObj();
 		this.setFonts();
@@ -108,14 +64,14 @@ public class Panel_Navigation extends JPanel {
 	private void init() {
 		try {
 			mouselisten = new mouse(this);
-			iconback = new JLabel(new ImageIcon(define.URL.url + back));
+			iconback = new JLabel(new ImageIcon(URL.url + URL.urlToolBarNavi + backIcon));
 			iconback.setToolTipText("back");
-			iconforward = new JLabel(new ImageIcon(define.URL.url + forward));
+			iconforward = new JLabel(new ImageIcon(URL.url + URL.urlToolBarNavi + forwardIcon));
 			iconforward.setToolTipText("forward");
 			address = new JPanel();
 			search = new JPanel();
-			input_location = new JComboBox();
-			input_search = new JComboBox();
+			input_location = new JComboBox<String>();
+			input_search = new JComboBox<String>();
 			icon = new JLabel();
 			iconsearch = new JLabel();
 			keyListen = new Key(this);
@@ -124,22 +80,37 @@ public class Panel_Navigation extends JPanel {
 			System.out.println("Error search");
 		}
 	}
+	
+	private void addObj() {
+		this.setLayout(new BorderLayout());
 
-	private void setComboBoxShow(Element e) {
-		String location = "";
-		if (e != null) {
-			location = e.getLocation() + e.getName();
-		} else {
-			location = "/";
-		}
-		input_location.addItem(location);
-		if (e.getClass().equals(model.File.class))
-			return;
-		for (Element el : e.getChildrents())
-			setComboBoxShow(el);
+		JPanel pn = new JPanel();
+		pn.setLayout(new FlowLayout(FlowLayout.LEFT));
+		pn.add(iconback, BorderLayout.WEST);
+		pn.add(iconforward);
+		pn.setOpaque(true);
+		pn.setBackground(ColorList.Back_Ground);
+		this.add(pn, BorderLayout.WEST);
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new EmptyBorder(2, 4, 2, 4));
+		panel.setLayout(new GridLayout(1, 2, 5, 5));
+		panel.setOpaque(true);
+		panel.setBackground(ColorList.Back_Ground);
+		address.setLayout(new BorderLayout());
+		address.add(icon, BorderLayout.WEST);
+		address.add(input_location);
+		search.setLayout(new BorderLayout());
+		search.add(input_search, BorderLayout.CENTER);
+		search.add(iconsearch, BorderLayout.WEST);
+		panel.add(address);
+		panel.add(search);
+		this.add(panel, BorderLayout.CENTER);
 	}
 
 	private void EditObj() {
+		this.setBorder(new LineBorder(Color.black));
+		
 		iconback.setEnabled(false);
 		iconback.setOpaque(true);
 		iconback.setBackground(ColorList.Back_Ground);
@@ -348,7 +319,7 @@ public class Panel_Navigation extends JPanel {
 			return;
 		}
 		input_search.removeAllItems();
-		LinkedList<Element> set = new LinkedList();
+		LinkedList<Element> set = new LinkedList<Element>();
 		ele = new Folder(-1);
 		setList(set, root, text);
 		for (Element pl : set) {
@@ -399,37 +370,6 @@ public class Panel_Navigation extends JPanel {
 				in_input = false;
 			}
 		}
-	}
-
-	private void addObj() {
-		this.setLayout(new BorderLayout());
-
-		JPanel pn = new JPanel();
-		pn.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pn.add(iconback, BorderLayout.WEST);
-		pn.add(iconforward);
-		pn.setOpaque(true);
-		pn.setBackground(ColorList.Back_Ground);
-		this.add(pn, BorderLayout.WEST);
-
-		JPanel panel = new JPanel();
-		panel.setBorder(new EmptyBorder(2, 4, 2, 4));
-		panel.setLayout(new GridLayout(1, 2, 5, 5));
-		panel.setOpaque(true);
-		panel.setBackground(ColorList.Back_Ground);
-		address.setLayout(new BorderLayout());
-		address.add(icon, BorderLayout.WEST);
-		address.add(input_location);
-		search.setLayout(new BorderLayout());
-		search.add(input_search, BorderLayout.CENTER);
-		search.add(iconsearch, BorderLayout.WEST);
-		panel.add(address);
-		panel.add(search);
-		this.add(panel, BorderLayout.CENTER);
-	}
-
-	private void EditSize() {
-
 	}
 
 	public void setColorIcon(int hash, Color color) {
@@ -492,11 +432,11 @@ public class Panel_Navigation extends JPanel {
 		input_location.setSelectedItem(location);
 	}
 
-	public JComboBox getInput_Location() {
+	public JComboBox<String> getInput_Location() {
 		return input_location;
 	}
 
-	public JComboBox getInput_Search() {
+	public JComboBox<String> getInput_Search() {
 		return input_search;
 	}
 }

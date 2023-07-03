@@ -1,26 +1,20 @@
 package view.toolbar;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.sql.Connection;
-import java.util.LinkedList;
-
 import view.screen.Screen;
-import view.toolbar.Panel_Functions;
 import javax.swing.JPanel;
-
 import define.ColorList;
-import define.FONT;
 import model.Element;
-import model.User;
 
 public class Screen_ToolBar extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Panel_Functions function;
 	private Panel_Navigation navigation;
 	private Screen screen;
 	private Boolean islogin;
-	private Element root;
 
 	public Screen_ToolBar(Screen screen, Boolean islogin, Element root) {
 		super();
