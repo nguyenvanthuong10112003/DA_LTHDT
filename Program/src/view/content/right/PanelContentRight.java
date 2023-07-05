@@ -341,6 +341,15 @@ public class PanelContentRight extends JPanel {
 			return;
 		}
 		String s = nameContent.getText();
+		for(int i = 0; i < s.length(); i++)
+		{
+			if(s.charAt(i) == '/' || s.charAt(i) == '\\')
+			{
+				JOptionPane.showMessageDialog(typeText, "Tên file/folder không được chứa kí tự '\\, /'.\n Hãy đặt tên khác.", "Thông báo",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+		}
 		while (s.charAt(0) == ' ')
 			s = s.substring(1, s.length());
 		while (s.charAt(s.length() - 1) == ' ')
