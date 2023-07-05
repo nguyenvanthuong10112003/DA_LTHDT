@@ -99,7 +99,6 @@ public class Folder extends Element {
 		return 0;
 	}
 
-	@Override
 	public double getSize(Element e) {
 		double size = 0;
 		if (e.getClass().equals(File.class))
@@ -133,7 +132,41 @@ public class Folder extends Element {
 	public Date getDateModified() {
 		return null;
 	}
+	
+	public static Element searchChild(Element e, Folder cha) {
+		if (e.getParent() == null)
+			return e;
+		if (e.getParent().equals((Folder) cha))
+			return e;
+		return searchChild(e.getParent(), cha);
+	}
 
+	public Element searchElement(int i, int j, LinkedList<String> text) {
+		Element e = null;
+		if (name.equals(text.get(i))) {
+			if (getClass().equals(Folder.class)) {
+				if (i >= j)
+					return this;
+				else {
+					for (Element child : getChildrents())
+						if (e == null) {
+							if(child.getClass().equals(Folder.class))
+								e = ((Folder)child).searchElement(i + 1, j, text);
+							else
+							{
+								if(i + 1 >= j)
+								{
+									if(child.getName().equals(text.get(i + 1)))		
+										e = child;
+								}
+							}
+						} else break;
+				}
+			}
+		}
+		return e;
+	}
+	
 	public static Folder searchFolder(Folder folder, int id) {
 		Folder f = null;
 		if (folder.id == id)
@@ -145,23 +178,6 @@ public class Folder extends Element {
 			}
 		}
 		return f;
-	}
-
-	public Element searchFile(Element e, int id) {
-		Element kq = null;
-		if (e.getClass().equals(File.class) && e.id == id)
-			kq = e;
-		else {
-			if (e.getClass().equals(Folder.class)) {
-				for (Element child : e.getChildrents()) {
-					if (kq == null)
-						kq = searchFile(child, id);
-					else
-						break;
-				}
-			}
-		}
-		return kq;
 	}
 
 	public Boolean addToChilds(Element e) {
@@ -282,6 +298,21 @@ public class Folder extends Element {
 		}
 		return newfolder;
 	}
+	
+	@Override
+	public void ghiFile(FileWriter out) {
+		try {
+			out.write(id + "|" + name + "|" + getStringTime(dateCreate) + "||||"
+					+ (parent != null ? parent.id : "") + '\n');
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (childrens.size() > 0) {
+			for (Element el : childrens) {
+				el.ghiFile(out);
+			}
+		}
+	}
 
 	public Boolean checkNameChild(String name) {
 		for (Element child : childrens)
@@ -290,7 +321,7 @@ public class Folder extends Element {
 		return false;
 	}
 
-	public Boolean checkIsChild(LinkedList<Element> list, Folder nows) {
+	public static Boolean checkIsChild(LinkedList<Element> list, Folder nows) {
 		if (nows == null)
 			return true;
 		for (Element e : list)
@@ -321,7 +352,7 @@ public class Folder extends Element {
 		}
 	}
 
-	public Boolean addToQuickAccess(Statement sta, User user) {
+	public Boolean addToQuickAccessSQL(Statement sta, User user) {
 		String sql = "INSERT INTO " + QUICKACCESS.nametable + "(" + QUICKACCESS.user + "," + QUICKACCESS.folder + ") "
 				+ "VALUES ('" + user.getTenDangNhap() + "'," + id + ")";
 		int check = 0;
@@ -342,21 +373,6 @@ public class Folder extends Element {
 	@Override
 	public int getMax() {
 		return max;
-	}
-
-	@Override
-	public void ghiFile(FileWriter out) {
-		try {
-			out.write(id + "|" + name + "|" + getStringTime(dateCreate) + "||||"
-					+ (parent != null ? parent.id : "") + '\n');
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (childrens.size() > 0) {
-			for (Element el : childrens) {
-				el.ghiFile(out);
-			}
-		}
 	}
 
 	public static Boolean isChild(Element con, Element cha) {

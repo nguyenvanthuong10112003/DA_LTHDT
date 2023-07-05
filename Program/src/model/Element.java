@@ -131,35 +131,11 @@ abstract public class Element {
 		return name;
 	}
 
-	public Element searchElement(int i, int j, LinkedList<String> text) {
-		Element e = null;
-		if (name.equals(text.get(i))) {
-			if (getClass().equals(Folder.class)) {
-				if (i >= j)
-					return this;
-				else {
-					for (Element child : getChildrents())
-						if (e == null)
-							e = child.searchElement(i + 1, j, text);
-				}
-			}
-		}
-		return e;
-	}
-
 	public static String to2(String s) {
 		if (s.length() > 1)
 			return s;
 		else
 			return "0" + s;
-	}
-
-	public Element timCon(Element e, Element cha) {
-		if (e.getParent() == null)
-			return e;
-		if (e.getParent().equals((Folder) cha))
-			return e;
-		return timCon(e.getParent(), cha);
 	}
 
 	public String getLocation() {
@@ -242,6 +218,4 @@ abstract public class Element {
 	public abstract void addToDB(Statement sta);
 
 	public abstract void deleteToDB(Statement sta);
-
-	public abstract double getSize(Element e);
 }

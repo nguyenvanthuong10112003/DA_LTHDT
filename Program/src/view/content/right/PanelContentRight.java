@@ -268,6 +268,7 @@ public class PanelContentRight extends JPanel {
 			contain.setVisible(!false);
 			modifieldText.setVisible(false);
 			modifield.setVisible(false);
+			size.setText(((Folder)e).getSize(e) + "kb");
 		} else {
 			create.setText(Element.getStringTime(e.getDateCreate()));
 			modifield.setText(Element.getStringTime(e.getDateModified()));
@@ -278,9 +279,9 @@ public class PanelContentRight extends JPanel {
 			modifield.setVisible(!false);
 			containText.setVisible(false);
 			contain.setVisible(false);
+			size.setText(e.getSize() + "kb");
 		}
 		location.setText(e.getLocation());
-		size.setText(e.getSize(e) + "kb");
 		Edit();
 		panel.setVisible(true);
 	}

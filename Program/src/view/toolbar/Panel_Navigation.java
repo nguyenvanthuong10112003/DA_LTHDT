@@ -205,7 +205,7 @@ public class Panel_Navigation extends JPanel {
 		LinkedList<String> kq = null;
 		if (!old.equals("") && old.charAt(0) == '/') {
 			kq = checkLocation(text);
-			cn = root.searchElement(1, kq.size() - 2, kq);
+			cn = ((Folder)root).searchElement(1, kq.size() - 2, kq);
 			if (cn != null) {
 				if (!kq.getLast().equals(cn.getName())) {
 					if (cn.getClass().equals(Folder.class)) {

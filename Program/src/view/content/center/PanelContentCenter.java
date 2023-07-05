@@ -405,7 +405,7 @@ public class PanelContentCenter extends JScrollPane {
 	}
 
 	public void forward() {
-		nows = (new Folder(0)).timCon(cuoi, nows);
+		nows = Folder.searchChild(cuoi, (Folder)nows);
 		pct.getScreen().setNowsNavi(cuoi);
 		if (nows == null) {
 			pct.getScreen().showNew(false);
@@ -525,7 +525,7 @@ public class PanelContentCenter extends JScrollPane {
 		} else if (cut != null) {
 			if (countCut == 0) {
 				// delete 
-				if (!(new Folder(0)).checkIsChild(cut, (Folder) now))
+				if (!Folder.checkIsChild(cut, (Folder) now))
 					return;
 				Folder parent = (Folder) cut.get(0).getParent();
 				if (parent != null) {

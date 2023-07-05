@@ -208,11 +208,6 @@ public class File extends Element {
 	}
 
 	@Override
-	public double getSize(Element e) {
-		return 0;
-	}
-
-	@Override
 	public void setChildrents(LinkedList<Element> childrens) {
 	}
 
