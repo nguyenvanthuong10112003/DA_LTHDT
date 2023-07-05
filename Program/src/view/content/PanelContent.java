@@ -50,7 +50,6 @@ public class PanelContent extends JPanel {
 			this.addEvent();
 			System.out.println("Upload success Content");
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error Content");
 		}
 

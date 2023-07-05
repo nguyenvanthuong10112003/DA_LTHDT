@@ -34,7 +34,6 @@ public class ScrollPaneTree extends JScrollPane {
 			this.setViewportView(tree);
 			System.out.println("Upload success content left");
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error Content left");
 		}
 	}

@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectSQL {
-	private static String severName = "MSI";
+	private static String serverName = "MSI";
 	private static String userName = "sa";
 	private static String password = "a";
 	private static String database = "ADMIN";
 	public static Connection getJDBCConnection() throws ClassNotFoundException {
 		Connection connect = null;
 		final String url =
-                "jdbc:sqlserver://" + severName + ":1433;"
+                "jdbc:sqlserver://" + serverName + ":1433;"
                         + "database=" + ConnectSQL.database + ";"
                         + "user=" + userName + ";"
                         + "password=" + password + ";"

@@ -249,7 +249,7 @@ public class Folder extends Element {
 					try {
 						int check = sta.executeUpdate(sql);
 						if (check > 0)
-							System.out.println("Cập nhật dữ liệu thành công");
+							System.out.println("Update success!");
 						sta.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();

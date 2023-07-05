@@ -72,17 +72,17 @@ public class Panel_Functions extends JToolBar {
 	private mouse mouseListen;
 	private action actionListen;
 	private String pin_to = "pin_to_access_24.png";
-	private String cut = "cut16.png";
-	private String copy = "copy2_16.png";
-	private String paste = "paste16.png";
+	private String cut = "cut3_16.png";
+	private String copy = "copy3_16.png";
+	private String paste = "paste2_16.png";
 	private String move_to = "move.png";
 	private String copy_to = "copy_to32.png";
 	private String delete = "delete24.png";
-	private String rename = "rename32.png";
+	private String rename = "rename2_32.png";
 	private String new_folder = "newfolder24px.png";
 	private String new_file = "newfile24px.png";
-	private String select_all_icon = "selectall24.png";
-	private String select_no_icon = "noselect24.png";
+	private String select_all_icon = "selectall3_24.png";
+	private String select_no_icon = "noselect2_24.png";
 	private String threedots = "dots16px.png";
 	
 	public Panel_Functions(Screen screen, Boolean islogin) {

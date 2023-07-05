@@ -38,7 +38,6 @@ public class Panel_Navigation extends JPanel {
 	private JComboBox<String> input_search;
 	private JLabel icon;
 	private JLabel iconsearch;
-	private Boolean in_input = false;
 	private Screen screen;
 	private Element root;
 	private Element nows;
@@ -358,18 +357,6 @@ public class Panel_Navigation extends JPanel {
 			}
 		kq.add(text.substring(z, text.length()));
 		return kq;
-	}
-
-	public void mouseOnclick(int hash) {
-		if (hash == input_location.hashCode()) {
-			if (!in_input) {
-				in_input = true;
-			}
-		} else if (hash == input_search.hashCode()) {
-			if (input_location.isEditable()) {
-				in_input = false;
-			}
-		}
 	}
 
 	public void setColorIcon(int hash, Color color) {

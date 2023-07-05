@@ -55,7 +55,6 @@ public class Screen_MenuBar extends JMenuBar {
 			setBack();
 			System.out.println("Upload success menu");
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error thanh menu");
 		}
 	}
@@ -103,6 +102,7 @@ public class Screen_MenuBar extends JMenuBar {
 		item3_2_1.addActionListener(actionlisten);
 		item3_2_2.addActionListener(actionlisten);
 		item3_2_3.addActionListener(actionlisten);
+		item1_2.addActionListener(actionlisten);
 	}
 
 	private void setText() {
@@ -151,17 +151,13 @@ public class Screen_MenuBar extends JMenuBar {
 		item3_1.add(item3_1_3);
 
 		item3_2.add(item3_2_1);
-		// item3_2.add(item3_2_2);
 		item3_2.add(item3_2_3);
 
 		item3_3.add(item3_3_1);
 		item3_3.add(item3_3_2);
 
-		File.add(item1_1);
-		File.addSeparator();
 		File.add(item1_2);
-		// View.add(item3_1);
-		// View.addSeparator();
+		
 		View.add(item3_2);
 		View.addSeparator();
 		View.add(item3_3);
@@ -220,6 +216,9 @@ public class Screen_MenuBar extends JMenuBar {
 			item3_2_3.setIcon(new ImageIcon(define.URL.url + "\\Icon\\menubar\\check.png"));
 			sort = 2;
 			sc.UpdateTable();
+		} else if (item1_2.hashCode() == hash)
+		{
+			System.exit(0);
 		}
 	}
 

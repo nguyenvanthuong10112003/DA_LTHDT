@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import org.apache.commons.dbutils.DbUtils;
 import controller.mouse;
 import define.ColorList;
 import libary.JTextFieldPassWord;
@@ -83,24 +84,20 @@ public class FormLogin extends JFrame {
 			this.setVisible(true);
 			System.out.println("Upload form login success");
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error Form login");
 		}
 	}
 
 	private void setData() throws ClassNotFoundException {
 		checkUser = new HashMap<String, User>();
+		Connection connect = null;
+		Statement sta = null;
+		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM " + USER.nametable;
-			Connection connect = ConnectSQL.getJDBCConnection();
-			if (connect != null) {
-				System.out.println("Ket noi database thanh cong");
-			} else {
-				System.out.println("Ket noi database that bai");
-				return;
-			}
-			Statement sta = connect.createStatement();
-			ResultSet rs = sta.executeQuery(sql);
+			connect = ConnectSQL.getJDBCConnection();
+			sta = connect.createStatement();
+			rs = sta.executeQuery(sql);
 			while (rs.next()) {
 				User user = new User(
 									rs.getString(USER.username).trim(), 
@@ -115,13 +112,14 @@ public class FormLogin extends JFrame {
 						new Folder(rs.getInt(USER.folder)));
 				checkUser.put(user.getTenDangNhap(), user);
 			}
-			sta.close();
-			rs.close();
-			connect.close();
 			System.out.println("Upload data success!");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Connect database error!");
 			e.printStackTrace();
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(sta);
+		    DbUtils.closeQuietly(connect);
 		}
 	}
 
@@ -294,28 +292,26 @@ public class FormLogin extends JFrame {
 	}
 
 	private void success(User user) {
+		Connection connect = null;
+		Statement sta = null;
+		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM " + FOLDER.nametable + " WHERE " + FOLDER.id + " = " + user.getRoot().getId();
-			Connection connect = ConnectSQL.getJDBCConnection();
-			if (connect != null) {
-				System.out.println("Ket noi database thanh cong");
-			} else {
-				System.out.println("Ket noi database that bai");
-				return;
-			}
-			Statement sta = connect.createStatement();
-			ResultSet rs = sta.executeQuery(sql);
+			connect = ConnectSQL.getJDBCConnection();
+			sta = connect.createStatement();
+			rs = sta.executeQuery(sql);
 			rs.next();
 			user.getRoot().setId(rs.getInt(FOLDER.id));
 			user.getRoot().setName(rs.getString(FOLDER.nameFolder));
 			user.getRoot().setDateCreate(model.Element.toDateTimeSQL(rs.getString(FOLDER.create)));
 			System.out.println("Update success");
-			sta.close();
-			rs.close();
-			connect.close();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("Connect database error!");
+			e.printStackTrace();
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(sta);
+		    DbUtils.closeQuietly(connect);
 		}
-
 	}
 }

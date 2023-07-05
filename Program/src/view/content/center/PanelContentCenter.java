@@ -513,6 +513,8 @@ public class PanelContentCenter extends JScrollPane {
 					now = nows.getChildrents().get(i);
 					break;
 				}
+			if(now.getClass().equals(File.class))
+				return;
 		}
 		else
 			now = nows;
