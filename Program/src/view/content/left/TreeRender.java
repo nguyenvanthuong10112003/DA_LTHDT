@@ -1,22 +1,16 @@
 package view.content.left;
 
 import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import model.Element;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-
-import define.ColorList;
 import define.URL;
 
 public class TreeRender extends DefaultTreeCellRenderer {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private String duoi = "16px.png";
 
 	public TreeRender() {

@@ -1,7 +1,6 @@
 package view.content.left;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,15 +9,12 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.EventObject;
 import java.util.LinkedList;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreePath;
 import javax.swing.*;
 import controller.mouse;
@@ -38,7 +34,6 @@ public class TreeBar extends JTree {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private PanelContent pc;
 	private JLabel close;
 	private mouse mouseListen;

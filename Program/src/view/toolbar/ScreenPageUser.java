@@ -23,7 +23,6 @@ public class ScreenPageUser extends JFrame {
 		/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 		private Panel_Functions fun;
 		private JPanel container;
 		private JPanel contentTTCN;
@@ -493,7 +492,6 @@ public class ScreenPageUser extends JFrame {
 				day.setSelectedItem(d);
 			else
 				day.setSelectedItem((Integer) day.getItemAt(day.getItemCount() - 1));
-
 		}
 		
 		public void addEvent()

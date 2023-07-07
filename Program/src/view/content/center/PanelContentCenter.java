@@ -37,7 +37,6 @@ public class PanelContentCenter extends JScrollPane {
 	private Element dau;
 	private LinkedList<Element> copy;
 	private LinkedList<Element> cut;
-	private int countCut;
 	private DefaultTableModel model;
 	private String px = "24px";
 	private String duoi = ".png";
@@ -458,7 +457,6 @@ public class PanelContentCenter extends JScrollPane {
 		if (nows != null)
 			pct.getScreen().setEnPaste(true);
 		copy = null;
-		countCut = 0;
 	}
 
 	public void Copy() {
@@ -487,8 +485,8 @@ public class PanelContentCenter extends JScrollPane {
 	public void Paste() throws ClassNotFoundException {
 		if (table.getSelectedRowCount() > 1)
 			return;
-		Element now = null;
-		LinkedList<Element> paste = new LinkedList<Element>();
+		
+		Element parentNew = null;
 		Connection connect = null;
 		Statement sta = null;
 		if (pct.isLogin()) {
@@ -504,93 +502,30 @@ public class PanelContentCenter extends JScrollPane {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-
 		}
+
 		if (table.getSelectedRowCount() > 0) {
 			for(int i = 0; i < nows.getChildrents().size(); i++)
 				if(data[table.getSelectedRow()][1].equals(nows.getChildrents().get(i).getName()))
 				{
-					now = nows.getChildrents().get(i);
+					parentNew = nows.getChildrents().get(i);
 					break;
 				}
-			if(now.getClass().equals(File.class))
+			if(parentNew.getClass().equals(File.class)) {
+				JOptionPane.showMessageDialog(table, "Không thể dán vào trong file, hãy chọn 1 folder.", "Thông báo", JOptionPane.OK_OPTION);
 				return;
+			}
 		}
 		else
-			now = nows;
-		if (now == null || (cut == null && copy == null))
-			return;
-		if (copy != null) {
-			paste = copy;
-		} else if (cut != null) {
-			if (countCut == 0) {
-				// delete 
-				if (!Folder.checkIsChild(cut, (Folder) now))
-					return;
-				Folder parent = (Folder) cut.get(0).getParent();
-				if (parent != null) {
-					for (Element e : cut) {
-						if(pct.getPanelContentLeft().getTreeBar().getListquick().contains(e))
-							try {
-								pct.getPanelContentLeft().getTreeBar().removePin(e);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						if (sta != null) {
-							try {
-								e.deleteToDB(sta);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-						}
-						for (int i = 0; i < parent.getChildrents().size(); i++) {
-							if (parent.getChildrents().get(i).equals(e)) {
-								parent.getChildrents().remove(i);
-								break;
-							}
-						}
-						e.setParent(null);
-					}
-				}
-				countCut++;
-			}
-			paste = cut;
+			parentNew = nows;
+		
+		if (cut != null) {
+			patseWhenCut(sta, (Folder)parentNew);
+		} else if (copy != null)
+		{
+			patseWhenCopy(sta, (Folder)parentNew);
 		}
-		LinkedList<Element> list = new LinkedList<Element>();
-		for (Element e : paste) {
-			Element el;
-			if (e.getClass().equals(Folder.class)) {
-				el = (Folder.TaoBanSao((Folder) e, (Folder) now));
-			} else {
-				el = (File.TaoBanSao((File) e, (Folder) now));
-			}
-			for (int i = 0; i < now.getChildrents().size(); i++) {
-				if (now.getChildrents().get(i).getName().equals(el.getName()) || el.getName().equals("")) {
-					String str = JOptionPane.showInputDialog(
-							table, "Tên File/Folder \"" + el.getName()
-									+ "\" bạn muốn Paste đã tồn tại trong bản ghi này.\n " + "Hãy đặt lại tên khác.",
-							"Thông báo", JOptionPane.OK_OPTION);
-					el.setName(str);
-					i = -1;
-				}
-			}
-			if (sta != null) {
-				try {
-					if (el.getClass().equals(Folder.class))
-						((Folder) el).addToDBs(sta);
-					else
-						((File) el).addToDB(sta);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			list.add(el);
-			now.getChildrents().add(el);
-		}
-		if (copy != null)
-			copy = list;
-		else
-			cut = list;
+		
 		if (!pct.isLogin())
 			try {
 				ghiFile();
@@ -610,6 +545,73 @@ public class PanelContentCenter extends JScrollPane {
 		pct.getPanelContentLeft().getTreeBar().setListQuick();
 		pct.UpdateLeft();
 		Update();
+	}
+	
+	public void patseWhenCut(Statement sta, Folder parent)
+	{
+		if (!Folder.checkIsChild(cut, (Folder) parent))
+			return;
+		Folder parentOld = (Folder) cut.get(0).getParent();
+		if (parentOld != null) {
+			for (Element e : cut) {
+				if(pct.getPanelContentLeft().getTreeBar().getListquick().contains(e))
+					try {
+						pct.getPanelContentLeft().getTreeBar().removePin(e);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				if (sta != null) {
+					try {
+						e.deleteToDB(sta);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				for (int i = 0; i < parentOld.getChildrents().size(); i++) {
+					if (parentOld.getChildrents().get(i).equals(e)) {
+						parentOld.getChildrents().remove(i);
+						break;
+					}
+				}
+				e.setParent((Folder)parent);
+				parent.getChildrents().add(e);
+			}
+		}
+		cut = null;
+		pct.getScreen().setEnPaste(false);
+	}
+	
+	public void patseWhenCopy(Statement sta, Folder parent)
+	{
+		for (Element e : copy) {
+			Element el;
+			if (e.getClass().equals(Folder.class)) {
+				el = (Folder.TaoBanSao((Folder) e, (Folder) parent));
+			} else {
+				el = (File.TaoBanSao((File) e, (Folder) parent));
+			}
+			for (int i = 0; i < parent.getChildrents().size(); i++) {
+				if (parent.getChildrents().get(i).getName().equals(el.getName()) || el.getName().equals("")) {
+					String str = JOptionPane.showInputDialog(
+							table, "Tên File/Folder \"" + el.getName()
+									+ "\" bạn muốn Paste đã tồn tại trong bản ghi này.\n " + "Hãy đặt lại tên khác.",
+							"Thông báo", JOptionPane.OK_OPTION);
+					el.setName(str);
+					i = -1;
+				}
+			}
+			if (sta != null) {
+				try {
+					if (el.getClass().equals(Folder.class))
+						((Folder) el).addToDBs(sta);
+					else
+						((File) el).addToDB(sta);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			parent.getChildrents().add(el);
+		}
 	}
 
 	public void MoveTo() {

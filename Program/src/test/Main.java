@@ -5,7 +5,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import view.screen.Screen;
 
 public class Main {
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 		/*

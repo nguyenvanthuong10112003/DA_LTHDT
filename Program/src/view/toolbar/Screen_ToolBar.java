@@ -10,7 +10,6 @@ public class Screen_ToolBar extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private Panel_Functions function;
 	private Panel_Navigation navigation;
 	private Screen screen;

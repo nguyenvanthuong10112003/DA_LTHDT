@@ -55,7 +55,6 @@ class Input extends JTextField{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private String pass;
 	private Boolean isView;
     public Input()

@@ -26,7 +26,6 @@ public class Panel_Navigation extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JLabel iconback;
 	private JLabel iconforward;
 	private String backIcon = "back16.png";

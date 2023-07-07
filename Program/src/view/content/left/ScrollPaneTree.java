@@ -10,7 +10,6 @@ public class ScrollPaneTree extends JScrollPane {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private PanelContent pc;
 	private int space;
 	private TreeBar tree;
@@ -23,10 +22,7 @@ public class ScrollPaneTree extends JScrollPane {
 	public ScrollPaneTree(PanelContent pc, Element root) {
 		super();
 		try {
-			if (root != null)
-				this.root = root;
-			else
-				this.root = null;
+			this.root = root;
 			this.pc = pc;
 			this.init();
 			this.setEvent();
@@ -129,7 +125,7 @@ public class ScrollPaneTree extends JScrollPane {
 		}
 	}
 
-	public void setHover(int x, int y) {
+	public void setDragged(int x, int y) {
 		this.setSize(x - pc.getSpace(), y - pc.getSpace());
 	}
 

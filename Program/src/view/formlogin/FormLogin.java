@@ -34,7 +34,6 @@ public class FormLogin extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel content;
 	private JLabel login_text;
 	private JPanel form;

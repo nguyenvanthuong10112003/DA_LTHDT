@@ -28,7 +28,6 @@ public class Panel_Functions extends JToolBar {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private ScreenPageUser pageUser;
 	private Screen screen;
 	private JPanel content;
@@ -601,7 +600,6 @@ public class Panel_Functions extends JToolBar {
 	}
 
 	public void setHover(int hash, Color color) {
-
 		if (hash == pin_to_access_icon.hashCode() || hash == pinTo_text.hashCode()) {
 			if (PinTo.isEnabled()) {
 				pin_to_access_icon.setBackground(color);
@@ -658,6 +656,20 @@ public class Panel_Functions extends JToolBar {
 			select_no.setBackground(color);
 		} else if (hash == select_all.hashCode()) {
 			select_all.setBackground(color);
+		} else if(hash == login.hashCode())
+		{
+			login.setBackground(ColorList.Back_Ground);
+			login.setForeground(ColorList.Fore_Ground);
+		}
+		else if(hash == register.hashCode())
+		{
+			register.setBackground(ColorList.Back_Ground);
+			register.setForeground(ColorList.Fore_Ground);
+		} 
+		else if(hash == dang_xuat.hashCode())
+		{
+			dang_xuat.setBackground(ColorList.Back_Ground);
+			dang_xuat.setForeground(ColorList.Fore_Ground);
 		}
 	}
 
@@ -739,25 +751,6 @@ public class Panel_Functions extends JToolBar {
 		}
 	}
 	
-	public void hover(int code)
-	{
-		if(code == login.hashCode())
-		{
-			login.setBackground(ColorList.Back_Ground);
-			login.setForeground(ColorList.Fore_Ground);
-		}
-		else if(code == register.hashCode())
-		{
-			register.setBackground(ColorList.Back_Ground);
-			register.setForeground(ColorList.Fore_Ground);
-		} 
-		else if(code == dang_xuat.hashCode())
-		{
-			dang_xuat.setBackground(ColorList.Back_Ground);
-			dang_xuat.setForeground(ColorList.Fore_Ground);
-		}
-	}
-	
 	public void setSelected(Boolean selected) {
 		PinTo.setEnabled(selected);
 		pin_to_access_icon.setEnabled(selected);
@@ -769,6 +762,8 @@ public class Panel_Functions extends JToolBar {
 	}
 
 	public void setEnPaste(Boolean bool) {
+		if(!bool)
+			paste_icon.setBackground(null);
 		paste_icon.setEnabled(bool);
 	}
 	

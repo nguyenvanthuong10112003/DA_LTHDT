@@ -16,7 +16,6 @@ public class PanelContent extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private Screen screen;
 	private ScrollPaneTree contentLeft;
 	private PanelContentCenter contentCenter;

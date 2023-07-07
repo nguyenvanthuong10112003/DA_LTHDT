@@ -27,7 +27,6 @@ public class Screen extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private int dd;
 	private int chenhlech;
 	private Screen_MenuBar menubar;

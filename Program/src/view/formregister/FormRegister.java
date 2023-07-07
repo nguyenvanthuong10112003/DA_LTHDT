@@ -31,7 +31,6 @@ public class FormRegister extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel content;
 	private JLabel register_text;
 	private JLabel tdn_text;

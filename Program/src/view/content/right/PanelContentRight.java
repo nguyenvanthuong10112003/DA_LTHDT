@@ -22,7 +22,6 @@ public class PanelContentRight extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private PanelContent pc;
 	private JLabel close;
 	private String iconClose16 = "close16.png";
@@ -45,7 +44,7 @@ public class PanelContentRight extends JPanel {
 	private JLabel typeText;
 	private JLabel type;
 	private JLabel save;
-	private String px = "32px";
+	private String px = "24px";
 	private String duoi = ".png";
 	private String urlIconFolder = "\\Icon\\content\\center\\folder\\";
 	private String urlIconFile = "\\Icon\\content\\center\\file\\";

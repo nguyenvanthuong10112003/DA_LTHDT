@@ -17,7 +17,6 @@ public class Screen_MenuBar extends JMenuBar {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private Screen sc;
 	private PanelContent pc;
 	private JMenu File;

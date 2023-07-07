@@ -202,7 +202,7 @@ public class mouse extends MouseAdapter implements MouseListener {
 			if (e.getSource().equals(scroll)) {
 				scroll.setSize(e.getX(), e.getY());
 			} else if (e.getSource().equals(pc)) {
-				scroll.setHover(e.getX(), e.getY());
+				scroll.setDragged(e.getX(), e.getY());
 			}
 		} else if (cr != null) {
 			if (e.getSource().equals(cr)) {
@@ -257,7 +257,6 @@ public class mouse extends MouseAdapter implements MouseListener {
 			}
 		} else if (tb != null) {
 			tb.setHover(e.getSource().hashCode(), ColorList.Hover);
-			tb.hover(e.getSource().hashCode());
 		} else if (formlogin != null) {
 			formlogin.hover(e.getSource().hashCode());
 		} else if (formregister != null) {
