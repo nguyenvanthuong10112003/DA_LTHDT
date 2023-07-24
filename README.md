@@ -23,6 +23,7 @@ I.NHỮNG THỨ CẦN THIẾT
       Eclipse bằng JDBC - một API dùng để kết nối và thực thi các câu
       lệnh SQL xuống database. Chương trình không yêu cầu cài đặt
       JDBC vì thư viện này đã được cài đặt sẵn trong chương trình.
+
 II.HƯỚNG DẪN CÀI ĐẶT
 
   - Sau khi tải về hoàn tất, chúng ta truy cập vào nơi mà chương trình được lưu vào. Sau đó giải nén file bằng WinRAR.
